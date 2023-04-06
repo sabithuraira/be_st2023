@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\SlsController;
+use App\Http\Controllers\API\RutaController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('sls', SlsController::class);
+Route::resource('ruta', RutaController::class);
