@@ -1,0 +1,285 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Monitoring ST2023",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/import_user": {
+            "post": {
+                "tags": [
+                    "import"
+                ],
+                "summary": "Import User",
+                "description": "Import Daftar user (Daftar Bisa dari hasil Export Manajemen Mitra)",
+                "operationId": "import_user",
+                "parameters": [
+                    {
+                        "name": "Bearer Token",
+                        "in": "header",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "File to upload",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "import_file"
+                                ],
+                                "properties": {
+                                    "import_file": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "File uploaded successfully"
+                    }
+                }
+            }
+        },
+        "/api/sls": {
+            "get": {
+                "tags": [
+                    "sls"
+                ],
+                "summary": "Get List",
+                "description": "pencarian dg keyword akan mengarah pada nama sls",
+                "operationId": "list",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "current page to show",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "filter and pagination",
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "keyword": {
+                                        "type": "string"
+                                    },
+                                    "kode_prov": {
+                                        "type": "string"
+                                    },
+                                    "kode_kab": {
+                                        "type": "string"
+                                    },
+                                    "kode_kec": {
+                                        "type": "string"
+                                    },
+                                    "kode_desa": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "return array model kategori"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "sls"
+                ],
+                "summary": "Store sls",
+                "description": "-",
+                "operationId": "sls/store",
+                "requestBody": {
+                    "description": "form sls",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "kode_prov",
+                                    "kode_kab",
+                                    "kode_kec",
+                                    "kode_desa",
+                                    "id_sls",
+                                    "id_sub_sls",
+                                    "nama_sls"
+                                ],
+                                "properties": {
+                                    "kode_prov": {
+                                        "type": "string"
+                                    },
+                                    "kode_kab": {
+                                        "type": "string"
+                                    },
+                                    "kode_kec": {
+                                        "type": "string"
+                                    },
+                                    "kode_desa": {
+                                        "type": "string"
+                                    },
+                                    "id_sls": {
+                                        "type": "string"
+                                    },
+                                    "id_sub_sls": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "nama_sls": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/sls/{id}/show": {
+            "get": {
+                "tags": [
+                    "sls"
+                ],
+                "summary": "Detail sls",
+                "description": "-",
+                "operationId": "sls/show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Enkripsi",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "jenis return data tergantung kode wilayah yang di request"
+                    }
+                }
+            }
+        },
+        "/api/sls/{id}": {
+            "put": {
+                "tags": [
+                    "sls"
+                ],
+                "summary": "Update sls",
+                "description": "-",
+                "operationId": "sls/update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Enkripsi",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "form sls",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "kode_prov",
+                                    "kode_kab",
+                                    "kode_kec",
+                                    "kode_desa",
+                                    "id_sls",
+                                    "id_sub_sls",
+                                    "nama_sls"
+                                ],
+                                "properties": {
+                                    "kode_prov": {
+                                        "type": "string"
+                                    },
+                                    "kode_kab": {
+                                        "type": "string"
+                                    },
+                                    "kode_kec": {
+                                        "type": "string"
+                                    },
+                                    "kode_desa": {
+                                        "type": "string"
+                                    },
+                                    "id_sls": {
+                                        "type": "string"
+                                    },
+                                    "id_sub_sls": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "nama_sls": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "sls"
+                ],
+                "summary": "Delete sls",
+                "description": "-",
+                "operationId": "sls/delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Enkripsi",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    }
+}
