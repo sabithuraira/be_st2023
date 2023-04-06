@@ -3584,8 +3584,6 @@
             "time": "2021-09-25T23:10:38+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "spatie/laravel-permission",
             "version": "5.10.0",
             "source": {
@@ -3668,7 +3666,6 @@
             "time": "2023-03-22T02:57:36+00:00"
         },
         {
->>>>>>> 18cd5f3326ca125db813f88c281948cac6baed6f
             "name": "swagger-api/swagger-ui",
             "version": "v4.18.2",
             "source": {
