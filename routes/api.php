@@ -30,4 +30,5 @@ Route::get('make_roles', [ImportController::class, 'make_roles']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('import_user', [ImportController::class, 'import_user']);
+    Route::post('import_alokasi', [ImportController::class, 'import_alokasi']);
 });

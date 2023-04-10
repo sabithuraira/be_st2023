@@ -2,22 +2,14 @@
 
 namespace App\Imports;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithStartRow;
-use Maatwebsite\Excel\Concerns\WithUpserts;
 
-class UsersImport implements ToModel, WithStartRow, WithUpserts
+class AlokasiImport implements ToModel
 {
     public function startRow(): int
     {
         return 2;
-    }
-    public function uniqueBy()
-    {
-        return 'email';
     }
     public function model(array $row)
     {

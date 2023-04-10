@@ -50,6 +50,51 @@
                 }
             }
         },
+        "/api/impot_alokasi": {
+            "post": {
+                "tags": [
+                    "import"
+                ],
+                "summary": "Import Alokasi Petugas",
+                "description": "Import Daftar SLS yang sudah berisi alokasi petugas (PCL, PML, Koseka), bisa dari export SLS pada halaman yang sama",
+                "operationId": "import_alokasi",
+                "parameters": [
+                    {
+                        "name": "Bearer Token",
+                        "in": "header",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "File to upload",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "import_file"
+                                ],
+                                "properties": {
+                                    "import_file": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "File uploaded successfully"
+                    }
+                }
+            }
+        },
         "/api/sls": {
             "get": {
                 "tags": [
