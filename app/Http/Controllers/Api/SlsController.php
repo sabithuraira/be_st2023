@@ -10,7 +10,8 @@ use Auth;
 use Illuminate\Support\Facades\Crypt;
 use App\Http\Requests\SlsRequest;
 
-class SlsController extends Controller{
+class SlsController extends Controller
+{
     /**
      * @OA\Get(
      *     path="/api/sls",
@@ -44,22 +45,23 @@ class SlsController extends Controller{
      *     )
      * )
      */
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $keyword = $request->keyword;
         $per_page = 20;
         $datas = [];
 
         $condition = [];
-        if(isset($request->kode_prov) && strlen($request->kode_prov)>0) $condition[] = ['kode_prov', '=', $request->kode_prov];
-        if(isset($request->kode_kab) && strlen($request->kode_kab)>0) $condition[] = ['kode_kab', '=', $request->kode_kab];
-        if(isset($request->kode_kec) && strlen($request->kode_kec)>0) $condition[] = ['kode_kec', '=', $request->kode_kec];
-        if(isset($request->kode_desa) && strlen($request->kode_desa)>0) $condition[] = ['kode_desa', '=', $request->kode_desa];
+        if (isset($request->kode_prov) && strlen($request->kode_prov) > 0) $condition[] = ['kode_prov', '=', $request->kode_prov];
+        if (isset($request->kode_kab) && strlen($request->kode_kab) > 0) $condition[] = ['kode_kab', '=', $request->kode_kab];
+        if (isset($request->kode_kec) && strlen($request->kode_kec) > 0) $condition[] = ['kode_kec', '=', $request->kode_kec];
+        if (isset($request->kode_desa) && strlen($request->kode_desa) > 0) $condition[] = ['kode_desa', '=', $request->kode_desa];
 
         //PAGINATION
-        if(isset($request->per_page) && strlen($request->per_page)>0) $per_page = $request->per_page;
+        if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
 
         //KEYWORD CONDITION
-        if(isset($request->keyword) && strlen($request->keyword)>0){
+        if (isset($request->keyword) && strlen($request->keyword) > 0) {
             $datas = Sls::where($condition)
                 ->where(
                     (function ($query) use ($keyword) {
@@ -68,15 +70,14 @@ class SlsController extends Controller{
                     })
                 )
                 ->orderBy('id', 'DESC')->paginate($per_page);
-        }
-        else{
+        } else {
             $datas = Sls::where($condition)->orderBy('id', 'DESC')->paginate($per_page);
         }
 
         $datas->withPath('sls');
-        $datas->appends($request->all());   
+        $datas->appends($request->all());
 
-        return response()->json(['status'=>'success','datas'=>$datas]);
+        return response()->json(['status' => 'success', 'datas' => $datas]);
     }
 
     /**
@@ -91,7 +92,7 @@ class SlsController extends Controller{
      *          description="form sls",
      *          @OA\JsonContent(
      *              required={
-     *                  "kode_prov", "kode_kab", "kode_kec", "kode_desa", 
+     *                  "kode_prov", "kode_kab", "kode_kec", "kode_desa",
      *                  "id_sls", "id_sub_sls", "nama_sls" },
      *              @OA\Property(property="kode_prov", type="string"),
      *              @OA\Property(property="kode_kab", type="string"),
@@ -108,13 +109,14 @@ class SlsController extends Controller{
      *     )
      * )
      */
-    public function store(SlsRequest $request){
+    public function store(SlsRequest $request)
+    {
         if (isset($request->validator) && $request->validator->fails()) {
             return response()->json(['status' => 'error', 'data' => $validator->errors()]);
         }
 
-        $model= new Sls;
-        $model->kode_prov= $request->kode_prov;
+        $model = new Sls;
+        $model->kode_prov = $request->kode_prov;
         $model->kode_kab = $request->kode_kab;
         $model->kode_kec = $request->kode_kec;
         $model->kode_desa = $request->kode_desa;
@@ -125,11 +127,11 @@ class SlsController extends Controller{
         $model->jenis_sls = 1;
         $model->status_sls = 1;
 
-        $model->created_by=Auth::id();
-        $model->updated_by=Auth::id();
+        $model->created_by = Auth::id();
+        $model->updated_by = Auth::id();
         $model->save();
 
-        return response()->json(['status' => 'success', 'data' => $data ]);
+        return response()->json(['status' => 'success', 'data' => $data]);
     }
 
     /**
@@ -154,21 +156,21 @@ class SlsController extends Controller{
      *     )
      * )
      */
-    public function show($id){
+    public function show($id)
+    {
         $status = "success";
 
-        try{
+        try {
             $decryptId = Crypt::decryptString($id);
             $result = Sls::find($decryptId);
-        }
-        catch(\Illuminate\Contracts\Encryption\DecryptException $e){
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
             $status = "error";
             $result = null;
         }
 
-        return response()->json(['status'=>$status, 'datas'=>$result]);
+        return response()->json(['status' => $status, 'datas' => $result]);
     }
-   
+
     /**
      * @OA\Put(
      *     path="/api/sls/{id}",
@@ -190,7 +192,7 @@ class SlsController extends Controller{
      *          description="form sls",
      *          @OA\JsonContent(
      *              required={
-     *                  "kode_prov", "kode_kab", "kode_kec", "kode_desa", 
+     *                  "kode_prov", "kode_kab", "kode_kec", "kode_desa",
      *                  "id_sls", "id_sub_sls", "nama_sls" },
      *              @OA\Property(property="kode_prov", type="string"),
      *              @OA\Property(property="kode_kab", type="string"),
@@ -207,17 +209,18 @@ class SlsController extends Controller{
      *     )
      * )
      */
-    public function update(SlsRequest $request, $id){
+    public function update(SlsRequest $request, $id)
+    {
         if (isset($request->validator) && $request->validator->fails()) {
             return response()->json(['status' => 'error', 'data' => $validator->errors()]);
         }
 
-        try{
+        try {
             $decryptId = Crypt::decryptString($id);
 
             $model = Sls::find($decryptId);
 
-            $model->kode_prov= $request->kode_prov;
+            $model->kode_prov = $request->kode_prov;
             $model->kode_kab = $request->kode_kab;
             $model->kode_kec = $request->kode_kec;
             $model->kode_desa = $request->kode_desa;
@@ -231,10 +234,9 @@ class SlsController extends Controller{
             $model->updated_by = auth()->user()->id;
             $model->save();
 
-            return response()->json(['status' => 'success', 'data' => $model ]);
-        }
-        catch(\Illuminate\Contracts\Encryption\DecryptException $e){
-            return response()->json(['status' => 'error', 'data' => null ]);
+            return response()->json(['status' => 'success', 'data' => $model]);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return response()->json(['status' => 'error', 'data' => null]);
         }
     }
 
@@ -260,16 +262,16 @@ class SlsController extends Controller{
      *     )
      * )
      */
-    public function destroy($id){
-        try{
+    public function destroy($id)
+    {
+        try {
             $decryptId = Crypt::decryptString($id);
             $model = Sls::find($decryptId);
             $model->delete();
 
-            return response()->json(['status' => 'success', 'data' => "Data berhasil dihapus" ]);
-        }
-        catch(\Illuminate\Contracts\Encryption\DecryptException $e){
-            return response()->json(['status' => 'error', 'data' => null ]);
+            return response()->json(['status' => 'success', 'data' => "Data berhasil dihapus"]);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return response()->json(['status' => 'error', 'data' => null]);
         }
     }
 }

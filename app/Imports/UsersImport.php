@@ -11,13 +11,6 @@ use Maatwebsite\Excel\Concerns\WithUpserts;
 
 class UsersImport implements ToModel, WithStartRow, WithUpserts
 {
-    /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-
-
     public function startRow(): int
     {
         return 2;
@@ -26,8 +19,6 @@ class UsersImport implements ToModel, WithStartRow, WithUpserts
     {
         return 'email';
     }
-
-
     public function model(array $row)
     {
 
@@ -38,7 +29,9 @@ class UsersImport implements ToModel, WithStartRow, WithUpserts
         if ($auth->kd_wilayah == 00) {
             $kd_wilayah = $row[6];
         }
-
+        if ($row[3] == 2) {
+            return null;
+        }
         // cek sudah ada di db atau belum
         $assign = User::where('email', $row[4])->first();
         if ($assign) {
