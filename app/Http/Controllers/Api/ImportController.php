@@ -24,7 +24,6 @@ class ImportController extends Controller
             $request->session()->regenerate();
             $auth = Auth::user();
             $token = $request->user()->createToken("be_st2023");
-
             echo  $token->plainTextToken;
         } else {
             echo "Error";
@@ -68,13 +67,20 @@ class ImportController extends Controller
 
     public function import_user(Request $request)
     {
+
+        $validator = $this->validator($request);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'data' => $validator->errors()]);
+        }
+
         if ($request->file('import_file')) {
-            Excel::import(new UsersImport, request()->file('import_file'));
+            $data = Excel::import(new UsersImport, request()->file('import_file'));
             // return 'Berhasil Memasukkan data';
-            return redirect()->back()->with('success', 'Berhasil Memasukkan data');
+            return response()->json(['status' => 'success', 'data' => $data]);
         } else {
             // return 'Kesalahan File';
-            return redirect()->back()->with('error', 'Kesalahan File');
+            return response()->json(['status' => 'error', 'data' => "File tidak ada/kesalahan variabel"]);
         }
     }
 
@@ -124,16 +130,4 @@ class ImportController extends Controller
             return redirect()->back()->with('error', 'Kesalahan File');
         }
     }
-
-
-    // public function make_roles()
-    // {
-    //     $role = Role::create(['name' => 'PPL']);
-    //     $role = Role::create(['name' => 'PML']);
-    //     $role = Role::create(['name' => 'Koseka']);
-    //     $role = Role::create(['name' => 'Super Admin']);
-    //     $role = Role::create(['name' => 'Admin Provinsi']);
-    //     $role = Role::create(['name' => 'Admin Kabupaten']);
-    //     return "selesai";
-    // }
 }
