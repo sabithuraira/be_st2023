@@ -5,6 +5,48 @@
         "version": "1.0"
     },
     "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Login",
+                "description": "-",
+                "operationId": "login",
+                "requestBody": {
+                    "description": "Auth form login",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/import_user": {
             "post": {
                 "tags": [
