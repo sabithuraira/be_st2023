@@ -97,7 +97,7 @@ class RutaController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $this->validator($request);
+        $validator = $this->validator($request->all());
 
         if ($validator->fails())
         {
@@ -122,6 +122,98 @@ class RutaController extends Controller
         ]);
 
         return response()->json(['status' => 'success', 'data' => $data]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/ruta/many",
+     *     tags={"ruta"},
+     *     summary="Store Many Ruta",
+     *     description="You can update array here by put the enc ID on array object. If not, just set ID with '' value",
+     *     operationId="ruta/many",
+     *     @OA\Parameter(
+     *          name="Bearer Token",
+     *          description="",
+     *          required=true,
+     *          in="header",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
+     *          @OA\JsonContent(
+     *              required={"data"},
+     *              @OA\Property(property="data", type="array", 
+    * *      @OA\Items(
+    *               type="object",
+    *               description="data",
+    *               @OA\Schema(type="object")
+    *         ),),
+     *          ),
+     *      ),
+     *     @OA\Response(
+     *         response="default",
+     *         description=""
+     *     )
+     * )
+     */
+    public function store_many(Request $request)
+    {
+        $data = [];
+
+        foreach($request->data as $key => $value)
+        {
+            $validator = $this->validator($value);
+
+            if ($validator->fails())
+            {
+                return response()->json(['status' => 'error', 'data' => $validator->errors(), 'at' => $value]);
+            }
+
+            try
+            {
+                if ($value['id']) $value['id'] = Crypt::decryptString($value['id']);
+            }
+
+            catch(\Illuminate\Contracts\Encryption\DecryptException $e)
+            {
+                return response()->json(['status' => 'error', 'data' => null, 'at' => $value]);
+            }
+
+            $data[] = [
+                'id' => $value['id'],
+                'kode_prov' => $value['kode_prov'],
+                'kode_kab' => $value['kode_kab'],
+                'kode_kec' => $value['kode_kec'],
+                'kode_desa' => $value['kode_desa'],
+                'id_sls' => $value['id_sls'],
+                'id_sub_sls' => $value['id_sub_sls'],
+                'start_time' => $value['start_time'],
+                'end_time' => $value['end_time'],
+                'start_latitude' => $value['start_latitude'],
+                'end_latitude' => $value['end_latitude'],
+                'start_longitude' => $value['start_longitude'],
+                'end_longitude' => $value['end_longitude'],
+                'created_by' => Auth::id(),
+                'updated_by' => Auth::id(),
+            ];
+        }
+        
+        foreach($data as $key => $value)
+        {
+            if ($value['id'])
+            {
+                Ruta::find($value['id'])->update($value);
+            }
+            else
+            {
+                Ruta::create($value);
+            }
+        }
+
+        return response()->json(['status' => 'success']);
     }
 
     /**
@@ -215,7 +307,7 @@ class RutaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = $this->validator($request);
+        $validator = $this->validator($request->all());
 
         if ($validator->fails())
         {
@@ -302,9 +394,9 @@ class RutaController extends Controller
         }
     }
 
-    private function validator(Request $request)
+    private function validator($value)
     {
-        return Validator::make($request->all(), [
+        return Validator::make($value, [
             'kode_prov' => 'required|string|max:2',
             'kode_kab' => 'required|string|max:2',
             'kode_kec' => 'required|string|max:3',
