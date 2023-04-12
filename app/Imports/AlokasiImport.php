@@ -3,47 +3,67 @@
 namespace App\Imports;
 
 use App\Models\Sls;
+use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithUpserts;
 
-class AlokasiImport implements ToModel
+class AlokasiImport implements ToModel, WithUpserts
 {
     public function startRow(): int
     {
         return 2;
     }
+
+    public function uniqueBy()
+    {
+        return 'id_sls';
+    }
+
     public function model(array $row)
     {
-
         $auth = Auth::user();
+        $sls = Sls::where('kode_kab', $row[1])
+            ->where('kode_kec', $row[2])
+            ->where('kode_desa', $row[3])
+            ->where('id_sls', $row[4])
+            ->where('id_sub_sls', $row[5])
+            ->first();
 
-        $kd_wilayah = $auth->kd_wilayah;
-        // khusus user Prov
-        if ($auth->kd_wilayah == 00) {
-            $kd_wilayah = $row[6];
-        }
-        if ($row[3] == 2) {
-            return null;
-        }
-        // cek sudah ada di db atau belum
-        $assign = Sls::where('email', $row[4])->first();
-        if ($assign) {
+        if ($sls) {
             // jika sudah ada di db
-            $user = new Sls([
-                'name'     => $row[1],
-                'email'    => $row[4],
-                'password' => Hash::make('123456'),
-                'pengawas' => $row[6],
-                'kode_kab' => $kd_wilayah,
-                'kode_kec' => $row[7],
-                'kode_desa' => $row[8],
-                'updated_by' => $auth->id
+            $kode_pcl = "";
+            $kode_pml = "";
+            $kode_koseka = "";
+
+            $pcl = User::where('email', $row[6])->first();
+            if ($pcl) {
+                $kode_pcl = $row[6];
+            }
+
+            $pml = User::where('email', $row[7])->first();
+            if ($pml) {
+                $kode_pcl = $row[7];
+            }
+
+            $koseka = User::where('email', $row[8])->first();
+            if ($koseka) {
+                $kode_pcl = $row[8];
+            }
+
+            $input = new Sls([
+                'kode_kab' => $row[1],
+                'kode_kec' => $row[2],
+                'kode_desa' => $row[3],
+                'id_sls' => $row[4],
+                'id_sub_sls' => $row[5],
+                'kode_pcl' => $kode_pcl,
+                'kode_pml' => $kode_pml,
+                'kode_koseka' => $kode_koseka,
             ]);
         }
-
-
-        return $user;
+        return $input;
     }
 }

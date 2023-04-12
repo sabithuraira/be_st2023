@@ -5,6 +5,77 @@
         "version": "1.0"
     },
     "paths": {
+        "/api/export_alokasi": {
+            "get": {
+                "tags": [
+                    "export"
+                ],
+                "summary": "Get Xlsx Alokasi",
+                "description": "export Sls",
+                "operationId": "export",
+                "parameters": [
+                    {
+                        "name": "Bearer Token",
+                        "in": "header",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kode_kab",
+                        "in": "path",
+                        "description": "Kode Kabupaten 2 Digit",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kode_kec",
+                        "in": "path",
+                        "description": "Kode Kecamtan 3 Digit",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kode_desa",
+                        "in": "path",
+                        "description": "Kode desa 3 Digit",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id_sls",
+                        "in": "path",
+                        "description": "Id SLS 4 Digit",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id_sub_sls",
+                        "in": "path",
+                        "description": "Id Sub SLS 2 Digit",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Download excel alokasi SLS"
+                    }
+                }
+            }
+        },
         "/api/import_user": {
             "post": {
                 "tags": [
