@@ -5,12 +5,147 @@
         "version": "1.0"
     },
     "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login",
+                "description": "-",
+                "operationId": "login",
+                "requestBody": {
+                    "description": "Auth form login",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Register",
+                "description": "-",
+                "operationId": "register",
+                "requestBody": {
+                    "description": "Auth form register",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "name",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "your name"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Logout",
+                "description": "-",
+                "operationId": "logout",
+                "parameters": [
+                    {
+                        "name": "Bearer Token",
+                        "in": "header",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/progress_per_kab": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get Progress",
+                "description": "Progress penyelesaian SLS perkabupatenkota",
+                "operationId": "dashboard",
+                "responses": {
+                    "default": {
+                        "description": "return array model kategori"
+                    }
+                }
+            }
+        },
         "/api/export_alokasi": {
             "get": {
                 "tags": [
                     "export"
                 ],
-                "summary": "Get Xlsx Alokasi",
+                "summary": "Get .XLSX Alokasi",
                 "description": "export Sls",
                 "operationId": "export",
                 "parameters": [
@@ -162,6 +297,337 @@
                 "responses": {
                     "200": {
                         "description": "File uploaded successfully"
+                    }
+                }
+            }
+        },
+        "/api/ruta": {
+            "get": {
+                "tags": [
+                    "ruta"
+                ],
+                "summary": "Get List",
+                "description": "-",
+                "operationId": "ruta/index",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "current page to show",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "kode wilayah and pagination",
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "per_page": {
+                                        "type": "integer"
+                                    },
+                                    "kode_wilayah": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "return array model ruta"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "ruta"
+                ],
+                "summary": "Store ruta",
+                "description": "-",
+                "operationId": "ruta/store",
+                "requestBody": {
+                    "description": "form ruta",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "kode_prov",
+                                    "kode_kab",
+                                    "kode_kec",
+                                    "kode_desa",
+                                    "id_sls",
+                                    "id_sub_sls",
+                                    "start_time",
+                                    "end_time",
+                                    "start_latitude",
+                                    "end_latitude",
+                                    "start_longitude",
+                                    "end_longitude"
+                                ],
+                                "properties": {
+                                    "kode_prov": {
+                                        "type": "string"
+                                    },
+                                    "kode_kab": {
+                                        "type": "string"
+                                    },
+                                    "kode_kec": {
+                                        "type": "string"
+                                    },
+                                    "kode_desa": {
+                                        "type": "string"
+                                    },
+                                    "id_sls": {
+                                        "type": "string"
+                                    },
+                                    "id_sub_sls": {
+                                        "type": "string"
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "start_latitude": {
+                                        "type": "decimal"
+                                    },
+                                    "end_latitude": {
+                                        "type": "decimal"
+                                    },
+                                    "start_longitude": {
+                                        "type": "decimal"
+                                    },
+                                    "end_longitude": {
+                                        "type": "decimal"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/ruta/many": {
+            "post": {
+                "tags": [
+                    "ruta"
+                ],
+                "summary": "Store Many Ruta",
+                "description": "You can update array here by put the enc ID on array object. If not, just set ID with '' value",
+                "operationId": "ruta/many",
+                "parameters": [
+                    {
+                        "name": "Bearer Token",
+                        "in": "header",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "data"
+                                ],
+                                "properties": {
+                                    "data": {
+                                        "type": "array",
+                                        "items": {
+                                            "description": "data",
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/ruta/{id}/show": {
+            "get": {
+                "tags": [
+                    "ruta"
+                ],
+                "summary": "Detail ruta",
+                "description": "-",
+                "operationId": "ruta/show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Enkripsi",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "jenis return data tergantung kode wilayah yang di request"
+                    }
+                }
+            }
+        },
+        "/api/ruta/{id}": {
+            "put": {
+                "tags": [
+                    "ruta"
+                ],
+                "summary": "Update Ruta",
+                "description": "-",
+                "operationId": "ruta/update",
+                "parameters": [
+                    {
+                        "name": "Bearer Token",
+                        "in": "header",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Enkripsi",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "form master ruta",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "kode_prov",
+                                    "kode_kab",
+                                    "kode_kec",
+                                    "kode_desa",
+                                    "id_sls",
+                                    "id_sub_sls",
+                                    "start_time",
+                                    "end_time",
+                                    "start_latitude",
+                                    "end_latitude",
+                                    "start_longitude",
+                                    "end_longitude"
+                                ],
+                                "properties": {
+                                    "kode_prov": {
+                                        "type": "string"
+                                    },
+                                    "kode_kab": {
+                                        "type": "string"
+                                    },
+                                    "kode_kec": {
+                                        "type": "string"
+                                    },
+                                    "kode_desa": {
+                                        "type": "string"
+                                    },
+                                    "id_sls": {
+                                        "type": "string"
+                                    },
+                                    "id_sub_sls": {
+                                        "type": "string"
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "start_latitude": {
+                                        "type": "decimal"
+                                    },
+                                    "end_latitude": {
+                                        "type": "decimal"
+                                    },
+                                    "start_longitude": {
+                                        "type": "decimal"
+                                    },
+                                    "end_longitude": {
+                                        "type": "decimal"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "ruta"
+                ],
+                "summary": "Delete Ruta",
+                "description": "-",
+                "operationId": "ruta/delete",
+                "parameters": [
+                    {
+                        "name": "Bearer Token",
+                        "in": "header",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Enkripsi",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
                     }
                 }
             }
