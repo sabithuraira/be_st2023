@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ExportController;
 use App\Http\Controllers\Api\SlsController;
 use App\Http\Controllers\Api\RutaController;
@@ -32,8 +33,11 @@ Route::resource('sls', SlsController::class);
 Route::get('make_roles', [ImportController::class, 'make_roles']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('progress_per_kab', [DashboardController::class, 'progress_per_kab']);
+
     Route::post('import_user', [ImportController::class, 'import_user']);
     Route::get('export_alokasi', [ExportController::class, 'export_alokasi']);
     Route::post('import_alokasi', [ImportController::class, 'import_alokasi']);
+
     Route::resource('ruta', RutaController::class);
 });
