@@ -21,6 +21,8 @@ class CreateRutaTable extends Migration
             $table->string('kode_desa', 3);
             $table->string('id_sls', 4);
             $table->string('id_sub_sls', 4);
+            $table->integer('nurt');
+            $table->string('kepala_ruta');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->decimal('start_latitude', 10, 8);

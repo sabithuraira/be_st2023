@@ -81,6 +81,8 @@ class RutaController extends Controller
      *              @OA\Property(property="kode_desa", type="string"),
      *              @OA\Property(property="id_sls", type="string"),
      *              @OA\Property(property="id_sub_sls", type="string"),
+     *              @OA\Property(property="nurt", type="integer"),
+     *              @OA\Property(property="kepala_ruta", type="string"),
      *              @OA\Property(property="start_time", type="datetime"),
      *              @OA\Property(property="end_time", type="datetime"),
      *              @OA\Property(property="start_latitude", type="decimal"),
@@ -111,6 +113,8 @@ class RutaController extends Controller
             'kode_desa' => $request->kode_desa,
             'id_sls' => $request->id_sls,
             'id_sub_sls' => $request->id_sub_sls,
+            'nurt' => $request->nurt,
+            'kepala_ruta' => $request->kepala_ruta,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
             'start_latitude' => $request->start_latitude,
@@ -142,7 +146,7 @@ class RutaController extends Controller
      *     ),
      *     @OA\RequestBody(
      *          required=true,
-     *          description="in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
+     *          description="in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, nurt, kepala_ruta, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
      *          @OA\JsonContent(
      *              required={"data"},
      *              @OA\Property(property="data", type="array", 
@@ -190,6 +194,8 @@ class RutaController extends Controller
                 'kode_desa' => $value['kode_desa'],
                 'id_sls' => $value['id_sls'],
                 'id_sub_sls' => $value['id_sub_sls'],
+                'nurt' => $value['nurt'],
+                'kepala_ruta' => $value['kepala_ruta'],
                 'start_time' => $value['start_time'],
                 'end_time' => $value['end_time'],
                 'start_latitude' => $value['start_latitude'],
@@ -284,7 +290,7 @@ class RutaController extends Controller
      *          required=true,
      *          description="form master ruta",
      *          @OA\JsonContent(
-     *              required={"kode_prov", "kode_kab", "kode_kec", "kode_desa", "id_sls", "id_sub_sls", "start_time", "end_time", "start_latitude", "end_latitude", "start_longitude", "end_longitude"},
+     *              required={"kode_prov", "kode_kab", "kode_kec", "kode_desa", "id_sls", "id_sub_sls", "nurt", "kepala_ruta", "start_time", "end_time", "start_latitude", "end_latitude", "start_longitude", "end_longitude"},
      *              @OA\Property(property="kode_prov", type="string"),
      *              @OA\Property(property="kode_kab", type="string"),
      *              @OA\Property(property="kode_kec", type="string"),
@@ -326,6 +332,8 @@ class RutaController extends Controller
             $data->kode_desa = $request->kode_desa;
             $data->id_sls = $request->id_sls;
             $data->id_sub_sls = $request->id_sub_sls;
+            $data->nurt = $request->nurt;
+            $data->kepala_ruta = $request->kepala_ruta;
             $data->start_time = $request->start_time;
             $data->end_time = $request->end_time;
             $data->start_latitude = $request->start_latitude;
@@ -403,6 +411,8 @@ class RutaController extends Controller
             'kode_desa' => 'required|string|max:3',
             'id_sls' => 'required|string|max:4',
             'id_sub_sls' => 'required|string|max:2',
+            'nurt' => 'required',
+            'kepala_ruta' => 'required|string',
             'start_time' => 'required|date',
             'end_time' => 'required|date',
             'start_latitude' => 'required',
