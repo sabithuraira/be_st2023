@@ -74,7 +74,7 @@ class RutaController extends Controller
      *          required=true,
      *          description="form ruta",
      *          @OA\JsonContent(
-     *              required={"kode_prov", "kode_kab", "kode_kec", "kode_desa", "id_sls", "id_sub_sls", "start_time", "end_time", "start_latitude", "end_latitude", "start_longitude", "end_longitude"},
+     *              required={"kode_prov", "kode_kab", "kode_kec", "kode_desa", "id_sls", "id_sub_sls", "nurt", "kepala_ruta", "start_time", "end_time", "start_latitude", "end_latitude", "start_longitude", "end_longitude"},
      *              @OA\Property(property="kode_prov", type="string"),
      *              @OA\Property(property="kode_kab", type="string"),
      *              @OA\Property(property="kode_kec", type="string"),
