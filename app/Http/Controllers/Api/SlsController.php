@@ -81,6 +81,60 @@ class SlsController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/sls/{jenis}/{kode_petugas}/petugas",
+     *     tags={"sls"},
+     *     summary="Get By Petugas",
+     *     description="get daftar SLS by Petugas",
+     *     operationId="get_by_petugas",
+     *     @OA\Parameter(
+     *          name="jenis",
+     *          description="1=PPL, 2=PML, 3=KOSEKA",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          name="kode_petugas",
+     *          description="Email Petugas",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="return array model kategori"
+     *     )
+     * )
+     */
+    public function get_by_petugas($jenis, $kode_petugas){
+        $datas = [];
+
+        $condition = [];
+        switch ($jenis) {
+            case 1:
+                $condition[] = ['kode_pcl', '=', $kode_petugas];
+                break;
+            case 2:
+                $condition[] = ['kode_pml', '=', $kode_petugas];
+                break;
+            case 3:
+                $condition[] = ['kode_koseka', '=', $kode_petugas];
+                break;
+            default:
+                $condition[] = ['kode_pcl', '=', $kode_petugas];
+        }
+
+        $datas = Sls::where($condition)->get();
+
+        return response()->json(['status' => 'success', 'datas' => $datas]);
+    }
+
+    /**
      * @OA\Post(
      *     path="/api/sls",
      *     tags={"sls"},
