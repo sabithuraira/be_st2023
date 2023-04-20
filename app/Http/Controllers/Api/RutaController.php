@@ -45,16 +45,16 @@ class RutaController extends Controller
     {
         $per_page = 20;
 
-        if(isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
+        if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
 
         $condition = [];
 
-        if(strlen($request->kode_wilayah) >= 2) $condition[] = ['kode_prov', '=', substr($request->kode_wilayah, 0, 2)];
-        if(strlen($request->kode_wilayah) >= 4) $condition[] = ['kode_kab', '=', substr($request->kode_wilayah, 2, 2)];
-        if(strlen($request->kode_wilayah) >= 7) $condition[] = ['kode_kec', '=', substr($request->kode_wilayah, 4, 3)];
-        if(strlen($request->kode_wilayah) >= 10) $condition[] = ['kode_desa', '=', substr($request->kode_wilayah, 7, 3)];
-        if(strlen($request->kode_wilayah) >= 14) $condition[] = ['id_sls', '=', substr($request->kode_wilayah, 10, 4)];
-        if(strlen($request->kode_wilayah) >= 16) $condition[] = ['id_subsls', '=', substr($request->kode_wilayah, 14, 2)];
+        if (strlen($request->kode_wilayah) >= 2) $condition[] = ['kode_prov', '=', substr($request->kode_wilayah, 0, 2)];
+        if (strlen($request->kode_wilayah) >= 4) $condition[] = ['kode_kab', '=', substr($request->kode_wilayah, 2, 2)];
+        if (strlen($request->kode_wilayah) >= 7) $condition[] = ['kode_kec', '=', substr($request->kode_wilayah, 4, 3)];
+        if (strlen($request->kode_wilayah) >= 10) $condition[] = ['kode_desa', '=', substr($request->kode_wilayah, 7, 3)];
+        if (strlen($request->kode_wilayah) >= 14) $condition[] = ['id_sls', '=', substr($request->kode_wilayah, 10, 4)];
+        if (strlen($request->kode_wilayah) >= 16) $condition[] = ['id_subsls', '=', substr($request->kode_wilayah, 14, 2)];
 
         $data = Ruta::where($condition)->orderBy('id', 'desc')->paginate($per_page);
 
@@ -99,8 +99,7 @@ class RutaController extends Controller
     {
         $validator = $this->validator($request->all());
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json(['status' => 'error', 'data' => $validator->errors()]);
         }
 
@@ -145,12 +144,12 @@ class RutaController extends Controller
      *          description="in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
      *          @OA\JsonContent(
      *              required={"data"},
-     *              @OA\Property(property="data", type="array", 
-    * *      @OA\Items(
-    *               type="object",
-    *               description="data",
-    *               @OA\Schema(type="object")
-    *         ),),
+     *              @OA\Property(property="data", type="array",
+     * *      @OA\Items(
+     *               type="object",
+     *               description="data",
+     *               @OA\Schema(type="object")
+     *         ),),
      *          ),
      *      ),
      *     @OA\Response(
@@ -163,22 +162,16 @@ class RutaController extends Controller
     {
         $data = [];
 
-        foreach($request->data as $key => $value)
-        {
+        foreach ($request->data as $key => $value) {
             $validator = $this->validator($value);
 
-            if ($validator->fails())
-            {
+            if ($validator->fails()) {
                 return response()->json(['status' => 'error', 'data' => $validator->errors(), 'at' => $value]);
             }
 
-            try
-            {
+            try {
                 if ($value['id']) $value['id'] = Crypt::decryptString($value['id']);
-            }
-
-            catch(\Illuminate\Contracts\Encryption\DecryptException $e)
-            {
+            } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
                 return response()->json(['status' => 'error', 'data' => null, 'at' => $value]);
             }
 
@@ -200,15 +193,11 @@ class RutaController extends Controller
                 'updated_by' => Auth::id(),
             ];
         }
-        
-        foreach($data as $key => $value)
-        {
-            if ($value['id'])
-            {
+
+        foreach ($data as $key => $value) {
+            if ($value['id']) {
                 Ruta::find($value['id'])->update($value);
-            }
-            else
-            {
+            } else {
                 Ruta::create($value);
             }
         }
@@ -240,17 +229,13 @@ class RutaController extends Controller
      */
     public function show($id)
     {
-        try
-        {
+        try {
             $decryptId = Crypt::decryptString($id);
 
             $data = Ruta::find($decryptId);
 
             return response()->json(['status' => 'success', 'data' => $data]);
-        }
-
-        catch(\Illuminate\Contracts\Encryption\DecryptException $e)
-        {
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
             return response()->json(['status' => 'error', 'data' => null]);
         }
     }
@@ -309,13 +294,11 @@ class RutaController extends Controller
     {
         $validator = $this->validator($request->all());
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json(['status' => 'error', 'data' => $validator->errors()]);
         }
 
-        try
-        {
+        try {
             $decryptId = Crypt::decryptString($id);
 
             $data = Ruta::find($decryptId);
@@ -336,11 +319,8 @@ class RutaController extends Controller
             $data->save();
 
             return response()->json(['status' => 'success', 'data' => $data]);
-        }
-
-        catch(\Illuminate\Contracts\Encryption\DecryptException $e)
-        {
-            return response()->json(['status' => 'error', 'data' => null ]);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return response()->json(['status' => 'error', 'data' => null]);
         }
     }
 
@@ -377,20 +357,16 @@ class RutaController extends Controller
      */
     public function destroy($id)
     {
-        try
-        {
+        try {
             $decryptId = Crypt::decryptString($id);
 
             $data = Ruta::find($decryptId);
 
             $data->delete();
 
-            return response()->json(['status' => 'success', 'data' => $data ]);
-        }
-
-        catch(\Illuminate\Contracts\Encryption\DecryptException $e)
-        {
-            return response()->json(['status' => 'error', 'data' => null ]);
+            return response()->json(['status' => 'success', 'data' => $data]);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return response()->json(['status' => 'error', 'data' => null]);
         }
     }
 

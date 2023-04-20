@@ -34,7 +34,7 @@ Route::resource('sls', SlsController::class);
 Route::get('make_roles', [ImportController::class, 'make_roles']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('progress_per_kab', [DashboardController::class, 'progress_per_kab']);
+    Route::get('progress', [DashboardController::class, 'progress']);
 
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('import_user', [ImportController::class, 'import_user']);

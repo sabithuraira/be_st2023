@@ -24,13 +24,27 @@ class DashboardController extends Controller
      *     )
      * )
      */
-    public function progress_per_kab()
+    public function progress(Request $request)
     {
-        $data = Sls::select('kode_kab',  DB::raw('SUM(status_selesai_pcl) as selesai'),  DB::raw('COUNT(*) as total_sls'))
-            ->groupby('kode_kab')
-            ->orderBy('kode_kab', 'asc')
-            ->get();
-
+        // $data = [];
+        // dd($request->all());
+        if ($request->sls_filter) {
+            $data  = Ruta::select('kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls', 'start_time', 'end_time', 'start_latitude', 'end_latitude', 'start_longitude', 'end_longitude')
+                ->where('kode_kab', $request->kab_filter)
+                ->where('kode_kec', $request->kec_filter)
+                ->where('kode_desa', $request->desa_filter)
+                ->where('id_sls', $request->sls_filter)
+                ->orderBy('kode_kab', 'asc')
+                ->get();
+        } else if ($request->desa_filter) {
+            $data = Sls::select('id_sls',  DB::raw('SUM(status_selesai_pcl) as selesai'))
+                ->where('kode_kab', $request->kab_filter)
+                ->where('kode_kec', $request->kec_filter)
+                ->where('kode_desa', $request->desa_filter)
+                ->groupby('id_sls')
+                ->orderBy('kode_desa', 'asc')
+                ->get();
+        }
         return response()->json(['status' => 'success', 'data' => $data]);
     }
 }
