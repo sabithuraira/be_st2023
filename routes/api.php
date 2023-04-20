@@ -31,6 +31,7 @@ Route::post('register', [AuthController::class, 'register']);
 Route::middleware('web')->get('authenticate', [ImportController::class, 'authenticate']);
 
 Route::resource('sls', SlsController::class);
+Route::get('sls/get_by_petugas', [SlsController::class, 'get_by_petugas']);
 Route::get('make_roles', [ImportController::class, 'make_roles']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {

@@ -85,6 +85,10 @@
                                     "password_confirmation": {
                                         "type": "string",
                                         "example": "PassWord12345"
+                                    },
+                                    "kode_kab": {
+                                        "type": "string",
+                                        "example": "02"
                                     }
                                 },
                                 "type": "object"
@@ -365,6 +369,8 @@
                                     "kode_desa",
                                     "id_sls",
                                     "id_sub_sls",
+                                    "nurt",
+                                    "kepala_ruta",
                                     "start_time",
                                     "end_time",
                                     "start_latitude",
@@ -389,6 +395,12 @@
                                         "type": "string"
                                     },
                                     "id_sub_sls": {
+                                        "type": "string"
+                                    },
+                                    "nurt": {
+                                        "type": "integer"
+                                    },
+                                    "kepala_ruta": {
                                         "type": "string"
                                     },
                                     "start_time": {
@@ -444,7 +456,7 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
+                    "description": "in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, nurt, kepala_ruta, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -540,6 +552,8 @@
                                     "kode_desa",
                                     "id_sls",
                                     "id_sub_sls",
+                                    "nurt",
+                                    "kepala_ruta",
                                     "start_time",
                                     "end_time",
                                     "start_latitude",
@@ -739,6 +753,41 @@
                 "responses": {
                     "default": {
                         "description": ""
+                    }
+                }
+            }
+        },
+        "/api/sls/{jenis}/{kode_petugas}/petugas": {
+            "get": {
+                "tags": [
+                    "sls"
+                ],
+                "summary": "Get By Petugas",
+                "description": "get daftar SLS by Petugas",
+                "operationId": "get_by_petugas",
+                "parameters": [
+                    {
+                        "name": "jenis",
+                        "in": "path",
+                        "description": "1=PPL, 2=PML, 3=KOSEKA",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kode_petugas",
+                        "in": "path",
+                        "description": "Email Petugas",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "return array model kategori"
                     }
                 }
             }

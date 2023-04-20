@@ -73,6 +73,7 @@ class AuthController extends Controller
      *              @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
      *              @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
      *              @OA\Property(property="password_confirmation", type="string", example="PassWord12345"),
+     *              @OA\Property(property="kode_kab", type="string", example="02"),
      *          ),
      *      ),
      *     @OA\Response(
@@ -88,6 +89,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
             'password_confirmation' => 'required|min:6|same:password',
+            'kode_kab' => 'required|string|min:2|max:2',
         ]);
 
         if($validator->fails())
@@ -101,6 +103,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'kode_kab' => $request->kode_kab,
             'password' => Hash::make($request->password)
          ]);
 
