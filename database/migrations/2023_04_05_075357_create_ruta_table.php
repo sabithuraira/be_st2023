@@ -22,15 +22,15 @@ class CreateRutaTable extends Migration
             $table->string('id_sls', 4);
             $table->string('id_sub_sls', 4);
             $table->integer('nurt');
-            $table->string('kepala_ruta');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
-            $table->decimal('start_latitude', 10, 8);
-            $table->decimal('end_latitude', 10, 8);
-            $table->decimal('start_longitude', 11, 8);
-            $table->decimal('end_longitude', 11, 8);
-            $table->integer('created_by');
-            $table->integer('updated_by');
+            $table->string('kepala_ruta')->nullable();
+            $table->dateTime('start_time')->nullable();
+            $table->dateTime('end_time')->nullable();
+            $table->decimal('start_latitude', 10, 8)->nullable();
+            $table->decimal('end_latitude', 10, 8)->nullable();
+            $table->decimal('start_longitude', 11, 8)->nullable();
+            $table->decimal('end_longitude', 11, 8)->nullable();
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

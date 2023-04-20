@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ruta;
 use App\Models\Sls;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -80,6 +81,31 @@ class DatabaseSeeder extends Seeder
             'jml_dok_ke_pml' => "0",
             'jml_dok_ke_koseka' => "0",
             'status_selesai_pcl' => "0",
+            'created_by' => "0",
+            'updated_by' => "0",
+        ]);
+
+        Ruta::create([
+            'kode_prov' => "16",
+            'kode_kab' => "71",
+            'kode_kec' => "080",
+            'kode_desa' => "008",
+            'id_sls' => "0001",
+            'id_sub_sls' => "00",
+            'nurt' => 1,
+            'kepala_ruta' => "kharis",
+            'created_by' => "0",
+            'updated_by' => "0",
+        ]);
+        Ruta::create([
+            'kode_prov' => "16",
+            'kode_kab' => "71",
+            'kode_kec' => "080",
+            'kode_desa' => "008",
+            'id_sls' => "0001",
+            'id_sub_sls' => "00",
+            'nurt' => 2,
+            'kepala_ruta' => "ari",
             'created_by' => "0",
             'updated_by' => "0",
         ]);
