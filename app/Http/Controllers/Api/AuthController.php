@@ -35,11 +35,11 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        if (! Auth::attempt($request->only('email', 'password')))
+        if (!Auth::attempt($request->only('email', 'password')))
         {
             return response()->json([
                 'status' => 'error',
-                'data' => 'Unauthorized',
+                'data' => 'Username/Password salah',
             ], 401);
         }
 
@@ -90,6 +90,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
             'password_confirmation' => 'required|min:6|same:password',
             'kode_kab' => 'required|string|min:2|max:2',
+            'jabatan' => 'required|numeric|min:1|max:3',
         ]);
 
         if($validator->fails())
@@ -104,6 +105,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'kode_kab' => $request->kode_kab,
+            'jabatan' => $request->jabatan,
             'password' => Hash::make($request->password)
          ]);
 
