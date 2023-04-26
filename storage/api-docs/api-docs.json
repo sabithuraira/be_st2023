@@ -129,17 +129,152 @@
                 }
             }
         },
-        "/api/progress_per_kab": {
+        "/api/progress": {
             "get": {
                 "tags": [
                     "Dashboard"
                 ],
-                "summary": "Get Progress",
-                "description": "Progress penyelesaian SLS perkabupatenkota",
-                "operationId": "dashboard",
+                "summary": "Get Progress selesai cacah",
+                "description": "progress selesai persls dengan filter wilayah sampai level sls(list ruta)",
+                "operationId": "progress",
+                "parameters": [
+                    {
+                        "name": "kab_filter",
+                        "in": "path",
+                        "description": "filter kode kabupaten",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kec_filter",
+                        "in": "path",
+                        "description": "filter kode kecamatan",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "desa_filter",
+                        "in": "path",
+                        "description": "filter kode desa",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sls_filter",
+                        "in": "path",
+                        "description": "filter kode sls",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "default": {
-                        "description": "return array model kategori"
+                        "description": "return array wilayah"
+                    }
+                }
+            }
+        },
+        "/api/progress_kk": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get Progress jumlah kk berdasarkan sektor dan keseluruhan",
+                "description": "progress jumlah kk yang telah diinput dengan filter wilayah sampai ke level desa",
+                "operationId": "progress_kk",
+                "parameters": [
+                    {
+                        "name": "kab_filter",
+                        "in": "path",
+                        "description": "filter kode kabupaten",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kec_filter",
+                        "in": "path",
+                        "description": "filter kode kecamatan",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "desa_filter",
+                        "in": "path",
+                        "description": "filter kode desa",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "return array wilayah & progress"
+                    }
+                }
+            }
+        },
+        "/api/progress_dokumen": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get Progress dokumen",
+                "description": "progress dokumen persls dengan filter wilayah",
+                "operationId": "progress_dokumen",
+                "parameters": [
+                    {
+                        "name": "kab_filter",
+                        "in": "path",
+                        "description": "filter kode kabupaten",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kec_filter",
+                        "in": "path",
+                        "description": "filter kode kecamatan",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "desa_filter",
+                        "in": "path",
+                        "description": "filter kode desa",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sls_filter",
+                        "in": "path",
+                        "description": "filter kode sls",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "return array wilayah"
                     }
                 }
             }

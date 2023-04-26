@@ -36,6 +36,8 @@ Route::get('make_roles', [ImportController::class, 'make_roles']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('progress', [DashboardController::class, 'progress']);
+    Route::get('progress_kk', [DashboardController::class, 'progress_kk']);
+    Route::get('progress_dokumen', [DashboardController::class, 'progress_dokumen']);
 
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('import_user', [ImportController::class, 'import_user']);

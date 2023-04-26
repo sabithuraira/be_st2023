@@ -85,6 +85,34 @@ class DatabaseSeeder extends Seeder
             'updated_by' => "0",
         ]);
 
+        Sls::create([
+            'kode_prov' => "16",
+            'kode_kab' => "71",
+            'kode_kec' => "080",
+            'kode_desa' => "009",
+            'id_sls' => "0001",
+            'id_sub_sls' => "00",
+            'nama_sls' => "RT 01 RW 01",
+            'sls_op' => "1",
+            'jenis_sls' => "1",
+            'jml_art_tani' => "20",
+            'jml_keluarga_tani' => "18",
+            'sektor1' => "10",
+            'sektor2' => "7",
+            'sektor3' => "1",
+            'sektor4' => "0",
+            'sektor5' => "0",
+            'sektor6' => "0",
+            'jml_keluarga_tani' => "0",
+            'jml_nr' => "0",
+            'jml_dok_ke_pml' => "0",
+            'jml_dok_ke_koseka' => "0",
+            'status_selesai_pcl' => "0",
+            'created_by' => "0",
+            'updated_by' => "0",
+        ]);
+
+
         Ruta::create([
             'kode_prov' => "16",
             'kode_kab' => "71",
@@ -94,6 +122,7 @@ class DatabaseSeeder extends Seeder
             'id_sub_sls' => "00",
             'nurt' => 1,
             'kepala_ruta' => "kharis",
+            'sektor' => 1,
             'created_by' => "0",
             'updated_by' => "0",
         ]);
@@ -106,6 +135,59 @@ class DatabaseSeeder extends Seeder
             'id_sub_sls' => "00",
             'nurt' => 2,
             'kepala_ruta' => "ari",
+            'sektor' => 2,
+            'created_by' => "0",
+            'updated_by' => "0",
+        ]);
+        Ruta::create([
+            'kode_prov' => "16",
+            'kode_kab' => "71",
+            'kode_kec' => "080",
+            'kode_desa' => "008",
+            'id_sls' => "0002",
+            'id_sub_sls' => "00",
+            'nurt' => 1,
+            'kepala_ruta' => "bombom",
+            'sektor' => 1,
+            'created_by' => "0",
+            'updated_by' => "0",
+        ]);
+        Ruta::create([
+            'kode_prov' => "16",
+            'kode_kab' => "71",
+            'kode_kec' => "080",
+            'kode_desa' => "008",
+            'id_sls' => "0002",
+            'id_sub_sls' => "00",
+            'nurt' => 2,
+            'kepala_ruta' => "jonathan",
+            'sektor' => 3,
+            'created_by' => "0",
+            'updated_by' => "0",
+        ]);
+        Ruta::create([
+            'kode_prov' => "16",
+            'kode_kab' => "71",
+            'kode_kec' => "080",
+            'kode_desa' => "009",
+            'id_sls' => "0001",
+            'id_sub_sls' => "00",
+            'nurt' => 1,
+            'kepala_ruta' => "ade",
+            'sektor' => 1,
+            'created_by' => "0",
+            'updated_by' => "0",
+        ]);
+        Ruta::create([
+            'kode_prov' => "16",
+            'kode_kab' => "71",
+            'kode_kec' => "080",
+            'kode_desa' => "009",
+            'id_sls' => "0001",
+            'id_sub_sls' => "00",
+            'nurt' => 2,
+            'kepala_ruta' => "hero",
+            'sektor' => 3,
             'created_by' => "0",
             'updated_by' => "0",
         ]);

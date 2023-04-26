@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Crypt;
 
 class Ruta extends Model
 {
-    use HasFactory;
+    use \Awobaz\Compoships\Compoships, HasFactory;
     protected $table = 'ruta';
     protected $fillable = [
         'kode_prov',
