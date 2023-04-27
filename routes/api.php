@@ -32,6 +32,7 @@ Route::middleware('web')->get('authenticate', [ImportController::class, 'authent
 
 Route::resource('sls', SlsController::class);
 Route::get('sls/get_by_petugas', [SlsController::class, 'get_by_petugas']);
+Route::get('sls/{jenis}/{kode_petugas}/petugas', [SlsController::class, 'get_by_petugas']);
 Route::get('make_roles', [ImportController::class, 'make_roles']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {

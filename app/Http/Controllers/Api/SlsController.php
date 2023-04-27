@@ -9,6 +9,7 @@ use Validator;
 use Auth;
 use Illuminate\Support\Facades\Crypt;
 use App\Http\Requests\SlsRequest;
+use App\Http\Resources\SlsResource;
 
 class SlsController extends Controller
 {
@@ -130,8 +131,9 @@ class SlsController extends Controller
         }
 
         $datas = Sls::where($condition)->get();
+        $result = SlsResource::collection($datas);
 
-        return response()->json(['status' => 'success', 'datas' => $datas]);
+        return response()->json(['status' => 'success', 'datas' => $result]);
     }
 
     /**
