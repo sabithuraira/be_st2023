@@ -19,6 +19,15 @@ class DashboardController extends Controller
      *     description="progress selesai persls dengan filter wilayah sampai level sls(list ruta)",
      *     operationId="progress",
      *     @OA\Parameter(
+     *          name="Bearer Token",
+     *          description="",
+     *          required=true,
+     *          in="header",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
      *          name="kab_filter",
      *          description="filter kode kabupaten",
      *          required=false,
@@ -120,6 +129,15 @@ class DashboardController extends Controller
      *     summary="Get Progress jumlah kk berdasarkan sektor dan keseluruhan",
      *     description="progress jumlah kk yang telah diinput dengan filter wilayah sampai ke level desa",
      *     operationId="progress_kk",
+     *     @OA\Parameter(
+     *          name="Bearer Token",
+     *          description="",
+     *          required=true,
+     *          in="header",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
      *     @OA\Parameter(
      *          name="kab_filter",
      *          description="filter kode kabupaten",
@@ -332,6 +350,15 @@ class DashboardController extends Controller
      *     summary="Get Progress dokumen",
      *     description="progress dokumen persls dengan filter wilayah",
      *     operationId="progress_dokumen",
+     *     @OA\Parameter(
+     *          name="Bearer Token",
+     *          description="",
+     *          required=true,
+     *          in="header",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
      *     @OA\Parameter(
      *          name="kab_filter",
      *          description="filter kode kabupaten",

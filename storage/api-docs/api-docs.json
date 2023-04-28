@@ -139,6 +139,15 @@
                 "operationId": "progress",
                 "parameters": [
                     {
+                        "name": "Bearer Token",
+                        "in": "header",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "kab_filter",
                         "in": "path",
                         "description": "filter kode kabupaten",
@@ -192,6 +201,15 @@
                 "operationId": "progress_kk",
                 "parameters": [
                     {
+                        "name": "Bearer Token",
+                        "in": "header",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "kab_filter",
                         "in": "path",
                         "description": "filter kode kabupaten",
@@ -235,6 +253,15 @@
                 "description": "progress dokumen persls dengan filter wilayah",
                 "operationId": "progress_dokumen",
                 "parameters": [
+                    {
+                        "name": "Bearer Token",
+                        "in": "header",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "kab_filter",
                         "in": "path",
