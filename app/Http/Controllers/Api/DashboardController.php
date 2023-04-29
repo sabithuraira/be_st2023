@@ -73,45 +73,86 @@ class DashboardController extends Controller
     public function progress(Request $request)
     {
         if ($request->sls_filter) {
-            $data  = Ruta::select('id_sub_sls', 'nurt as kode_wilayah', 'kepala_ruta as nama_wilayah', 'start_time', 'end_time', 'start_latitude', 'end_latitude', 'start_longitude', 'end_longitude')
-                ->where('kode_kab', $request->kab_filter)
-                ->where('kode_kec', $request->kec_filter)
-                ->where('kode_desa', $request->desa_filter)
-                ->where('id_sls', $request->sls_filter)
+            $data  = Ruta::select('ruta.kode_kab', 'nama_kab', 'ruta.kode_kec', 'nama_kec', 'ruta.kode_desa', 'nama_desa', 'ruta.id_sls', 'nama_sls', 'ruta.id_sub_sls', 'nurt', 'kepala_ruta ', 'start_time', 'end_time', 'start_latitude', 'end_latitude', 'start_longitude', 'end_longitude')
+                ->leftJoin('master_sls', function ($join) {
+                    $join->on('ruta.kode_kab', '=', 'master_sls.kode_kab')
+                        ->on('ruta.kode_kec', '=', 'master_sls.kode_kec')
+                        ->on('ruta.kode_desa', '=', 'master_sls.kode_desa')
+                        ->on('ruta.id_sls', '=', 'master_sls.id_sls')
+                        ->on('ruta.id_sub_sls', '=', 'master_sls.id_sub_sls');
+                })
+                ->leftJoin('desas', function ($join) {
+                    $join->on('ruta.kode_kab', '=', 'desas.id_kab')
+                        ->on('ruta.kode_kec', '=', 'desas.id_kec')
+                        ->on('ruta.kode_desa', '=', 'desas.id_desa');
+                })
+                ->leftJoin('kecs', function ($join) {
+                    $join->on('ruta.kode_kab', '=', 'kecs.id_kab')
+                        ->on('ruta.kode_kec', '=', 'kecs.id_kec');
+                })
+                ->leftJoin('kabs', function ($join) {
+                    $join->on('ruta.kode_kab', '=', 'kabs.id_kab');
+                })
+                ->where('ruta.kode_kab', $request->kab_filter)
+                ->where('ruta.kode_kec', $request->kec_filter)
+                ->where('ruta.kode_desa', $request->desa_filter)
+                ->where('ruta.id_sls', $request->sls_filter)
                 ->orderBy('nurt', 'asc')
                 ->get();
         } else if ($request->desa_filter) {
-            $data = Sls::select('id_sls as kode_wilayah', 'nama_sls as nama_wilayah',  DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
-                ->where('kode_kab', $request->kab_filter)
-                ->where('kode_kec', $request->kec_filter)
-                ->where('kode_desa', $request->desa_filter)
-                ->groupby('id_sls', 'nama_sls')
-                ->orderBy('id_sls', 'asc')
-                ->get();
-        } else if ($request->kec_filter) {
-            $data = Sls::select('id_desa as kode_wilayah', 'nama_desa as kode_wilayah',  DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
+            $data = Sls::select('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec', 'kode_desa', 'nama_desa', 'id_sls', 'id_sls as kode_wilayah', 'nama_sls as nama_wilayah',   DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
                 ->leftJoin('desas', function ($join) {
                     $join->on('master_sls.kode_kab', '=', 'desas.id_kab')
                         ->on('master_sls.kode_kec', '=', 'desas.id_kec')
                         ->on('master_sls.kode_desa', '=', 'desas.id_desa');
                 })
-                ->where('kode_kab', $request->kab_filter)
-                ->where('kode_kec', $request->kec_filter)
-                ->groupby('id_desa', 'nama_desa')
-                ->orderBy('kode_desa', 'asc')
-                ->get();
-        } else if ($request->kab_filter) {
-            $data = Sls::select('kode_kec as kode_wilayah', 'nama_kec as kode_wilayah',  DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
                 ->leftJoin('kecs', function ($join) {
                     $join->on('master_sls.kode_kab', '=', 'kecs.id_kab')
                         ->on('master_sls.kode_kec', '=', 'kecs.id_kec');
                 })
+                ->leftJoin('kabs', function ($join) {
+                    $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
+                })
                 ->where('kode_kab', $request->kab_filter)
-                ->groupby('kode_kec', 'nama_kec')
+                ->where('kode_kec', $request->kec_filter)
+                ->where('kode_desa', $request->desa_filter)
+                ->groupby('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec', 'kode_desa', 'nama_desa', 'id_sls', 'nama_sls')
+                ->orderBy('id_sls', 'asc')
+                ->get();
+        } else if ($request->kec_filter) {
+            $data = Sls::select('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec', 'kode_desa', 'kode_desa as kode_wilayah', 'nama_desa as nama_wilayah',  DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
+                ->leftJoin('desas', function ($join) {
+                    $join->on('master_sls.kode_kab', '=', 'desas.id_kab')
+                        ->on('master_sls.kode_kec', '=', 'desas.id_kec')
+                        ->on('master_sls.kode_desa', '=', 'desas.id_desa');
+                })
+                ->leftJoin('kecs', function ($join) {
+                    $join->on('master_sls.kode_kab', '=', 'kecs.id_kab')
+                        ->on('master_sls.kode_kec', '=', 'kecs.id_kec');
+                })
+                ->leftJoin('kabs', function ($join) {
+                    $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
+                })
+                ->where('kode_kab', $request->kab_filter)
+                ->where('kode_kec', $request->kec_filter)
+                ->groupby('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec', 'kode_desa', 'nama_desa')
+                ->orderBy('kode_desa', 'asc')
+                ->get();
+        } else if ($request->kab_filter) {
+            $data = Sls::select('kode_kab', 'nama_kab', 'kode_kec', 'kode_kec as kode_wilayah', 'nama_kec as nama_wilayah', DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
+                ->leftJoin('kecs', function ($join) {
+                    $join->on('master_sls.kode_kab', '=', 'kecs.id_kab')
+                        ->on('master_sls.kode_kec', '=', 'kecs.id_kec');
+                })
+                ->leftJoin('kabs', function ($join) {
+                    $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
+                })
+                ->where('kode_kab', $request->kab_filter)
+                ->groupby('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec')
                 ->orderBy('kode_kec', 'asc')
                 ->get();
         } else {
-            $data = Sls::select('kode_kab as kode_wilayah', 'nama_kab as kode_wilayah', 'alias',  DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
+            $data = Sls::select('kode_kab', 'kode_kab as kode_wilayah', 'nama_kab as nama_wilayah', 'alias',  DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
                 ->leftJoin('kabs', function ($join) {
                     $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
                 })
