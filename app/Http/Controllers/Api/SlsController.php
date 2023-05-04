@@ -112,7 +112,8 @@ class SlsController extends Controller
      *     )
      * )
      */
-    public function get_by_petugas($jenis, $kode_petugas){
+    public function get_by_petugas($jenis, $kode_petugas)
+    {
         $datas = [];
 
         $condition = [];

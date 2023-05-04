@@ -26,5 +26,9 @@ class WilkerstatSeeder extends Seeder
         $path = public_path('sql/desas.sql');
         $sql = file_get_contents($path);
         DB::unprepared($sql);
+
+        $path = public_path('sql/master_sls.sql');
+        $sql = file_get_contents($path);
+        DB::unprepared($sql);
     }
 }

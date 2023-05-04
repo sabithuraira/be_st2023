@@ -191,59 +191,6 @@
                 }
             }
         },
-        "/api/progress_kk": {
-            "get": {
-                "tags": [
-                    "Dashboard"
-                ],
-                "summary": "Get Progress jumlah kk berdasarkan sektor dan keseluruhan",
-                "description": "progress jumlah kk yang telah diinput dengan filter wilayah sampai ke level desa",
-                "operationId": "progress_kk",
-                "parameters": [
-                    {
-                        "name": "Bearer Token",
-                        "in": "header",
-                        "description": "",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "kab_filter",
-                        "in": "path",
-                        "description": "filter kode kabupaten",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "kec_filter",
-                        "in": "path",
-                        "description": "filter kode kecamatan",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "desa_filter",
-                        "in": "path",
-                        "description": "filter kode desa",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "default": {
-                        "description": "return array wilayah & progress"
-                    }
-                }
-            }
-        },
         "/api/progress_dokumen": {
             "get": {
                 "tags": [
@@ -467,6 +414,86 @@
                 }
             }
         },
+        "/api/petugas": {
+            "get": {
+                "tags": [
+                    "petugas"
+                ],
+                "summary": "Get List",
+                "description": "pencarian dg keyword akan mengarah pada nama petugas",
+                "operationId": "List Petugas",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "current page to show",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "filter and pagination",
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "keyword": {
+                                        "type": "string"
+                                    },
+                                    "kab_filter": {
+                                        "type": "string"
+                                    },
+                                    "kec_filter": {
+                                        "type": "string"
+                                    },
+                                    "desa_filter": {
+                                        "type": "string"
+                                    },
+                                    "sls_filter": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "return array model kategori"
+                    }
+                }
+            }
+        },
+        "/api/petugas/{id}": {
+            "delete": {
+                "tags": [
+                    "petugas"
+                ],
+                "summary": "Delete petugas",
+                "description": "-",
+                "operationId": "petugas/delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Enkripsi",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/ruta": {
             "get": {
                 "tags": [
@@ -584,6 +611,86 @@
                                     },
                                     "end_longitude": {
                                         "type": "decimal"
+                                    },
+                                    "subsektor1_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor1_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor2_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor2_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor3_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor3_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor4_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor4_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor4_c": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor5_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor5_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor5_c": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor6_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor6_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor6_c": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor7_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
                                     }
                                 },
                                 "type": "object"
@@ -618,7 +725,7 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, nurt, kepala_ruta, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
+                    "description": "in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, nurt, kepala_ruta,\n     *          start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude, subsektor1_a, subsektor1_b, subsektor1_c, subsektor2_a,\n     *          subsektor2_b,subsektor3_a,subsektor3_b,subsektor4_a,subsektor4_b,subsektor4_c,subsektor5_a,subsektor5_b,subsektor5_c,subsektor6_a,\n     *          subsektor6_b,subsektor6_c,subsektor7_a",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -761,6 +868,86 @@
                                     },
                                     "end_longitude": {
                                         "type": "decimal"
+                                    },
+                                    "subsektor1_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor1_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor2_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor2_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor3_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor3_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor4_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor4_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor4_c": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor5_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor5_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor5_c": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor6_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor6_b": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor6_c": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
+                                    },
+                                    "subsektor7_a": {
+                                        "type": "integer",
+                                        "maximum": 1,
+                                        "minimum": 0
                                     }
                                 },
                                 "type": "object"
@@ -1070,6 +1257,142 @@
                 "responses": {
                     "default": {
                         "description": ""
+                    }
+                }
+            }
+        },
+        "/api/list_kabs": {
+            "get": {
+                "tags": [
+                    "Wilayah"
+                ],
+                "summary": "Get List",
+                "description": "-",
+                "operationId": "list_kabs",
+                "requestBody": {
+                    "description": "wilayah",
+                    "required": false
+                },
+                "responses": {
+                    "default": {
+                        "description": "return array model ruta"
+                    }
+                }
+            }
+        },
+        "/api/list_kecs": {
+            "get": {
+                "tags": [
+                    "Wilayah"
+                ],
+                "summary": "Get List",
+                "description": "-",
+                "operationId": "list_kecs",
+                "parameters": [
+                    {
+                        "name": "kab_filter",
+                        "in": "query",
+                        "description": "kode kabupaten",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "wilayah",
+                    "required": false
+                },
+                "responses": {
+                    "default": {
+                        "description": "return array model ruta"
+                    }
+                }
+            }
+        },
+        "/api/list_desas": {
+            "get": {
+                "tags": [
+                    "Wilayah"
+                ],
+                "summary": "Get List",
+                "description": "-",
+                "operationId": "list_desas",
+                "parameters": [
+                    {
+                        "name": "kab_filter",
+                        "in": "query",
+                        "description": "kode kabupaten",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kec_filter",
+                        "in": "query",
+                        "description": "kode kecamatan",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "wilayah",
+                    "required": false
+                },
+                "responses": {
+                    "default": {
+                        "description": "return array model ruta"
+                    }
+                }
+            }
+        },
+        "/api/list_sls": {
+            "get": {
+                "tags": [
+                    "Wilayah"
+                ],
+                "summary": "Get List",
+                "description": "-",
+                "operationId": "list_sls",
+                "parameters": [
+                    {
+                        "name": "kab_filter",
+                        "in": "query",
+                        "description": "kode kabupaten",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kec_filter",
+                        "in": "query",
+                        "description": "kode kecamatan",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "desa_filter",
+                        "in": "query",
+                        "description": "kode desa",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "wilayah",
+                    "required": false
+                },
+                "responses": {
+                    "default": {
+                        "description": "return array model ruta"
                     }
                 }
             }

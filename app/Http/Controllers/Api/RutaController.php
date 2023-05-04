@@ -89,6 +89,22 @@ class RutaController extends Controller
      *              @OA\Property(property="end_latitude", type="decimal"),
      *              @OA\Property(property="start_longitude", type="decimal"),
      *              @OA\Property(property="end_longitude", type="decimal"),
+     *              @OA\Property(property="subsektor1_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor1_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor2_a",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor2_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor3_a",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor3_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_a",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_c",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_a",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_c",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_a",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_c",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor7_a",  type="integer", minimum = 0, maximum = 1),
      *          ),
      *      ),
      *     @OA\Response(
@@ -120,6 +136,22 @@ class RutaController extends Controller
             'end_latitude' => $request->end_latitude,
             'start_longitude' => $request->start_longitude,
             'end_longitude' => $request->end_longitude,
+            'subsektor1_a' => $request->subsektor1_a,
+            'subsektor1_b' => $request->subsektor1_b,
+            'subsektor2_a' => $request->subsektor2_a,
+            'subsektor2_b' => $request->subsektor2_b,
+            'subsektor3_a' => $request->subsektor3_a,
+            'subsektor3_b' => $request->subsektor3_b,
+            'subsektor4_a' => $request->subsektor4_a,
+            'subsektor4_b' => $request->subsektor4_b,
+            'subsektor4_c' => $request->subsektor4_c,
+            'subsektor5_a' => $request->subsektor5_a,
+            'subsektor5_b' => $request->subsektor5_b,
+            'subsektor5_c' => $request->subsektor5_c,
+            'subsektor6_a' => $request->subsektor6_a,
+            'subsektor6_b' => $request->subsektor6_b,
+            'subsektor6_c' => $request->subsektor6_c,
+            'subsektor7_a' => $request->subsektor7_a,
             'created_by' => Auth::id(),
             'updated_by' => Auth::id(),
         ]);
@@ -145,7 +177,10 @@ class RutaController extends Controller
      *     ),
      *     @OA\RequestBody(
      *          required=true,
-     *          description="in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, nurt, kepala_ruta, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
+     *          description="in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, nurt, kepala_ruta,
+     *          start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude, subsektor1_a, subsektor1_b, subsektor1_c, subsektor2_a,
+     *          subsektor2_b,subsektor3_a,subsektor3_b,subsektor4_a,subsektor4_b,subsektor4_c,subsektor5_a,subsektor5_b,subsektor5_c,subsektor6_a,
+     *          subsektor6_b,subsektor6_c,subsektor7_a",
      *          @OA\JsonContent(
      *              required={"data"},
      *              @OA\Property(property="data", type="array",
@@ -195,6 +230,24 @@ class RutaController extends Controller
                 'end_latitude' => $value['end_latitude'],
                 'start_longitude' => $value['start_longitude'],
                 'end_longitude' => $value['end_longitude'],
+
+                'subsektor1_a' => $value['subsektor1_a'],
+                'subsektor1_b' => $value['subsektor1_b'],
+                'subsektor2_a' => $value['subsektor2_a'],
+                'subsektor2_b' => $value['subsektor2_b'],
+                'subsektor3_a' => $value['subsektor3_a'],
+                'subsektor3_b' => $value['subsektor3_b'],
+                'subsektor4_a' => $value['subsektor4_a'],
+                'subsektor4_b' => $value['subsektor4_b'],
+                'subsektor4_c' => $value['subsektor4_c'],
+                'subsektor5_a' => $value['subsektor5_a'],
+                'subsektor5_b' => $value['subsektor5_b'],
+                'subsektor5_c' => $value['subsektor5_c'],
+                'subsektor6_a' => $value['subsektor6_a'],
+                'subsektor6_b' => $value['subsektor6_b'],
+                'subsektor6_c' => $value['subsektor6_c'],
+                'subsektor7_a' => $value['subsektor7_a'],
+
                 'created_by' => Auth::id(),
                 'updated_by' => Auth::id(),
             ];
@@ -288,6 +341,22 @@ class RutaController extends Controller
      *              @OA\Property(property="end_latitude", type="decimal"),
      *              @OA\Property(property="start_longitude", type="decimal"),
      *              @OA\Property(property="end_longitude", type="decimal"),
+     *              @OA\Property(property="subsektor1_a",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor1_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor2_a",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor2_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor3_a",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor3_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_a",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_c",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_a",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_c",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_a",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_b",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_c",  type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor7_a",  type="integer", minimum = 0, maximum = 1),
      *          ),
      *      ),
      *     @OA\Response(
@@ -323,6 +392,22 @@ class RutaController extends Controller
             $data->end_latitude = $request->end_latitude;
             $data->start_longitude = $request->start_longitude;
             $data->end_longitude = $request->end_longitude;
+            $data->subsektor1_a = $request->subsektor1_a;
+            $data->subsektor1_b = $request->subsektor1_b;
+            $data->subsektor2_a = $request->subsektor2_a;
+            $data->subsektor2_b = $request->subsektor2_b;
+            $data->subsektor3_a = $request->subsektor3_a;
+            $data->subsektor3_b = $request->subsektor3_b;
+            $data->subsektor4_a = $request->subsektor4_a;
+            $data->subsektor4_b = $request->subsektor4_b;
+            $data->subsektor4_c = $request->subsektor4_c;
+            $data->subsektor5_a = $request->subsektor5_a;
+            $data->subsektor5_b = $request->subsektor5_b;
+            $data->subsektor5_c = $request->subsektor5_c;
+            $data->subsektor6_a = $request->subsektor6_a;
+            $data->subsektor6_b = $request->subsektor6_b;
+            $data->subsektor6_c = $request->subsektor6_c;
+            $data->subsektor7_a = $request->subsektor7_a;
             $data->updated_by = Auth::id();
             $data->save();
 
@@ -394,7 +479,23 @@ class RutaController extends Controller
             'start_latitude' => 'required',
             'end_latitude' => 'required',
             'start_longitude' => 'required',
-            'end_longitude' => 'required'
+            'end_longitude' => 'required',
+            'subsektor1_a' => 'integer',
+            'subsektor1_b' => 'integer',
+            'subsektor2_a' => 'integer',
+            'subsektor2_b' => 'integer',
+            'subsektor3_a' => 'integer',
+            'subsektor3_b' => 'integer',
+            'subsektor4_a' => 'integer',
+            'subsektor4_b' => 'integer',
+            'subsektor4_c' => 'integer',
+            'subsektor5_a' => 'integer',
+            'subsektor5_b' => 'integer',
+            'subsektor5_c' => 'integer',
+            'subsektor6_a' => 'integer',
+            'subsektor6_b' => 'integer',
+            'subsektor6_c' => 'integer',
+            'subsektor7_a' => 'integer',
         ]);
     }
 }
