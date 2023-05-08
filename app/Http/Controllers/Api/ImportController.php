@@ -67,17 +67,14 @@ class ImportController extends Controller
 
     public function import_user(Request $request)
     {
-
-        $validator = $this->validator($request);
-
-        if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'data' => $validator->errors()]);
-        }
-
         if ($request->file('import_file')) {
             $data = Excel::import(new UsersImport, request()->file('import_file'));
             // return 'Berhasil Memasukkan data';
-            return response()->json(['status' => 'success', 'data' => $data]);
+            if ($data) {
+                return response()->json(['status' => 'success', 'data' => "Import Berhasil"]);
+            } else {
+                return response()->json(['status' => 'error', 'data' => 'Kesalahan']);
+            }
         } else {
             // return 'Kesalahan File';
             return response()->json(['status' => 'error', 'data' => "File tidak ada/kesalahan variabel"]);
