@@ -23,7 +23,6 @@ class CreateRutaTable extends Migration
             $table->string('id_sub_sls', 4);
             $table->integer('nurt');
             $table->string('kepala_ruta')->nullable();
-            // $table->integer('sektor')->nullable();
             $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time')->nullable();
             $table->decimal('start_latitude', 10, 8)->nullable();

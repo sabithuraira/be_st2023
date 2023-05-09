@@ -74,7 +74,7 @@ class RutaController extends Controller
      *          required=true,
      *          description="form ruta",
      *          @OA\JsonContent(
-     *              required={"kode_prov", "kode_kab", "kode_kec", "kode_desa", "id_sls", "id_sub_sls", "nurt", "kepala_ruta", "start_time", "end_time", "start_latitude", "end_latitude", "start_longitude", "end_longitude"},
+     *              required={"kode_prov", "kode_kab", "kode_kec", "kode_desa", "id_sls", "id_sub_sls", "nurt"},
      *              @OA\Property(property="kode_prov", type="string"),
      *              @OA\Property(property="kode_kab", type="string"),
      *              @OA\Property(property="kode_kec", type="string"),
@@ -83,28 +83,40 @@ class RutaController extends Controller
      *              @OA\Property(property="id_sub_sls", type="string"),
      *              @OA\Property(property="nurt", type="integer"),
      *              @OA\Property(property="kepala_ruta", type="string"),
+     *              @OA\Property(property="jumlah_art", type="integer"),
+     *              @OA\Property(property="jumlah_unit_usaha", type="integer"),
+     *              @OA\Property(property="subsektor1_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor1_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor2_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor2_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor3_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor3_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_c", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_c", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_c", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor7_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="jml_308_sawah", type="integer"),
+     *              @OA\Property(property="jml_308_bukan_sawah", type="integer"),
+     *              @OA\Property(property="jml_308_rumput_sementara", type="integer"),
+     *              @OA\Property(property="jml_308_rumput_permanen", type="integer"),
+     *              @OA\Property(property="jml_308_belum_tanam", type="integer"),
+     *              @OA\Property(property="jml_308_ternak_bangunan_lain", type="integer"),
+     *              @OA\Property(property="jml_308_kehutanan", type="integer"),
+     *              @OA\Property(property="jml_308_budidaya", type="integer"),
+     *              @OA\Property(property="jml_308_lahan_lainnya", type="integer"),
+     *              @OA\Property(property="daftar_komoditas", type="integer"),
      *              @OA\Property(property="start_time", type="datetime"),
      *              @OA\Property(property="end_time", type="datetime"),
      *              @OA\Property(property="start_latitude", type="decimal"),
      *              @OA\Property(property="end_latitude", type="decimal"),
      *              @OA\Property(property="start_longitude", type="decimal"),
      *              @OA\Property(property="end_longitude", type="decimal"),
-     *              @OA\Property(property="subsektor1_a", type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor1_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor2_a",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor2_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor3_a",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor3_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor4_a",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor4_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor4_c",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor5_a",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor5_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor5_c",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor6_a",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor6_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor6_c",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor7_a",  type="integer", minimum = 0, maximum = 1),
      *          ),
      *      ),
      *     @OA\Response(
@@ -130,12 +142,8 @@ class RutaController extends Controller
             'id_sub_sls' => $request->id_sub_sls,
             'nurt' => $request->nurt,
             'kepala_ruta' => $request->kepala_ruta,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
-            'start_latitude' => $request->start_latitude,
-            'end_latitude' => $request->end_latitude,
-            'start_longitude' => $request->start_longitude,
-            'end_longitude' => $request->end_longitude,
+            'jumlah_art' => $request->jumlah_art,
+            'jumlah_unit_usaha' => $request->jumlah_unit_usaha,
             'subsektor1_a' => $request->subsektor1_a,
             'subsektor1_b' => $request->subsektor1_b,
             'subsektor2_a' => $request->subsektor2_a,
@@ -152,6 +160,22 @@ class RutaController extends Controller
             'subsektor6_b' => $request->subsektor6_b,
             'subsektor6_c' => $request->subsektor6_c,
             'subsektor7_a' => $request->subsektor7_a,
+            'jml_308_sawah' => $request->jml_308_sawah,
+            'jml_308_bukan_sawah' => $request->jml_308_bukan_sawah,
+            'jml_308_rumput_sementara' => $request->jml_308_rumput_sementara,
+            'jml_308_rumput_permanen' => $request->jml_308_rumput_permanen,
+            'jml_308_belum_tanam' => $request->jml_308_belum_tanam,
+            'jml_308_ternak_bangunan_lain' => $request->jml_308_ternak_bangunan_lain,
+            'jml_308_kehutanan' => $request->jml_308_sawah,
+            'jml_308_budidaya' => $request->jml_308_sawah,
+            'jml_308_lahan_lainnya' => $request->jml_308_sawah,
+            'daftar_komoditas' => $request->daftar_komoditas,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'start_latitude' => $request->start_latitude,
+            'end_latitude' => $request->end_latitude,
+            'start_longitude' => $request->start_longitude,
+            'end_longitude' => $request->end_longitude,
             'created_by' => Auth::id(),
             'updated_by' => Auth::id(),
         ]);
@@ -177,10 +201,12 @@ class RutaController extends Controller
      *     ),
      *     @OA\RequestBody(
      *          required=true,
-     *          description="in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, nurt, kepala_ruta,
-     *          start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude, subsektor1_a, subsektor1_b, subsektor1_c, subsektor2_a,
-     *          subsektor2_b,subsektor3_a,subsektor3_b,subsektor4_a,subsektor4_b,subsektor4_c,subsektor5_a,subsektor5_b,subsektor5_c,subsektor6_a,
-     *          subsektor6_b,subsektor6_c,subsektor7_a",
+     *          description="in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls,
+     *                      nurt, kepala_ruta, jumlah_art, jumlah_unit_usaha, subsektor1_a, subsektor1_b, subsektor2_a, subsektor2_b,
+     *                      subsektor3_a, subsektor3_b, subsektor4_a, subsektor4_b, subsektor4_c, subsektor5_a, subsektor5_b, subsektor5_c,
+     *                      subsektor6_a, subsektor6_b, subsektor6_c, subsektor7_a, jml_308_sawah, jml_308_bukan_sawah, jml_308_rumput_sementara,
+     *                      jml_308_rumput_permanen, jml_308_belum_tanam, jml_308_ternak_bangunan_lain, jml_308_kehutanan, jml_308_budidaya,
+     *                      jml_308_lahan_lainnya, daftar_komoditas, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
      *          @OA\JsonContent(
      *              required={"data"},
      *              @OA\Property(property="data", type="array",
@@ -224,13 +250,8 @@ class RutaController extends Controller
                 'id_sub_sls' => $value['id_sub_sls'],
                 'nurt' => $value['nurt'],
                 'kepala_ruta' => $value['kepala_ruta'],
-                'start_time' => $value['start_time'],
-                'end_time' => $value['end_time'],
-                'start_latitude' => $value['start_latitude'],
-                'end_latitude' => $value['end_latitude'],
-                'start_longitude' => $value['start_longitude'],
-                'end_longitude' => $value['end_longitude'],
-
+                'jumlah_art' => $value['jumlah_art'],
+                'jumlah_unit_usaha' => $value['jumlah_unit_usaha'],
                 'subsektor1_a' => $value['subsektor1_a'],
                 'subsektor1_b' => $value['subsektor1_b'],
                 'subsektor2_a' => $value['subsektor2_a'],
@@ -247,7 +268,22 @@ class RutaController extends Controller
                 'subsektor6_b' => $value['subsektor6_b'],
                 'subsektor6_c' => $value['subsektor6_c'],
                 'subsektor7_a' => $value['subsektor7_a'],
-
+                'jml_308_sawah' => $value['jml_308_sawah'],
+                'jml_308_bukan_sawah' => $value['jml_308_bukan_sawah'],
+                'jml_308_rumput_sementara' => $value['jml_308_rumput_sementara'],
+                'jml_308_rumput_permanen' => $value['jml_308_rumput_permanen'],
+                'jml_308_belum_tanam' => $value['jml_308_belum_tanam'],
+                'jml_308_ternak_bangunan_lain' => $value['jml_308_ternak_bangunan_lain'],
+                'jml_308_kehutanan' => $value['jml_308_sawah'],
+                'jml_308_budidaya' => $value['jml_308_sawah'],
+                'jml_308_lahan_lainnya' => $value['jml_308_sawah'],
+                'daftar_komoditas' => $value['daftar_komoditas'],
+                'start_time' => $value['start_time'],
+                'end_time' => $value['end_time'],
+                'start_latitude' => $value['start_latitude'],
+                'end_latitude' => $value['end_latitude'],
+                'start_longitude' => $value['start_longitude'],
+                'end_longitude' => $value['end_longitude'],
                 'created_by' => Auth::id(),
                 'updated_by' => Auth::id(),
             ];
@@ -328,35 +364,49 @@ class RutaController extends Controller
      *          required=true,
      *          description="form master ruta",
      *          @OA\JsonContent(
-     *              required={"kode_prov", "kode_kab", "kode_kec", "kode_desa", "id_sls", "id_sub_sls", "nurt", "kepala_ruta", "start_time", "end_time", "start_latitude", "end_latitude", "start_longitude", "end_longitude"},
+     *              required={"kode_prov", "kode_kab", "kode_kec", "kode_desa", "id_sls", "id_sub_sls", "nurt"},
      *              @OA\Property(property="kode_prov", type="string"),
      *              @OA\Property(property="kode_kab", type="string"),
      *              @OA\Property(property="kode_kec", type="string"),
      *              @OA\Property(property="kode_desa", type="string"),
      *              @OA\Property(property="id_sls", type="string"),
      *              @OA\Property(property="id_sub_sls", type="string"),
+     *              @OA\Property(property="nurt", type="integer"),
+     *              @OA\Property(property="kepala_ruta", type="string"),
+     *              @OA\Property(property="jumlah_art", type="integer"),
+     *              @OA\Property(property="jumlah_unit_usaha", type="integer"),
+     *              @OA\Property(property="subsektor1_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor1_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor2_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor2_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor3_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor3_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor4_c", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor5_c", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_b", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor6_c", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="subsektor7_a", type="integer", minimum = 0, maximum = 1),
+     *              @OA\Property(property="jml_308_sawah", type="integer"),
+     *              @OA\Property(property="jml_308_bukan_sawah", type="integer"),
+     *              @OA\Property(property="jml_308_rumput_sementara", type="integer"),
+     *              @OA\Property(property="jml_308_rumput_permanen", type="integer"),
+     *              @OA\Property(property="jml_308_belum_tanam", type="integer"),
+     *              @OA\Property(property="jml_308_ternak_bangunan_lain", type="integer"),
+     *              @OA\Property(property="jml_308_kehutanan", type="integer"),
+     *              @OA\Property(property="jml_308_budidaya", type="integer"),
+     *              @OA\Property(property="jml_308_lahan_lainnya", type="integer"),
+     *              @OA\Property(property="daftar_komoditas", type="integer"),
      *              @OA\Property(property="start_time", type="datetime"),
      *              @OA\Property(property="end_time", type="datetime"),
      *              @OA\Property(property="start_latitude", type="decimal"),
      *              @OA\Property(property="end_latitude", type="decimal"),
      *              @OA\Property(property="start_longitude", type="decimal"),
      *              @OA\Property(property="end_longitude", type="decimal"),
-     *              @OA\Property(property="subsektor1_a",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor1_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor2_a",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor2_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor3_a",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor3_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor4_a",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor4_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor4_c",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor5_a",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor5_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor5_c",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor6_a",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor6_b",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor6_c",  type="integer", minimum = 0, maximum = 1),
-     *              @OA\Property(property="subsektor7_a",  type="integer", minimum = 0, maximum = 1),
      *          ),
      *      ),
      *     @OA\Response(
@@ -386,12 +436,8 @@ class RutaController extends Controller
             $data->id_sub_sls = $request->id_sub_sls;
             $data->nurt = $request->nurt;
             $data->kepala_ruta = $request->kepala_ruta;
-            $data->start_time = $request->start_time;
-            $data->end_time = $request->end_time;
-            $data->start_latitude = $request->start_latitude;
-            $data->end_latitude = $request->end_latitude;
-            $data->start_longitude = $request->start_longitude;
-            $data->end_longitude = $request->end_longitude;
+            $data->jumlah_art = $request->jumlah_art;
+            $data->jumlah_unit_usaha = $request->jumlah_unit_usaha;
             $data->subsektor1_a = $request->subsektor1_a;
             $data->subsektor1_b = $request->subsektor1_b;
             $data->subsektor2_a = $request->subsektor2_a;
@@ -408,6 +454,22 @@ class RutaController extends Controller
             $data->subsektor6_b = $request->subsektor6_b;
             $data->subsektor6_c = $request->subsektor6_c;
             $data->subsektor7_a = $request->subsektor7_a;
+            $data->jml_308_sawah = $request->jml_308_sawah;
+            $data->jml_308_bukan_sawah = $request->jml_308_bukan_sawah;
+            $data->jml_308_rumput_sementara = $request->jml_308_rumput_sementara;
+            $data->jml_308_rumput_permanen = $request->jml_308_rumput_permanen;
+            $data->jml_308_belum_tanam = $request->jml_308_belum_tanam;
+            $data->jml_308_ternak_bangunan_lain = $request->jml_308_ternak_bangunan_lain;
+            $data->jml_308_kehutanan = $request->jml_308_sawah;
+            $data->jml_308_budidaya = $request->jml_308_sawah;
+            $data->jml_308_lahan_lainnya = $request->jml_308_sawah;
+            $data->daftar_komoditas = $request->daftar_komoditas;
+            $data->start_time = $request->start_time;
+            $data->end_time = $request->end_time;
+            $data->start_latitude = $request->start_latitude;
+            $data->end_latitude = $request->end_latitude;
+            $data->start_longitude = $request->start_longitude;
+            $data->end_longitude = $request->end_longitude;
             $data->updated_by = Auth::id();
             $data->save();
 
@@ -472,14 +534,10 @@ class RutaController extends Controller
             'kode_desa' => 'required|string|max:3',
             'id_sls' => 'required|string|max:4',
             'id_sub_sls' => 'required|string|max:2',
-            'nurt' => 'required',
-            'kepala_ruta' => 'required|string',
-            'start_time' => 'required|date',
-            'end_time' => 'required|date',
-            'start_latitude' => 'required',
-            'end_latitude' => 'required',
-            'start_longitude' => 'required',
-            'end_longitude' => 'required',
+            'nurt' => 'required|integer',
+            'kepala_ruta' => 'string',
+            'jumlah_art' => 'integer',
+            'jumlah_unit_usaha' => 'integer',
             'subsektor1_a' => 'integer',
             'subsektor1_b' => 'integer',
             'subsektor2_a' => 'integer',
@@ -496,6 +554,22 @@ class RutaController extends Controller
             'subsektor6_b' => 'integer',
             'subsektor6_c' => 'integer',
             'subsektor7_a' => 'integer',
+            'jml_308_sawah' => 'integer',
+            'jml_308_bukan_sawah' => 'integer',
+            'jml_308_rumput_sementara' => 'integer',
+            'jml_308_rumput_permanen' => 'integer',
+            'jml_308_belum_tanam' => 'integer',
+            'jml_308_ternak_bangunan_lain' => 'integer',
+            'jml_308_kehutanan' => 'integer',
+            'jml_308_budidaya' => 'integer',
+            'jml_308_lahan_lainnya' => 'integer',
+            'daftar_komoditas' => 'string',
+            'start_time' => 'date',
+            'end_time' => 'date',
+            'start_latitude' => 'decimal:0:8',
+            'end_latitude' => 'decimal:0:8',
+            'start_longitude' => 'decimal:0:8',
+            'end_longitude' => 'decimal:0:8',
         ]);
     }
 }
