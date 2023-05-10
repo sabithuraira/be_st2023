@@ -113,10 +113,10 @@ class RutaController extends Controller
      *              @OA\Property(property="daftar_komoditas", type="integer"),
      *              @OA\Property(property="start_time", type="datetime"),
      *              @OA\Property(property="end_time", type="datetime"),
-     *              @OA\Property(property="start_latitude", type="decimal"),
-     *              @OA\Property(property="end_latitude", type="decimal"),
-     *              @OA\Property(property="start_longitude", type="decimal"),
-     *              @OA\Property(property="end_longitude", type="decimal"),
+     *              @OA\Property(property="start_latitude", type="numeric"),
+     *              @OA\Property(property="end_latitude", type="numeric"),
+     *              @OA\Property(property="start_longitude", type="numeric"),
+     *              @OA\Property(property="end_longitude", type="numeric"),
      *          ),
      *      ),
      *     @OA\Response(
@@ -225,76 +225,95 @@ class RutaController extends Controller
      */
     public function store_many(Request $request)
     {
-        $data = [];
+        $data_store = [];
+        $data_delete = [];
 
         foreach ($request->data as $key => $value) {
-            $validator = $this->validator($value);
+            $value_null_to_string = [];
+            
+            foreach ($value as $k => $v) {
+                if ($v) {
+                    $value_null_to_string[$k] = $v;
+                } else {
+                    $value_null_to_string[$k] = "";
+                }
+            }
+
+            $validator = $this->validator($value_null_to_string);
 
             if ($validator->fails()) {
-                return response()->json(['status' => 'error', 'data' => $validator->errors(), 'at' => $value]);
+                return response()->json(['status' => 'error', 'data' => $validator->errors(), 'at' => $value_null_to_string]);
             }
 
             try {
-                if ($value['id']) $value['id'] = Crypt::decryptString($value['id']);
+                if ($value_null_to_string['id']) $value_null_to_string['id'] = Crypt::decryptString($value_null_to_string['id']);
             } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-                return response()->json(['status' => 'error', 'data' => null, 'at' => $value]);
+                return response()->json(['status' => 'error', 'data' => null, 'at' => $value_null_to_string]);
             }
 
-            $data[] = [
-                'id' => $value['id'],
-                'kode_prov' => $value['kode_prov'],
-                'kode_kab' => $value['kode_kab'],
-                'kode_kec' => $value['kode_kec'],
-                'kode_desa' => $value['kode_desa'],
-                'id_sls' => $value['id_sls'],
-                'id_sub_sls' => $value['id_sub_sls'],
-                'nurt' => $value['nurt'],
-                'kepala_ruta' => $value['kepala_ruta'],
-                'jumlah_art' => $value['jumlah_art'],
-                'jumlah_unit_usaha' => $value['jumlah_unit_usaha'],
-                'subsektor1_a' => $value['subsektor1_a'],
-                'subsektor1_b' => $value['subsektor1_b'],
-                'subsektor2_a' => $value['subsektor2_a'],
-                'subsektor2_b' => $value['subsektor2_b'],
-                'subsektor3_a' => $value['subsektor3_a'],
-                'subsektor3_b' => $value['subsektor3_b'],
-                'subsektor4_a' => $value['subsektor4_a'],
-                'subsektor4_b' => $value['subsektor4_b'],
-                'subsektor4_c' => $value['subsektor4_c'],
-                'subsektor5_a' => $value['subsektor5_a'],
-                'subsektor5_b' => $value['subsektor5_b'],
-                'subsektor5_c' => $value['subsektor5_c'],
-                'subsektor6_a' => $value['subsektor6_a'],
-                'subsektor6_b' => $value['subsektor6_b'],
-                'subsektor6_c' => $value['subsektor6_c'],
-                'subsektor7_a' => $value['subsektor7_a'],
-                'jml_308_sawah' => $value['jml_308_sawah'],
-                'jml_308_bukan_sawah' => $value['jml_308_bukan_sawah'],
-                'jml_308_rumput_sementara' => $value['jml_308_rumput_sementara'],
-                'jml_308_rumput_permanen' => $value['jml_308_rumput_permanen'],
-                'jml_308_belum_tanam' => $value['jml_308_belum_tanam'],
-                'jml_308_ternak_bangunan_lain' => $value['jml_308_ternak_bangunan_lain'],
-                'jml_308_kehutanan' => $value['jml_308_sawah'],
-                'jml_308_budidaya' => $value['jml_308_sawah'],
-                'jml_308_lahan_lainnya' => $value['jml_308_sawah'],
-                'daftar_komoditas' => $value['daftar_komoditas'],
-                'start_time' => $value['start_time'],
-                'end_time' => $value['end_time'],
-                'start_latitude' => $value['start_latitude'],
-                'end_latitude' => $value['end_latitude'],
-                'start_longitude' => $value['start_longitude'],
-                'end_longitude' => $value['end_longitude'],
-                'created_by' => Auth::id(),
-                'updated_by' => Auth::id(),
-            ];
+            if ($value['status_upload'] == '3') {
+                $data_delete[] = $value_null_to_string['id'];
+            } else {
+                $data_store[] = [
+                    'id' => $value_null_to_string['id'],
+                    'kode_prov' => $value['kode_prov'],
+                    'kode_kab' => $value['kode_kab'],
+                    'kode_kec' => $value['kode_kec'],
+                    'kode_desa' => $value['kode_desa'],
+                    'id_sls' => $value['id_sls'],
+                    'id_sub_sls' => $value['id_sub_sls'],
+                    'nurt' => $value['nurt'],
+                    'kepala_ruta' => $value['kepala_ruta'],
+                    'jumlah_art' => $value['jumlah_art'],
+                    'jumlah_unit_usaha' => $value['jumlah_unit_usaha'],
+                    'subsektor1_a' => $value['subsektor1_a'],
+                    'subsektor1_b' => $value['subsektor1_b'],
+                    'subsektor2_a' => $value['subsektor2_a'],
+                    'subsektor2_b' => $value['subsektor2_b'],
+                    'subsektor3_a' => $value['subsektor3_a'],
+                    'subsektor3_b' => $value['subsektor3_b'],
+                    'subsektor4_a' => $value['subsektor4_a'],
+                    'subsektor4_b' => $value['subsektor4_b'],
+                    'subsektor4_c' => $value['subsektor4_c'],
+                    'subsektor5_a' => $value['subsektor5_a'],
+                    'subsektor5_b' => $value['subsektor5_b'],
+                    'subsektor5_c' => $value['subsektor5_c'],
+                    'subsektor6_a' => $value['subsektor6_a'],
+                    'subsektor6_b' => $value['subsektor6_b'],
+                    'subsektor6_c' => $value['subsektor6_c'],
+                    'subsektor7_a' => $value['subsektor7_a'],
+                    'jml_308_sawah' => $value['jml_308_sawah'],
+                    'jml_308_bukan_sawah' => $value['jml_308_bukan_sawah'],
+                    'jml_308_rumput_sementara' => $value['jml_308_rumput_sementara'],
+                    'jml_308_rumput_permanen' => $value['jml_308_rumput_permanen'],
+                    'jml_308_belum_tanam' => $value['jml_308_belum_tanam'],
+                    'jml_308_ternak_bangunan_lain' => $value['jml_308_ternak_bangunan_lain'],
+                    'jml_308_kehutanan' => $value['jml_308_sawah'],
+                    'jml_308_budidaya' => $value['jml_308_sawah'],
+                    'jml_308_lahan_lainnya' => $value['jml_308_sawah'],
+                    'daftar_komoditas' => $value['daftar_komoditas'],
+                    'start_time' => $value['start_time'],
+                    'end_time' => $value['end_time'],
+                    'start_latitude' => $value['start_latitude'],
+                    'end_latitude' => $value['end_latitude'],
+                    'start_longitude' => $value['start_longitude'],
+                    'end_longitude' => $value['end_longitude'],
+                    'created_by' => Auth::id(),
+                    'updated_by' => Auth::id(),
+                ];
+            }
         }
 
-        foreach ($data as $key => $value) {
+        foreach ($data_store as $key => $value) {
             if ($value['id']) {
                 Ruta::find($value['id'])->update($value);
             } else {
                 Ruta::create($value);
             }
+        }
+
+        foreach ($data_delete as $id) {
+            Ruta::find($id)->delete();
         }
 
         return response()->json(['status' => 'success']);
@@ -403,10 +422,10 @@ class RutaController extends Controller
      *              @OA\Property(property="daftar_komoditas", type="integer"),
      *              @OA\Property(property="start_time", type="datetime"),
      *              @OA\Property(property="end_time", type="datetime"),
-     *              @OA\Property(property="start_latitude", type="decimal"),
-     *              @OA\Property(property="end_latitude", type="decimal"),
-     *              @OA\Property(property="start_longitude", type="decimal"),
-     *              @OA\Property(property="end_longitude", type="decimal"),
+     *              @OA\Property(property="start_latitude", type="numeric"),
+     *              @OA\Property(property="end_latitude", type="numeric"),
+     *              @OA\Property(property="start_longitude", type="numeric"),
+     *              @OA\Property(property="end_longitude", type="numeric"),
      *          ),
      *      ),
      *     @OA\Response(
@@ -564,12 +583,12 @@ class RutaController extends Controller
             'jml_308_budidaya' => 'integer',
             'jml_308_lahan_lainnya' => 'integer',
             'daftar_komoditas' => 'string',
-            'start_time' => 'date',
-            'end_time' => 'date',
-            'start_latitude' => 'decimal:0:8',
-            'end_latitude' => 'decimal:0:8',
-            'start_longitude' => 'decimal:0:8',
-            'end_longitude' => 'decimal:0:8',
+            'start_time' => 'string',
+            'end_time' => 'string',
+            'start_latitude' => 'numeric',
+            'end_latitude' => 'numeric',
+            'start_longitude' => 'numeric',
+            'end_longitude' => 'numeric',
         ]);
     }
 }

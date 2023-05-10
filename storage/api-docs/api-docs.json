@@ -710,16 +710,16 @@
                                         "format": "date-time"
                                     },
                                     "start_latitude": {
-                                        "type": "decimal"
+                                        "type": "numeric"
                                     },
                                     "end_latitude": {
-                                        "type": "decimal"
+                                        "type": "numeric"
                                     },
                                     "start_longitude": {
-                                        "type": "decimal"
+                                        "type": "numeric"
                                     },
                                     "end_longitude": {
-                                        "type": "decimal"
+                                        "type": "numeric"
                                     }
                                 },
                                 "type": "object"
@@ -1002,16 +1002,16 @@
                                         "format": "date-time"
                                     },
                                     "start_latitude": {
-                                        "type": "decimal"
+                                        "type": "numeric"
                                     },
                                     "end_latitude": {
-                                        "type": "decimal"
+                                        "type": "numeric"
                                     },
                                     "start_longitude": {
-                                        "type": "decimal"
+                                        "type": "numeric"
                                     },
                                     "end_longitude": {
-                                        "type": "decimal"
+                                        "type": "numeric"
                                     }
                                 },
                                 "type": "object"
