@@ -57,4 +57,6 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
 
     Route::resource('ruta', RutaController::class);
     Route::post('ruta/many', [RutaController::class, 'store_many']);
+
+    Route::post('sls/update_progress', [SlsController::class, 'update_progress']);
 });

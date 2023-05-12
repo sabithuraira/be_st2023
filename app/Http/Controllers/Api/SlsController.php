@@ -297,6 +297,44 @@ class SlsController extends Controller
         }
     }
 
+    public function update_progress(Request $request)
+    {
+        $data = [];
+
+        foreach ($request->data as $key => $value) {
+            $validator = Validator::make($value, [
+                'status_selesai_pcl' => 'required|boolean'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['status' => 'error', 'data' => $validator->errors(), 'at' => $value]);
+            }
+
+            try {
+                $value['id'] = Crypt::decryptString($value['id']);
+            } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+                return response()->json(['status' => 'error', 'data' => null, 'at' => $value]);
+            }
+
+            $data[] = [
+                'id' => $value['id'],
+                'status_selesai_pcl' => $value['status_selesai_pcl'],
+                'updated_by' => Auth::id()
+            ];
+        }
+
+        foreach ($data as $key => $value) {
+            $model = Sls::find($value['id']);
+            
+            $model->status_selesai_pcl = $value['status_selesai_pcl'];
+            $model->updated_by = Auth::id();
+
+            $model->save();
+        }
+
+        return response()->json(['status' => 'success']);
+    }
+
     /**
      * @OA\Delete(
      *     path="/api/sls/{id}",
