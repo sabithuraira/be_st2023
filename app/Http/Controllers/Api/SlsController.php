@@ -326,6 +326,10 @@ class SlsController extends Controller
         foreach ($data as $key => $value) {
             $model = Sls::find($value['id']);
             
+            if ($model->status_selesai_pcl == $value['status_selesai_pcl']) {
+                continue;
+            }
+            
             $model->status_selesai_pcl = $value['status_selesai_pcl'];
             $model->updated_by = Auth::id();
 
