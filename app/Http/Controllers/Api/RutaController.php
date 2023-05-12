@@ -110,6 +110,8 @@ class RutaController extends Controller
      *              @OA\Property(property="jml_308_kehutanan", type="integer"),
      *              @OA\Property(property="jml_308_budidaya", type="integer"),
      *              @OA\Property(property="jml_308_lahan_lainnya", type="integer"),
+     *              @OA\Property(property="jml_308_tanaman_tahunan", type="integer"),
+     *              @OA\Property(property="status_data", type="integer"),
      *              @OA\Property(property="daftar_komoditas", type="integer"),
      *              @OA\Property(property="start_time", type="datetime"),
      *              @OA\Property(property="end_time", type="datetime"),
@@ -166,9 +168,11 @@ class RutaController extends Controller
             'jml_308_rumput_permanen' => $request->jml_308_rumput_permanen,
             'jml_308_belum_tanam' => $request->jml_308_belum_tanam,
             'jml_308_ternak_bangunan_lain' => $request->jml_308_ternak_bangunan_lain,
-            'jml_308_kehutanan' => $request->jml_308_sawah,
-            'jml_308_budidaya' => $request->jml_308_sawah,
-            'jml_308_lahan_lainnya' => $request->jml_308_sawah,
+            'jml_308_kehutanan' => $request->jml_308_kehutanan,
+            'jml_308_budidaya' => $request->jml_308_budidaya,
+            'jml_308_lahan_lainnya' => $request->jml_308_lahan_lainnya,
+            'jml_308_tanaman_tahunan' => $request->jml_308_tanaman_tahunan,
+            'status_data' => $request->status_data,
             'daftar_komoditas' => $request->daftar_komoditas,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
@@ -288,9 +292,12 @@ class RutaController extends Controller
                     'jml_308_rumput_permanen' => $value['jml_308_rumput_permanen'],
                     'jml_308_belum_tanam' => $value['jml_308_belum_tanam'],
                     'jml_308_ternak_bangunan_lain' => $value['jml_308_ternak_bangunan_lain'],
-                    'jml_308_kehutanan' => $value['jml_308_sawah'],
-                    'jml_308_budidaya' => $value['jml_308_sawah'],
-                    'jml_308_lahan_lainnya' => $value['jml_308_sawah'],
+                    'jml_308_kehutanan' => $value['jml_308_kehutanan'],
+                    'jml_308_budidaya' => $value['jml_308_budidaya'],
+                    'jml_308_lahan_lainnya' => $value['jml_308_lahan_lainnya'],
+
+                    'jml_308_tanaman_tahunan' => $value['jml_308_tanaman_tahunan'],
+                    'status_data' => $value['status_data'],
                     'daftar_komoditas' => $value['daftar_komoditas'],
                     'start_time' => $value['start_time'],
                     'end_time' => $value['end_time'],
@@ -419,6 +426,8 @@ class RutaController extends Controller
      *              @OA\Property(property="jml_308_kehutanan", type="integer"),
      *              @OA\Property(property="jml_308_budidaya", type="integer"),
      *              @OA\Property(property="jml_308_lahan_lainnya", type="integer"),
+     *              @OA\Property(property="jml_308_tanaman_tahunan", type="integer"),
+     *              @OA\Property(property="status_data", type="integer"),
      *              @OA\Property(property="daftar_komoditas", type="integer"),
      *              @OA\Property(property="start_time", type="datetime"),
      *              @OA\Property(property="end_time", type="datetime"),
@@ -479,9 +488,13 @@ class RutaController extends Controller
             $data->jml_308_rumput_permanen = $request->jml_308_rumput_permanen;
             $data->jml_308_belum_tanam = $request->jml_308_belum_tanam;
             $data->jml_308_ternak_bangunan_lain = $request->jml_308_ternak_bangunan_lain;
-            $data->jml_308_kehutanan = $request->jml_308_sawah;
-            $data->jml_308_budidaya = $request->jml_308_sawah;
-            $data->jml_308_lahan_lainnya = $request->jml_308_sawah;
+            $data->jml_308_kehutanan = $request->jml_308_kehutanan;
+            $data->jml_308_budidaya = $request->jml_308_budidaya;
+            $data->jml_308_lahan_lainnya = $request->jml_308_lahan_lainnya;
+
+            $data->jml_308_tanaman_tahunan = $request->jml_308_tanaman_tahunan;
+            $data->status_data = $request->status_data;
+
             $data->daftar_komoditas = $request->daftar_komoditas;
             $data->start_time = $request->start_time;
             $data->end_time = $request->end_time;
@@ -582,6 +595,8 @@ class RutaController extends Controller
             'jml_308_kehutanan' => 'integer',
             'jml_308_budidaya' => 'integer',
             'jml_308_lahan_lainnya' => 'integer',
+            'jml_308_tanaman_tahunan' => 'integer',
+            'status_data' => 'integer',
             'daftar_komoditas' => 'string',
             'start_time' => 'string',
             'end_time' => 'string',
