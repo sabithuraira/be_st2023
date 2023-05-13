@@ -67,6 +67,7 @@ class ImportController extends Controller
 
     public function import_user(Request $request)
     {
+        // dd($request->all());
         if ($request->file('import_file')) {
             $data = Excel::import(new UsersImport, request()->file('import_file'));
             // return 'Berhasil Memasukkan data';

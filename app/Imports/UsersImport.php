@@ -60,7 +60,7 @@ class UsersImport implements ToModel, WithStartRow, WithUpserts
                 'created_by' => $auth->id
             ]);
         }
-        if (in_array($row[2], ['PPL', 'PML', 'Koseka'])) {
+        if (in_array($row[2], ['PPL', 'PML', 'Koseka', 'Admin Kabupaten'])) {
             if ($assign) {
                 // jika dia ada di db
                 $assign->syncRoles($row[2]);

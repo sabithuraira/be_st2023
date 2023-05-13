@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AlokasiController;
 use App\Http\Controllers\Api\ImportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,9 +30,9 @@ Route::middleware('auth:sanctum')->get('cd/user', function (Request $request) {
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
-
 Route::middleware('web')->get('authenticate', [ImportController::class, 'authenticate']);
-
+Route::middleware('web')->get('getcsrf', [PetugasController::class, 'getcsrf']);
+// Route::middleware('web')->resource('petugas', PetugasController::class);
 Route::resource('sls', SlsController::class);
 Route::get('sls/get_by_petugas', [SlsController::class, 'get_by_petugas']);
 Route::get('sls/{jenis}/{kode_petugas}/petugas', [SlsController::class, 'get_by_petugas']);
@@ -49,6 +50,11 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
     Route::get('progress_dokumen', [DashboardController::class, 'progress_dokumen']);
 
     Route::resource('petugas', PetugasController::class);
+    Route::get('list_petugas', [PetugasController::class, 'list_petugas']);
+    // Route::get('list_pcl', [PetugasController::class, 'list_pcl']);
+    // Route::get('list_pml', [PetugasController::class, 'list_pml']);
+    // Route::get('list_koseka', [PetugasController::class, 'list_koseka']);
+    Route::resource('alokasi', AlokasiController::class);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('import_user', [ImportController::class, 'import_user']);
 

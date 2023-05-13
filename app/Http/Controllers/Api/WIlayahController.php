@@ -63,7 +63,7 @@ class WIlayahController extends Controller
      */
     public function list_kecs(Request $request)
     {
-        $data = Kecs::where('id_kab', $request->kab_filter)->get();
+        $data = Kecs::where('id_kab', $request->kab_filter)->orderBy('id_kec')->get();
         return response()->json(['status' => 'success', 'data' => $data]);
     }
 

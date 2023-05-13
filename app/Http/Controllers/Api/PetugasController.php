@@ -89,65 +89,17 @@ class PetugasController extends Controller
         } else {
             $datas = User::where($condition)->orderBy('name', 'Asc')->paginate($per_page);
         }
-        $datas->withPath('sls');
+        $datas->withPath('petugas');
         $datas->appends($request->all());
 
         return response()->json(['status' => 'success', 'data' => $datas, 'label_kab' => $label_kab, 'label_kec' => $label_kec, 'label_desa' => $label_desa, 'label_sls' => $label_sls]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getcsrf(Request $request)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        // Mendapatkan token CSRF
+        $token = $request->session()->token();
+        return response()->json(['csrf_token' => $token]);
     }
 
     /**
@@ -175,8 +127,8 @@ class PetugasController extends Controller
     public function destroy($id)
     {
         try {
-            $decryptId = Crypt::decryptString($id);
-            $model = User::find($decryptId);
+            // $decryptId = Crypt::decryptString($id);
+            $model = User::find($id);
             $model->delete();
 
             return response()->json(['status' => 'success', 'data' => "Data berhasil dihapus"]);
@@ -184,4 +136,29 @@ class PetugasController extends Controller
             return response()->json(['status' => 'error', 'data' => null]);
         }
     }
+
+
+
+    public function list_petugas(Request $request)
+    {
+        $condition = [];
+        if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
+        $petugas = User::where($condition)->role('PPL')->orderBy('name', 'Asc')->get();
+        $pcl = User::where($condition)->role('PPL')->orderBy('name', 'Asc')->get();
+        $pml = User::where($condition)->role('PML')->orderBy('name', 'Asc')->get();
+        $data = [
+            'list_pcl' => $pcl,
+            'list_pml' => $pml
+        ];
+
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
+    // public function pml(Request $request)
+    // {
+    //     $condition = [];
+    //     if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
+    //     $data = User::where($condition)->orderBy('name', 'Asc')->get();
+
+    //     return response()->json(['status' => 'success', 'data' => $data]);
+    // }
 }
