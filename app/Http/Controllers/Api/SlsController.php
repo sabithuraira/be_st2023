@@ -303,7 +303,9 @@ class SlsController extends Controller
 
         foreach ($request->data as $key => $value) {
             $validator = Validator::make($value, [
-                'status_selesai_pcl' => 'required|boolean'
+                'status_selesai_pcl' => 'required|boolean',
+                'jml_dok_ke_pml' => 'required|integer',
+                'jml_dok_ke_koseka' => 'required|integer'
             ]);
 
             if ($validator->fails()) {
@@ -319,6 +321,8 @@ class SlsController extends Controller
             $data[] = [
                 'id' => $value['id'],
                 'status_selesai_pcl' => $value['status_selesai_pcl'],
+                'jml_dok_ke_pml' => $value['jml_dok_ke_pml'],
+                'jml_dok_ke_koseka' => $value['jml_dok_ke_koseka'],
                 'updated_by' => Auth::id()
             ];
         }
@@ -326,11 +330,9 @@ class SlsController extends Controller
         foreach ($data as $key => $value) {
             $model = Sls::find($value['id']);
             
-            if ($model->status_selesai_pcl == $value['status_selesai_pcl']) {
-                continue;
-            }
-            
             $model->status_selesai_pcl = $value['status_selesai_pcl'];
+            $model->jml_dok_ke_pml = $value['jml_dok_ke_pml'];
+            $model->jml_dok_ke_koseka = $value['jml_dok_ke_koseka'];
             $model->updated_by = Auth::id();
 
             $model->save();
