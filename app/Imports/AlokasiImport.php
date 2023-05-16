@@ -19,7 +19,7 @@ class AlokasiImport implements ToModel, WithUpserts
 
     public function uniqueBy()
     {
-        return 'id_sls';
+        return ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls'];
     }
 
     public function model(array $row)
@@ -38,32 +38,41 @@ class AlokasiImport implements ToModel, WithUpserts
             $kode_pml = "";
             $kode_koseka = "";
 
-            $pcl = User::where('email', $row[6])->first();
+            $pcl = User::where('email', $row[7])->first();
             if ($pcl) {
-                $kode_pcl = $row[6];
-            }
-
-            $pml = User::where('email', $row[7])->first();
-            if ($pml) {
                 $kode_pcl = $row[7];
             }
 
-            $koseka = User::where('email', $row[8])->first();
-            if ($koseka) {
-                $kode_pcl = $row[8];
+            $pml = User::where('email', $row[8])->first();
+            if ($pml) {
+                $kode_pml = $row[8];
             }
 
-            $input = new Sls([
-                'kode_kab' => $row[1],
-                'kode_kec' => $row[2],
-                'kode_desa' => $row[3],
-                'id_sls' => $row[4],
-                'id_sub_sls' => $row[5],
-                'kode_pcl' => $kode_pcl,
-                'kode_pml' => $kode_pml,
-                'kode_koseka' => $kode_koseka,
-            ]);
+            $koseka = User::where('email', $row[9])->first();
+            if ($koseka) {
+                $kode_koseka = $row[9];
+            }
+
+            // $input = new Sls([
+            //     'kode_prov' => '16',
+            //     'kode_kab' => $row[1],
+            //     'kode_kec' => $row[2],
+            //     'kode_desa' => $row[3],
+            //     'id_sls' => $row[4],
+            //     'id_sub_sls' => $row[5],
+            //     'nama_sls' => $row[6],
+            //     'kode_pcl' => $kode_pcl,
+            //     'kode_pml' => $kode_pml,
+            //     'kode_koseka' => $kode_koseka,
+            //     'created_by' => $auth->id,
+            //     'updated_by' => $auth->id,
+            // ]);
+            $sls->kode_pcl = $kode_pcl;
+            $sls->kode_pml = $kode_pml;
+            $sls->kode_koseka = $kode_koseka;
+            return $sls;
+        } else {
+            return null;
         }
-        return $input;
     }
 }

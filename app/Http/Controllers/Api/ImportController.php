@@ -120,9 +120,13 @@ class ImportController extends Controller
     public function import_alokasi(Request $request)
     {
         if ($request->file('import_file')) {
-            Excel::import(new AlokasiImport, request()->file('import_file'));
+            $data = Excel::import(new AlokasiImport, request()->file('import_file'));
             // return 'Berhasil Memasukkan data';
-            return redirect()->back()->with('success', 'Berhasil Memasukkan data');
+            if ($data) {
+                return response()->json(['status' => 'success', 'data' => "Import Berhasil"]);
+            } else {
+                return response()->json(['status' => 'error', 'data' => 'Kesalahan']);
+            }
         } else {
             // return 'Kesalahan File';
             return redirect()->back()->with('error', 'Kesalahan File');
