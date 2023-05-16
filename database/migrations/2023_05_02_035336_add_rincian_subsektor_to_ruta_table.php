@@ -42,6 +42,7 @@ class AddRincianSubsektorToRutaTable extends Migration
             $table->integer('jml_308_kehutanan')->nullable();
             $table->integer('jml_308_budidaya')->nullable();
             $table->integer('jml_308_lahan_lainnya')->nullable();
+            $table->integer('apakah_menggunakan_lahan')->nullable();
             $table->string('daftar_komoditas')->nullable();
         });
     }

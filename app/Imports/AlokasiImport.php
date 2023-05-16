@@ -38,21 +38,20 @@ class AlokasiImport implements ToModel, WithUpserts
             $kode_pml = "";
             $kode_koseka = "";
 
-            $pcl = User::where('email', $row[7])->first();
+            $pcl = User::where('email', $row[8])->first();
             if ($pcl) {
-                $kode_pcl = $row[7];
+                $kode_pcl = $row[8];
             }
 
-            $pml = User::where('email', $row[8])->first();
+            $pml = User::where('email', $row[9])->first();
             if ($pml) {
-                $kode_pml = $row[8];
+                $kode_pml = $row[9];
             }
 
             $koseka = User::where('email', $row[9])->first();
             if ($koseka) {
                 $kode_koseka = $row[9];
             }
-
             // $input = new Sls([
             //     'kode_prov' => '16',
             //     'kode_kab' => $row[1],
@@ -67,6 +66,7 @@ class AlokasiImport implements ToModel, WithUpserts
             //     'created_by' => $auth->id,
             //     'updated_by' => $auth->id,
             // ]);
+            $sls->kode_pcl = $row[7];
             $sls->kode_pcl = $kode_pcl;
             $sls->kode_pml = $kode_pml;
             $sls->kode_koseka = $kode_koseka;

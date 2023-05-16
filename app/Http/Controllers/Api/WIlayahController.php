@@ -31,7 +31,7 @@ class WIlayahController extends Controller
      */
     public function list_kabs(Request $request)
     {
-        $data = Kabs::all();
+        $data = Kabs::where('id_kab', 'LIKE', '%' . $request->kab_filter . '%')->get();
         return response()->json(['status' => 'success', 'data' => $data]);
     }
 

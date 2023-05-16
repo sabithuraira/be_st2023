@@ -43,6 +43,7 @@ Route::get('list_kabs', [WIlayahController::class, 'list_kabs']);
 Route::get('list_kecs', [WIlayahController::class, 'list_kecs']);
 Route::get('list_desas', [WIlayahController::class, 'list_desas']);
 Route::get('list_sls', [WIlayahController::class, 'list_sls']);
+Route::get('list_roles', [PetugasController::class, 'list_roles']);
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {

@@ -10,6 +10,7 @@ use App\Models\Sls;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Spatie\Permission\Models\Role;
 
 class PetugasController extends Controller
 {
@@ -95,6 +96,35 @@ class PetugasController extends Controller
         return response()->json(['status' => 'success', 'data' => $datas, 'label_kab' => $label_kab, 'label_kec' => $label_kec, 'label_desa' => $label_desa, 'label_sls' => $label_sls]);
     }
 
+    public function show($id)
+    {
+        $status = "success";
+
+        try {
+            $decryptId = Crypt::decryptString($id);
+            $result = User::where('id', $decryptId)->with('roles')->first();
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            $status = "error";
+            $result = null;
+        }
+
+        return response()->json(['status' => $status, 'data' => $result]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $decryptId = Crypt::decryptString($id);
+            $model = User::find($decryptId);
+            $model->name = $request->name;
+            $model->syncRoles([$request->roles]);
+            $model->save();
+            return response()->json(['status' => 'success', 'data' => $model]);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return response()->json(['status' => "error", 'data' => null]);
+        }
+    }
+
     public function getcsrf(Request $request)
     {
         // Mendapatkan token CSRF
@@ -137,8 +167,6 @@ class PetugasController extends Controller
         }
     }
 
-
-
     public function list_petugas(Request $request)
     {
         $condition = [];
@@ -155,12 +183,10 @@ class PetugasController extends Controller
 
         return response()->json(['status' => 'success', 'data' => $data]);
     }
-    // public function pml(Request $request)
-    // {
-    //     $condition = [];
-    //     if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
-    //     $data = User::where($condition)->orderBy('name', 'Asc')->get();
 
-    //     return response()->json(['status' => 'success', 'data' => $data]);
-    // }
+    public function list_roles(Request $request)
+    {
+        $data = Role::whereNotIn('name', ['Admin Provinsi', 'Super Admin'])->get();
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
 }
