@@ -121,6 +121,28 @@ class AuthController extends Controller
         ]);
     }
 
+        /**
+     * @OA\Post(
+     *     path="/api/change_password",
+     *     tags={"auth"},
+     *     summary="Change Password",
+     *     description="-",
+     *     operationId="change_password",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Change Password",
+     *          @OA\JsonContent(
+     *              required={"email", "password"},
+     *              @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *              @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *          ),
+     *      ),
+     *     @OA\Response(
+     *         response="default",
+     *         description=""
+     *     )
+     * )
+     */
     public function change_password(Request $request)
     {
         $validator = Validator::make($request->all(), [
