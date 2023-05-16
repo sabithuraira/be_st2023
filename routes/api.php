@@ -44,7 +44,7 @@ Route::get('list_desas', [WIlayahController::class, 'list_desas']);
 Route::get('list_sls', [WIlayahController::class, 'list_sls']);
 
 
-Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('progress', [DashboardController::class, 'progress']);
     Route::get('progress_kk', [DashboardController::class, 'progress_kk']);
     Route::get('progress_dokumen', [DashboardController::class, 'progress_dokumen']);
@@ -54,6 +54,7 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
     // Route::get('list_pcl', [PetugasController::class, 'list_pcl']);
     // Route::get('list_pml', [PetugasController::class, 'list_pml']);
     // Route::get('list_koseka', [PetugasController::class, 'list_koseka']);
+
     Route::resource('alokasi', AlokasiController::class);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('import_user', [ImportController::class, 'import_user']);

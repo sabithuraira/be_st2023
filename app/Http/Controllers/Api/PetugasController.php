@@ -84,10 +84,10 @@ class PetugasController extends Controller
                         $query->where('name', 'LIKE', '%' . $keyword . '%')
                             ->orWhere('email', 'LIKE', '%' . $keyword . '%');
                     })
-                )
+                )->with('roles')
                 ->orderBy('id', 'DESC')->paginate($per_page);
         } else {
-            $datas = User::where($condition)->orderBy('name', 'Asc')->paginate($per_page);
+            $datas = User::where($condition)->with('roles')->orderBy('name', 'Asc')->paginate($per_page);
         }
         $datas->withPath('petugas');
         $datas->appends($request->all());
@@ -146,9 +146,11 @@ class PetugasController extends Controller
         $petugas = User::where($condition)->role('PPL')->orderBy('name', 'Asc')->get();
         $pcl = User::where($condition)->role('PPL')->orderBy('name', 'Asc')->get();
         $pml = User::where($condition)->role('PML')->orderBy('name', 'Asc')->get();
+        $koseka = User::where($condition)->role('Koseka')->orderBy('name', 'Asc')->get();
         $data = [
             'list_pcl' => $pcl,
-            'list_pml' => $pml
+            'list_pml' => $pml,
+            'list_koseka' => $koseka
         ];
 
         return response()->json(['status' => 'success', 'data' => $data]);

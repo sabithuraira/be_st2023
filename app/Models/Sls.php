@@ -12,6 +12,7 @@ class Sls extends Model
     use \Awobaz\Compoships\Compoships, HasFactory;
     protected $table = 'master_sls';
     protected $appends = ['encId'];
+    protected $guarded = [];
 
     public function getEncIdAttribute()
     {
@@ -30,7 +31,8 @@ class Sls extends Model
             ->where('sektor', 1);
     }
 
-    public function getRutasAttribute(){
+    public function getRutasAttribute()
+    {
         $condition = [];
         $condition[] = ['kode_prov', '=', $this->kode_prov];
         $condition[] = ['kode_kab', '=', $this->kode_kab];
@@ -40,7 +42,7 @@ class Sls extends Model
         $condition[] = ['id_sub_sls', '=', $this->id_sub_sls];
 
         return Ruta::where($condition)
-                ->orderBy('nurt')
-                ->get();
+            ->orderBy('nurt')
+            ->get();
     }
 }

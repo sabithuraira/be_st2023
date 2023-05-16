@@ -122,4 +122,20 @@ class AlokasiController extends Controller
 
         return response()->json(['status' => $status, 'data' => $result]);
     }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $decryptId = Crypt::decryptString($id);
+            $model = Sls::find($decryptId);
+            $model->kode_pcl = $request->kode_pcl;
+            $model->kode_pml = $request->kode_pml;
+            $model->kode_koseka = $request->kode_koseka;
+            $model->updated_by = auth()->user()->id;
+            $model->save();
+            return response()->json(['status' => 'success', 'data' => $model]);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return response()->json(['status' => "error", 'data' => null]);
+        }
+    }
 }
