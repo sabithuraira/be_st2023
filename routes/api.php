@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->get('cd/user', function (Request $request) {
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
+Route::post('change_password', [AuthController::class, 'change_password']);
 Route::middleware('web')->get('authenticate', [ImportController::class, 'authenticate']);
 Route::middleware('web')->get('getcsrf', [PetugasController::class, 'getcsrf']);
 // Route::middleware('web')->resource('petugas', PetugasController::class);

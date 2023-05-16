@@ -121,6 +121,30 @@ class AuthController extends Controller
         ]);
     }
 
+    public function change_password(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'status' => 'error',
+                'data' => $validator->errors()
+            ]);       
+        }
+
+        $user = User::where('email', $request->email)->firstOrFail();
+
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+
+        return response()->json(['status' => 'success']);
+    }
+
     /**
      * @OA\Post(
      *     path="/api/logout",
