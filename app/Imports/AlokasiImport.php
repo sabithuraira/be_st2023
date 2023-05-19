@@ -51,7 +51,20 @@ class AlokasiImport implements ToModel, WithUpserts
             $koseka = User::where('email', $row[9])->first();
             if ($koseka) {
                 $kode_koseka = $row[9];
+            } else {
+                $user = User::create([
+                    'name'     =>  str_replace("@bps.go.id", "", $row[9]),
+                    'email'    => $row[9],
+                    'password' => Hash::make('123456'),
+                    'kode_kab' => $row[1],
+                    'kode_kec' => $row[2],
+                    'kode_desa' => $row[3],
+                    'created_by' => $auth->id
+                ]);
+                $user->syncRoles(["Koseka"]);
+                $kode_koseka = $row[9];
             }
+
             // $input = new Sls([
             //     'kode_prov' => '16',
             //     'kode_kab' => $row[1],

@@ -669,7 +669,9 @@ class DashboardController extends Controller
 
         //KEYWORD CONDITION
         $datas = [];
-        $datas = DB::view('dashboard_waktu')
+        $datas =  DB::table('dashboard_waktu')
+            ->select('pcl', 'pml', 'koseka', DB::raw('AVG(TIME_TO_SEC(time_difference)) / 60 AS rata_rata_waktu_menit'))
+            ->groupBy('pcl', 'pml', 'koseka')
             ->where($condition)
             ->orderBy('kode_kab')
             ->orderBy('kode_kec')
@@ -697,7 +699,9 @@ class DashboardController extends Controller
 
         //KEYWORD CONDITION
         $datas = [];
-        $datas = DB::view('dashboard_lokasi')
+        $datas =  DB::table('dashboard_lokasi')
+            ->select('pcl', 'pml', 'koseka', DB::raw('AVG(distance) * 1000 as rata_rata_jarak'))
+            ->groupBy('pcl', 'pml', 'koseka')
             ->where($condition)
             ->orderBy('kode_kab')
             ->orderBy('kode_kec')

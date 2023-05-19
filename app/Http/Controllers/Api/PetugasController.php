@@ -86,9 +86,10 @@ class PetugasController extends Controller
                             ->orWhere('email', 'LIKE', '%' . $keyword . '%');
                     })
                 )->with('roles')
+                ->orderBy('kode_kab', 'Asc')
                 ->orderBy('id', 'DESC')->paginate($per_page);
         } else {
-            $datas = User::where($condition)->with('roles')->orderBy('name', 'Asc')->paginate($per_page);
+            $datas = User::where($condition)->with('roles')->orderBy('kode_kab', 'Asc')->orderBy('name', 'Asc')->paginate($per_page);
         }
         $datas->withPath('petugas');
         $datas->appends($request->all());
