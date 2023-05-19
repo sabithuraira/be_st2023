@@ -21,15 +21,13 @@ class UsersImport implements ToModel, WithStartRow, WithUpserts
     }
     public function model(array $row)
     {
-
         $auth = Auth::user();
-
         $kd_wilayah = $auth->kd_wilayah;
         // khusus user Prov
         if ($auth->kd_wilayah == 00) {
             $kd_wilayah = $row[6];
         }
-        if ($row[3] == 2) {
+        if ($row[3] == "2" || $row[3] == "") {
             return null;
         }
         // cek sudah ada di db atau belum
@@ -60,12 +58,23 @@ class UsersImport implements ToModel, WithStartRow, WithUpserts
                 'created_by' => $auth->id
             ]);
         }
-        if (in_array($row[2], ['PPL', 'PML', 'Koseka', 'Admin Kabupaten'])) {
+        if (in_array($row[2], ['Petugas Lapangan Sensus', 'Pemeriksa Lapangan Sensus', 'Koseka', 'Admin Kabupaten'])) {
+            $role = "";
+            if ($row[2] == "Petugas Lapangan Sensus") {
+                $role = "PPL";
+            } else if ($row[2] == "Pemeriksa Lapangan Sensus") {
+                $role = "PML";
+            } else if ($row[2] == "Koseka") {
+                $role = "Koseka";
+            } else if ($row[2] == "Admin Kabupaten") {
+                $role = "Admin Kabupaten";
+            }
+
             if ($assign) {
                 // jika dia ada di db
-                $assign->syncRoles($row[2]);
+                $assign->syncRoles($role);
             } else {
-                $user->assignRole($row[2]);
+                $user->assignRole($role);
             }
         }
         return $user;

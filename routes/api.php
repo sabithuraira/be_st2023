@@ -51,6 +51,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('progress_kk', [DashboardController::class, 'progress_kk']);
     Route::get('progress_dokumen', [DashboardController::class, 'progress_dokumen']);
 
+    Route::get('dashboard_waktu', [DashboardController::class, 'dashboard_waktu']);
+    Route::get('dashboard_lokasi', [DashboardController::class, 'dashboard_lokasi']);
+    Route::get('dashboard_target', [DashboardController::class, 'dashboard_target']);
+
     Route::resource('petugas', PetugasController::class);
     Route::get('list_petugas', [PetugasController::class, 'list_petugas']);
     // Route::get('list_pcl', [PetugasController::class, 'list_pcl']);

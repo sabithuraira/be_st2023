@@ -1,0 +1,5 @@
+CREATE VIEW dashboard_waktu AS
+SELECT kode_prov, kode_kab, kode_kec,kode_desa,id_sls, id_sub_sls,
+        nurt, kepala_ruta, start_time, end_time,
+        TIMEDIFF(end_time, start_time) AS time_difference
+FROM ruta

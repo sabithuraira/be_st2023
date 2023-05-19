@@ -45,4 +45,9 @@ class Sls extends Model
             ->orderBy('nurt')
             ->get();
     }
+
+    public function ruta()
+    {
+        return $this->hasMany(Ruta::class,  ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls'], [$this->kode_kab, $this->kec, $this->kode_desa, $this->id_sls]);
+    }
 }
