@@ -111,6 +111,7 @@ class RutaController extends Controller
      *              @OA\Property(property="jml_308_budidaya", type="integer"),
      *              @OA\Property(property="jml_308_lahan_lainnya", type="integer"),
      *              @OA\Property(property="jml_308_tanaman_tahunan", type="integer"),
+     *              @OA\Property(property="apakah_menggunakan_lahan", type="boolean"),
      *              @OA\Property(property="status_data", type="integer"),
      *              @OA\Property(property="daftar_komoditas", type="integer"),
      *              @OA\Property(property="start_time", type="datetime"),
@@ -172,6 +173,7 @@ class RutaController extends Controller
             'jml_308_budidaya' => $request->jml_308_budidaya,
             'jml_308_lahan_lainnya' => $request->jml_308_lahan_lainnya,
             'jml_308_tanaman_tahunan' => $request->jml_308_tanaman_tahunan,
+            'apakah_menggunakan_lahan' => $request->apakah_menggunakan_lahan,
             'status_data' => $request->status_data,
             'daftar_komoditas' => $request->daftar_komoditas,
             'start_time' => $request->start_time,
@@ -210,7 +212,8 @@ class RutaController extends Controller
      *                      subsektor3_a, subsektor3_b, subsektor4_a, subsektor4_b, subsektor4_c, subsektor5_a, subsektor5_b, subsektor5_c,
      *                      subsektor6_a, subsektor6_b, subsektor6_c, subsektor7_a, jml_308_sawah, jml_308_bukan_sawah, jml_308_rumput_sementara,
      *                      jml_308_rumput_permanen, jml_308_belum_tanam, jml_308_ternak_bangunan_lain, jml_308_kehutanan, jml_308_budidaya,
-     *                      jml_308_lahan_lainnya, daftar_komoditas, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
+     *                      jml_308_lahan_lainnya, jml_308_tanaman_tahunan, apakah_menggunakan_lahan, status_data, daftar_komoditas,
+     *                      start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
      *          @OA\JsonContent(
      *              required={"data"},
      *              @OA\Property(property="data", type="array",
@@ -295,8 +298,8 @@ class RutaController extends Controller
                     'jml_308_kehutanan' => $value['jml_308_kehutanan'],
                     'jml_308_budidaya' => $value['jml_308_budidaya'],
                     'jml_308_lahan_lainnya' => $value['jml_308_lahan_lainnya'],
-
                     'jml_308_tanaman_tahunan' => $value['jml_308_tanaman_tahunan'],
+                    'apakah_menggunakan_lahan' => $value['apakah_menggunakan_lahan'],
                     'status_data' => $value['status_data'],
                     'daftar_komoditas' => $value['daftar_komoditas'],
                     'start_time' => $value['start_time'],
@@ -427,6 +430,7 @@ class RutaController extends Controller
      *              @OA\Property(property="jml_308_budidaya", type="integer"),
      *              @OA\Property(property="jml_308_lahan_lainnya", type="integer"),
      *              @OA\Property(property="jml_308_tanaman_tahunan", type="integer"),
+     *              @OA\Property(property="apakah_menggunakan_lahan", type="boolean"),
      *              @OA\Property(property="status_data", type="integer"),
      *              @OA\Property(property="daftar_komoditas", type="integer"),
      *              @OA\Property(property="start_time", type="datetime"),
@@ -491,10 +495,9 @@ class RutaController extends Controller
             $data->jml_308_kehutanan = $request->jml_308_kehutanan;
             $data->jml_308_budidaya = $request->jml_308_budidaya;
             $data->jml_308_lahan_lainnya = $request->jml_308_lahan_lainnya;
-
             $data->jml_308_tanaman_tahunan = $request->jml_308_tanaman_tahunan;
+            $data->apakah_menggunakan_lahan = $request->apakah_menggunakan_lahan;
             $data->status_data = $request->status_data;
-
             $data->daftar_komoditas = $request->daftar_komoditas;
             $data->start_time = $request->start_time;
             $data->end_time = $request->end_time;
@@ -596,6 +599,7 @@ class RutaController extends Controller
             'jml_308_budidaya' => 'integer',
             'jml_308_lahan_lainnya' => 'integer',
             'jml_308_tanaman_tahunan' => 'integer',
+            'apakah_menggunakan_lahan' => 'boolean',
             'status_data' => 'integer',
             'daftar_komoditas' => 'string',
             'start_time' => 'string',

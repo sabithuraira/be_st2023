@@ -285,8 +285,8 @@ class SlsController extends Controller
             $model->id_sub_sls = $request->id_sub_sls;
             $model->nama_sls = $request->nama_sls;
 
-            $model->jenis_sls = 1;
-            $model->status_sls = 1;
+            // $model->jenis_sls = 1;
+            // $model->status_sls = 1;
 
             $model->updated_by = auth()->user()->id;
             $model->save();
@@ -305,7 +305,8 @@ class SlsController extends Controller
             $validator = Validator::make($value, [
                 'status_selesai_pcl' => 'required|boolean',
                 'jml_dok_ke_pml' => 'required|integer',
-                'jml_dok_ke_koseka' => 'required|integer'
+                'jml_dok_ke_koseka' => 'required|integer',
+                'status_sls' => 'required|integer'
             ]);
 
             if ($validator->fails()) {
@@ -323,6 +324,7 @@ class SlsController extends Controller
                 'status_selesai_pcl' => $value['status_selesai_pcl'],
                 'jml_dok_ke_pml' => $value['jml_dok_ke_pml'],
                 'jml_dok_ke_koseka' => $value['jml_dok_ke_koseka'],
+                'status_sls' => $value['status_sls'],
                 'updated_by' => Auth::id()
             ];
         }
@@ -333,6 +335,7 @@ class SlsController extends Controller
             $model->status_selesai_pcl = $value['status_selesai_pcl'];
             $model->jml_dok_ke_pml = $value['jml_dok_ke_pml'];
             $model->jml_dok_ke_koseka = $value['jml_dok_ke_koseka'];
+            $model->status_sls = $value['status_sls'];
             $model->updated_by = Auth::id();
 
             $model->save();
