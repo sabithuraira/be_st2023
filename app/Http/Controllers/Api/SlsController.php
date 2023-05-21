@@ -131,7 +131,14 @@ class SlsController extends Controller
                 $condition[] = ['kode_pcl', '=', $kode_petugas];
         }
 
-        $datas = Sls::where($condition)->get();
+        $datas = Sls::join('desas', function ($join) {
+            $join->on('master_sls.kode_kab', '=', 'desas.id_kab')
+                ->on('master_sls.kode_kec', '=', 'desas.id_kec')
+                ->on('master_sls.kode_desa', '=', 'desas.id_desa');
+        })->join('kecs', function ($join) {
+            $join->on('master_sls.kode_kab', '=', 'kecs.id_kab')
+                ->on('master_sls.kode_kec', '=', 'kecs.id_kec');
+        })->where($condition)->get();
         $result = SlsResource::collection($datas);
 
         return response()->json(['status' => 'success', 'datas' => $result]);
