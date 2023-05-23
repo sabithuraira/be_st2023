@@ -60,8 +60,10 @@ class AlokasiController extends Controller
             $datas = Sls::where($condition)
                 ->where(
                     (function ($query) use ($keyword) {
-                        $query->where('name', 'LIKE', '%' . $keyword . '%')
-                            ->orWhere('tag', 'LIKE', '%' . $keyword . '%');
+                        $query->where('nama_sls', 'LIKE', '%' . $keyword . '%')
+                            ->orWhere('kode_pcl', 'LIKE', '%' . $keyword . '%')
+                            ->orWhere('kode_pml', 'LIKE', '%' . $keyword . '%')
+                            ->orWhere('kode_koseka', 'LIKE', '%' . $keyword . '%');
                     })
                 )
                 ->orderBy('kode_kab')

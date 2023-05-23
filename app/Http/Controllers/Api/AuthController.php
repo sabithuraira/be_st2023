@@ -47,10 +47,16 @@ class AuthController extends Controller
 
         $token = $user->createToken('be_st2023')->plainTextToken;
 
+        $jabatan = 1;
+        if(Auth::user()->hasRole(['PPL'])) $jabatan = 1;
+        else if(Auth::user()->hasRole(['PML']))  $jabatan = 2;
+        else if(Auth::user()->hasRole(['Koseka']))  $jabatan = 3;
+
         return response()->json([
             'status' => 'success',
             'data' => [
                 'user' => $user,
+                'jabatan'   => $jabatan,
                 'access_token' => $token, 
                 'token_type' => 'Bearer', 
             ]

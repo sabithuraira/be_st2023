@@ -124,7 +124,18 @@ class DashboardController extends Controller
                 ->orderBy('nurt', 'asc')
                 ->get();
         } else if ($request->desa_filter) {
-            $data = Sls::select('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec', 'kode_desa', 'nama_desa', 'id_sls', 'id_sls as kode_wilayah', 'nama_sls as nama_wilayah',   DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
+            $data = Sls::select(
+                'master_sls.kode_kab',
+                'nama_kab',
+                'master_sls.kode_kec',
+                'nama_kec',
+                'master_sls.kode_desa',
+                'nama_desa',
+                'master_sls.id_sls',
+                'master_sls.id_sls as kode_wilayah',
+                'nama_sls as nama_wilayah',
+                DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah, COUNT(ruta.id) as ruta_selesai, SUM(master_sls.jml_keluarga_tani) as perkiraan_ruta')
+            )
                 ->leftJoin('desas', function ($join) {
                     $join->on('master_sls.kode_kab', '=', 'desas.id_kab')
                         ->on('master_sls.kode_kec', '=', 'desas.id_kec')
@@ -137,14 +148,30 @@ class DashboardController extends Controller
                 ->leftJoin('kabs', function ($join) {
                     $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
                 })
-                ->where('kode_kab', $request->kab_filter)
-                ->where('kode_kec', $request->kec_filter)
-                ->where('kode_desa', $request->desa_filter)
+                ->leftjoin('ruta', function ($join) {
+                    $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab')
+                        ->on('master_sls.kode_kec', '=', 'ruta.kode_kec')
+                        ->on('master_sls.kode_desa', '=', 'ruta.kode_desa')
+                        ->on('master_sls.id_sls', '=', 'ruta.id_sls')
+                        ->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
+                })
+                ->where('master_sls.kode_kab', $request->kab_filter)
+                ->where('master_sls.kode_kec', $request->kec_filter)
+                ->where('master_sls.kode_desa', $request->desa_filter)
                 ->groupby('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec', 'kode_desa', 'nama_desa', 'id_sls', 'nama_sls')
                 ->orderBy('id_sls', 'asc')
                 ->get();
         } else if ($request->kec_filter) {
-            $data = Sls::select('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec', 'kode_desa', 'kode_desa as kode_wilayah', 'nama_desa as nama_wilayah',  DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
+            $data = Sls::select(
+                'master_sls.kode_kab',
+                'nama_kab',
+                'master_sls.kode_kec',
+                'nama_kec',
+                'master_sls.kode_desa',
+                'master_sls.kode_desa as kode_wilayah',
+                'nama_desa as nama_wilayah',
+                DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah,  COUNT(ruta.id) as ruta_selesai, SUM(master_sls.jml_keluarga_tani) as perkiraan_ruta')
+            )
                 ->leftJoin('desas', function ($join) {
                     $join->on('master_sls.kode_kab', '=', 'desas.id_kab')
                         ->on('master_sls.kode_kec', '=', 'desas.id_kec')
@@ -157,13 +184,27 @@ class DashboardController extends Controller
                 ->leftJoin('kabs', function ($join) {
                     $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
                 })
-                ->where('kode_kab', $request->kab_filter)
-                ->where('kode_kec', $request->kec_filter)
+                ->leftjoin('ruta', function ($join) {
+                    $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab')
+                        ->on('master_sls.kode_kec', '=', 'ruta.kode_kec')
+                        ->on('master_sls.kode_desa', '=', 'ruta.kode_desa')
+                        ->on('master_sls.id_sls', '=', 'ruta.id_sls')
+                        ->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
+                })
+                ->where('master_sls.kode_kab', $request->kab_filter)
+                ->where('master_sls.kode_kec', $request->kec_filter)
                 ->groupby('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec', 'kode_desa', 'nama_desa')
                 ->orderBy('kode_desa', 'asc')
                 ->get();
         } else if ($request->kab_filter) {
-            $data = Sls::select('kode_kab', 'nama_kab', 'kode_kec', 'kode_kec as kode_wilayah', 'nama_kec as nama_wilayah', DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
+            $data = Sls::select(
+                'master_sls.kode_kab',
+                'nama_kab',
+                'master_sls.kode_kec',
+                'master_sls.kode_kec as kode_wilayah',
+                'nama_kec as nama_wilayah',
+                DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah,  COUNT(ruta.id) as ruta_selesai, SUM(master_sls.jml_keluarga_tani) as perkiraan_ruta')
+            )
                 ->leftJoin('kecs', function ($join) {
                     $join->on('master_sls.kode_kab', '=', 'kecs.id_kab')
                         ->on('master_sls.kode_kec', '=', 'kecs.id_kec');
@@ -171,14 +212,34 @@ class DashboardController extends Controller
                 ->leftJoin('kabs', function ($join) {
                     $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
                 })
-                ->where('kode_kab', $request->kab_filter)
+                ->leftjoin('ruta', function ($join) {
+                    $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab')
+                        ->on('master_sls.kode_kec', '=', 'ruta.kode_kec')
+                        ->on('master_sls.kode_desa', '=', 'ruta.kode_desa')
+                        ->on('master_sls.id_sls', '=', 'ruta.id_sls')
+                        ->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
+                })
+                ->where('master_sls.kode_kab', $request->kab_filter)
                 ->groupby('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec')
                 ->orderBy('kode_kec', 'asc')
                 ->get();
         } else {
-            $data = Sls::select('kode_kab', 'kode_kab as kode_wilayah', 'nama_kab as nama_wilayah', 'alias',  DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah'))
+            $data = Sls::select(
+                'master_sls.kode_kab',
+                'master_sls.kode_kab as kode_wilayah',
+                'nama_kab as nama_wilayah',
+                'alias',
+                DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah, COUNT(ruta.id) as ruta_selesai, SUM(master_sls.jml_keluarga_tani) as perkiraan_ruta')
+            )
                 ->leftJoin('kabs', function ($join) {
                     $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
+                })
+                ->leftjoin('ruta', function ($join) {
+                    $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab')
+                        ->on('master_sls.kode_kec', '=', 'ruta.kode_kec')
+                        ->on('master_sls.kode_desa', '=', 'ruta.kode_desa')
+                        ->on('master_sls.id_sls', '=', 'ruta.id_sls')
+                        ->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
                 })
                 ->groupby('kode_kab', 'nama_kab', 'alias')
                 ->orderBy('kode_kab', 'asc')
@@ -670,8 +731,8 @@ class DashboardController extends Controller
         //KEYWORD CONDITION
         $datas = [];
         $datas =  DB::table('dashboard_waktu')
-            ->select('pcl', 'pml', 'koseka', DB::raw('AVG(TIME_TO_SEC(time_difference)) / 60 AS rata_rata_waktu_menit'))
-            ->groupBy('pcl', 'pml', 'koseka')
+            ->select('kode_kab', 'pcl', 'pml', 'koseka', DB::raw('AVG(TIME_TO_SEC(time_difference)) / 60 AS rata_rata_waktu_menit, COUNT(*) as jml_ruta'))
+            ->groupBy('kode_kab', 'pcl', 'pml', 'koseka')
             ->where($condition)
             ->orderBy('kode_kab')
             ->orderBy('kode_kec')
@@ -700,8 +761,8 @@ class DashboardController extends Controller
         //KEYWORD CONDITION
         $datas = [];
         $datas =  DB::table('dashboard_lokasi')
-            ->select('pcl', 'pml', 'koseka', DB::raw('AVG(distance) * 1000 as rata_rata_jarak'))
-            ->groupBy('pcl', 'pml', 'koseka')
+            ->select('kode_kab', 'pcl', 'pml', 'koseka', DB::raw('AVG(distance) * 1000 as rata_rata_jarak, COUNT(*) as jml_ruta'))
+            ->groupBy('kode_kab', 'pcl', 'pml', 'koseka')
             ->where($condition)
             ->orderBy('kode_kab')
             ->orderBy('kode_kec')
