@@ -55,6 +55,8 @@ class SlsResource extends JsonResource
             "updated_by"=> $this->updated_by,
             "created_at"=> $this->created_at,
             "updated_at"=> $this->updated_at,
+            "nama_desa" => $this->nama_desa,
+            "nama_kec" => $this->nama_kec,
             "daftar_ruta"  => $this->rutas
         ];
     }

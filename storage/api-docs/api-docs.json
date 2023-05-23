@@ -180,6 +180,48 @@
                 }
             }
         },
+        "/api/change_password": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Change Password",
+                "description": "-",
+                "operationId": "change_password",
+                "requestBody": {
+                    "description": "Change Password",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/logout": {
             "post": {
                 "tags": [
@@ -778,6 +820,9 @@
                                     "jml_308_tanaman_tahunan": {
                                         "type": "integer"
                                     },
+                                    "apakah_menggunakan_lahan": {
+                                        "type": "boolean"
+                                    },
                                     "status_data": {
                                         "type": "integer"
                                     },
@@ -837,7 +882,7 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls,\n     *                      nurt, kepala_ruta, jumlah_art, jumlah_unit_usaha, subsektor1_a, subsektor1_b, subsektor2_a, subsektor2_b,\n     *                      subsektor3_a, subsektor3_b, subsektor4_a, subsektor4_b, subsektor4_c, subsektor5_a, subsektor5_b, subsektor5_c,\n     *                      subsektor6_a, subsektor6_b, subsektor6_c, subsektor7_a, jml_308_sawah, jml_308_bukan_sawah, jml_308_rumput_sementara,\n     *                      jml_308_rumput_permanen, jml_308_belum_tanam, jml_308_ternak_bangunan_lain, jml_308_kehutanan, jml_308_budidaya,\n     *                      jml_308_lahan_lainnya, daftar_komoditas, start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
+                    "description": "in data, just send object with property kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls,\n     *                      nurt, kepala_ruta, jumlah_art, jumlah_unit_usaha, subsektor1_a, subsektor1_b, subsektor2_a, subsektor2_b,\n     *                      subsektor3_a, subsektor3_b, subsektor4_a, subsektor4_b, subsektor4_c, subsektor5_a, subsektor5_b, subsektor5_c,\n     *                      subsektor6_a, subsektor6_b, subsektor6_c, subsektor7_a, jml_308_sawah, jml_308_bukan_sawah, jml_308_rumput_sementara,\n     *                      jml_308_rumput_permanen, jml_308_belum_tanam, jml_308_ternak_bangunan_lain, jml_308_kehutanan, jml_308_budidaya,\n     *                      jml_308_lahan_lainnya, jml_308_tanaman_tahunan, apakah_menggunakan_lahan, status_data, daftar_komoditas,\n     *                      start_time, end_time, start_latitude, end_latitude, start_longitude, end_longitude",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -1075,6 +1120,9 @@
                                     },
                                     "jml_308_tanaman_tahunan": {
                                         "type": "integer"
+                                    },
+                                    "apakah_menggunakan_lahan": {
+                                        "type": "boolean"
                                     },
                                     "status_data": {
                                         "type": "integer"
