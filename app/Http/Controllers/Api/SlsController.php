@@ -313,7 +313,8 @@ class SlsController extends Controller
                 'status_selesai_pcl' => 'required|boolean',
                 'jml_dok_ke_pml' => 'required|integer',
                 'jml_dok_ke_koseka' => 'required|integer',
-                'status_sls' => 'required|integer'
+                'status_sls' => 'required|integer',
+                'jabatan' => 'required|integer'
             ]);
 
             if ($validator->fails()) {
@@ -332,17 +333,34 @@ class SlsController extends Controller
                 'jml_dok_ke_pml' => $value['jml_dok_ke_pml'],
                 'jml_dok_ke_koseka' => $value['jml_dok_ke_koseka'],
                 'status_sls' => $value['status_sls'],
+                'pendampingan_pml' => $value['pendampingan_pml'],
+                'pendampingan_koseka' => $value['pendampingan_koseka'],
+                'jabatan' => $value['jabatan'],
                 'updated_by' => Auth::id()
             ];
         }
 
         foreach ($data as $key => $value) {
             $model = Sls::find($value['id']);
+
+            switch ($value['jabatan']) {
+            case 1:
+                $model->status_selesai_pcl = $value['status_selesai_pcl'];
+                $model->status_sls = $value['status_sls'];
+                break;
+            case 2:
+                $model->jml_dok_ke_pml = $value['jml_dok_ke_pml'];
+                $model->pendampingan_pml = $value['pendampingan_pml'];
+                break;
+            case 3:
+                $model->jml_dok_ke_koseka = $value['jml_dok_ke_koseka'];
+                $model->pendampingan_koseka = $value['pendampingan_koseka'];
+                break;
+            default:
+                $model->status_selesai_pcl = $value['status_selesai_pcl'];
+                $model->status_sls = $value['status_sls'];
+            }
             
-            $model->status_selesai_pcl = $value['status_selesai_pcl'];
-            $model->jml_dok_ke_pml = $value['jml_dok_ke_pml'];
-            $model->jml_dok_ke_koseka = $value['jml_dok_ke_koseka'];
-            $model->status_sls = $value['status_sls'];
             $model->updated_by = Auth::id();
 
             $model->save();
