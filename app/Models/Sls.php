@@ -46,8 +46,11 @@ class Sls extends Model
             ->get();
     }
 
-    public function ruta()
-    {
-        return $this->hasMany(Ruta::class,  ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls'], [$this->kode_kab, $this->kec, $this->kode_desa, $this->id_sls]);
+    public function ruta(){
+        return $this->hasMany(
+            Ruta::class,  
+            ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls'], 
+            [$this->kode_kab, $this->kec, $this->kode_desa, $this->id_sls, $this->id_sub_sls]
+        );
     }
 }
