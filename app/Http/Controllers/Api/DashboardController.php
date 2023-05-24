@@ -97,7 +97,7 @@ class DashboardController extends Controller
             ->pluck('nama_sls')->first();
 
         if ($request->sls_filter) {
-            $data  = Ruta::select('ruta.kode_kab', 'nama_kab', 'ruta.kode_kec', 'nama_kec', 'ruta.kode_desa', 'nama_desa', 'ruta.id_sls', 'nama_sls', 'ruta.id_sub_sls', 'nurt', 'subsektor1_a', 'kepala_ruta', 'start_time', 'end_time', 'start_latitude', 'end_latitude', 'start_longitude', 'end_longitude')
+            $data  = Ruta::select('ruta.kode_kab', 'nama_kab', 'ruta.kode_kec', 'nama_kec', 'ruta.kode_desa', 'nama_desa', 'ruta.id_sls', 'nama_sls', 'ruta.id_sub_sls', 'nurt', 'jumlah_unit_usaha', 'kepala_ruta', 'start_time', 'end_time', 'start_latitude', 'end_latitude', 'start_longitude', 'end_longitude')
                 ->leftJoin('master_sls', function ($join) {
                     $join->on('ruta.kode_kab', '=', 'master_sls.kode_kab')
                         ->on('ruta.kode_kec', '=', 'master_sls.kode_kec')
@@ -715,7 +715,6 @@ class DashboardController extends Controller
         return response()->json(['status' => 'success', 'data' => $data]);
     }
 
-
     public function dashboard_waktu(Request $request)
     {
         $per_page = 20;
@@ -731,16 +730,17 @@ class DashboardController extends Controller
         //KEYWORD CONDITION
         $datas = [];
         $datas =  DB::table('dashboard_waktu')
-            ->select('kode_kab', 'pcl', 'pml', 'koseka', DB::raw('AVG(TIME_TO_SEC(time_difference)) / 60 AS rata_rata_waktu_menit, COUNT(*) as jml_ruta'))
-            ->groupBy('kode_kab', 'pcl', 'pml', 'koseka')
+            ->select('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka', DB::raw('AVG(TIME_TO_SEC(time_difference)) / 60 AS rata_rata_waktu_menit, COUNT(*) as jml_ruta'))
+            ->groupBy('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka')
             ->where($condition)
             ->orderBy('kode_kab')
-            ->orderBy('kode_kec')
-            ->orderBy('kode_desa')
-            ->orderBy('id_sls')
-            ->orderBy('id_sub_sls')
+            ->orderBy('rata_rata_waktu_menit', 'desc')
+            // ->orderBy('kode_kec')
+            // ->orderBy('kode_desa')
+            // ->orderBy('id_sls')
+            // ->orderBy('id_sub_sls')
             ->paginate($per_page);
-        $datas->withPath('dashboard_waktu');
+        $datas->withPath('waktu');
         $datas->appends($request->all());
 
         return response()->json(['status' => 'success', 'datas' => $datas]);
@@ -761,8 +761,8 @@ class DashboardController extends Controller
         //KEYWORD CONDITION
         $datas = [];
         $datas =  DB::table('dashboard_lokasi')
-            ->select('kode_kab', 'pcl', 'pml', 'koseka', DB::raw('AVG(distance) * 1000 as rata_rata_jarak, COUNT(*) as jml_ruta'))
-            ->groupBy('kode_kab', 'pcl', 'pml', 'koseka')
+            ->select('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka', DB::raw('AVG(distance) * 1000 as rata_rata_jarak, COUNT(*) as jml_ruta'))
+            ->groupBy('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka')
             ->where($condition)
             ->orderBy('kode_kab')
             ->orderBy('kode_kec')
@@ -770,7 +770,7 @@ class DashboardController extends Controller
             ->orderBy('id_sls')
             ->orderBy('id_sub_sls')
             ->paginate($per_page);
-        $datas->withPath('dashboard_lokasi');
+        $datas->withPath('lokasi');
         $datas->appends($request->all());
 
         return response()->json(['status' => 'success', 'datas' => $datas]);

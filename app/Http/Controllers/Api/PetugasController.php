@@ -10,6 +10,7 @@ use App\Models\Sls;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class PetugasController extends Controller
@@ -124,6 +125,36 @@ class PetugasController extends Controller
         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
             return response()->json(['status' => "error", 'data' => null]);
         }
+    }
+
+
+    public function petugas_sls($id)
+    {
+        $per_page = 20;
+        $condition = [];
+
+        $user = User::where('email', $id)->first();
+
+        // dd($user->hasRole('pml'));
+        $condition = [];
+        if ($user->hasRole('PPL')) $condition[] = ['kode_pcl', '=', $id];
+        if ($user->hasRole('PML')) $condition[] = ['kode_pml', '=', $id];
+        if ($user->hasRole('Koseka')) $condition[] = ['kode_koseka', '=', $id];
+
+
+        $datas = Sls::select('master_sls.kode_kab', 'master_sls.kode_kec', 'master_sls.kode_desa', 'master_sls.id_sls', 'master_sls.id_sub_sls', 'status_selesai_pcl', 'jml_keluarga_tani', DB::raw('count(ruta.id) as jumlah_ruta'))
+            ->where($condition)
+            ->leftjoin('ruta', function ($join) {
+                $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab')
+                    ->on('master_sls.kode_kec', '=', 'ruta.kode_kec')
+                    ->on('master_sls.kode_desa', '=', 'ruta.kode_desa')
+                    ->on('master_sls.id_sls', '=', 'ruta.id_sls')
+                    ->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
+            })
+            ->groupby('master_sls.kode_kab', 'master_sls.kode_kec', 'master_sls.kode_desa', 'master_sls.id_sls', 'master_sls.id_sub_sls', 'status_selesai_pcl', 'jml_keluarga_tani')
+            ->paginate($per_page);
+
+        return response()->json(['status' => 'success', 'data' => $datas]);
     }
 
     public function getcsrf(Request $request)

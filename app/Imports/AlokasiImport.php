@@ -68,50 +68,53 @@ class AlokasiImport implements ToModel, WithUpserts
             $sls->kode_koseka = $kode_koseka;
             return $sls;
         } else {
-            $kode_pcl = "";
-            $kode_pml = "";
-            $kode_koseka = "";
-            $pcl = User::where('email', $row[8])->first();
-            if ($pcl) {
-                $kode_pcl = $row[8];
-            }
-            $pml = User::where('email', $row[9])->first();
-            if ($pml) {
-                $kode_pml = $row[9];
-            }
-            $koseka = User::where('email', $row[10])->first();
-            if ($koseka) {
-                $kode_koseka = $row[10];
-            } else {
-                $user = User::create([
-                    'name'     =>  str_replace("@bps.go.id", "", $row[10]),
-                    'email'    => $row[10],
-                    'password' => Hash::make('123456'),
+            if (strlen($row[1]) == 2) {
+                $kode_pcl = "";
+                $kode_pml = "";
+                $kode_koseka = "";
+                $pcl = User::where('email', $row[8])->first();
+                if ($pcl) {
+                    $kode_pcl = $row[8];
+                }
+                $pml = User::where('email', $row[9])->first();
+                if ($pml) {
+                    $kode_pml = $row[9];
+                }
+                $koseka = User::where('email', $row[10])->first();
+                if ($koseka) {
+                    $kode_koseka = $row[10];
+                } else {
+                    $user = User::create([
+                        'name'     =>  str_replace("@bps.go.id", "", $row[10]),
+                        'email'    => $row[10],
+                        'password' => Hash::make('123456'),
+                        'kode_kab' => $row[1],
+                        'kode_kec' => $row[2],
+                        'kode_desa' => $row[3],
+                        'created_by' => $auth->id
+                    ]);
+                    $user->syncRoles(["Koseka"]);
+                    $kode_koseka = $row[10];
+                }
+
+                $sls = Sls::create([
+                    'kode_prov'     => "16",
                     'kode_kab' => $row[1],
                     'kode_kec' => $row[2],
                     'kode_desa' => $row[3],
-                    'created_by' => $auth->id
+                    'id_sls' => $row[4],
+                    'id_sub_sls' => $row[5],
+                    'jml_keluarga_tani' => $row[7],
+                    'kode_pcl' => $kode_pcl,
+                    'kode_pml' => $kode_pml,
+                    'kode_koseka' => $kode_koseka,
+                    'created_by' => $auth->id,
+                    'updated_by' => $auth->id,
                 ]);
-                $user->syncRoles(["Koseka"]);
-                $kode_koseka = $row[10];
+                return $sls;
+            } else {
+                return null;
             }
-
-            $sls = Sls::create([
-                'kode_prov'     => "16",
-                'kode_kab' => $row[1],
-                'kode_kec' => $row[2],
-                'kode_desa' => $row[3],
-                'id_sls' => $row[4],
-                'id_sub_sls' => $row[5],
-                'jml_keluarga_tani' => $row[7],
-                'kode_pcl' => $kode_pcl,
-                'kode_pml' => $kode_pml,
-                'kode_koseka' => $kode_koseka,
-                'created_by' => $auth->id,
-                'updated_by' => $auth->id,
-            ]);
-
-            return $sls;
         }
     }
 }
