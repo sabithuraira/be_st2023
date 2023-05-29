@@ -45,7 +45,6 @@ Route::get('list_desas', [WIlayahController::class, 'list_desas']);
 Route::get('list_sls', [WIlayahController::class, 'list_sls']);
 Route::get('list_roles', [PetugasController::class, 'list_roles']);
 
-
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('progress', [DashboardController::class, 'progress']);
     Route::get('progress_kk', [DashboardController::class, 'progress_kk']);
@@ -56,6 +55,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('dashboard_target', [DashboardController::class, 'dashboard_target']);
 
     Route::resource('petugas', PetugasController::class);
+    Route::get('petugas/rekap', [PetugasController::class, 'rekap']);
+
     Route::get('petugas_sls/{id}', [PetugasController::class, 'petugas_sls']);
     Route::get('list_petugas', [PetugasController::class, 'list_petugas']);
     // Route::get('list_pcl', [PetugasController::class, 'list_pcl']);

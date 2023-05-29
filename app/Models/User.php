@@ -45,4 +45,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function rutas(){
+        return $this->hasMany('App\Models\Ruta', 'created_by', 'id');
+    }
 }
