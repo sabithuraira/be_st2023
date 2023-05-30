@@ -17,37 +17,18 @@ LEFT JOIN users as pml on sls.kode_pml = pml.email
 LEFT JOIN users as koseka on sls.kode_koseka = koseka.email
 
 
---
+-- satuan jaraknya adalah Meter
 CREATE VIEW dashboard_lokasi AS
-SELECT ruta.kode_prov, ruta.kode_kab, ruta.kode_kec, ruta.kode_desa, ruta.id_sls, ruta.id_sub_sls,
-        nurt, kepala_ruta, start_time, end_time,
-        TIMEDIFF(end_time, start_time) AS time_difference,
+SELECT ruta.kode_kab, ruta.kode_kec, ruta.kode_desa, ruta.id_sls, ruta.id_sub_sls, nurt, kepala_ruta,
+    start_latitude, end_latitude, start_longitude, end_longitude,
+     6371000 * 2 * ASIN(SQRT(
+        POWER(SIN((RADIANS(end_latitude) - RADIANS(start_latitude)) / 2), 2) +
+        COS(RADIANS(start_latitude)) * COS(RADIANS(end_latitude)) *
+        POWER(SIN((RADIANS(end_longitude) - RADIANS(start_longitude)) / 2), 2)
+    )) AS distance,
         kode_pcl, pcl.name as pcl,
         kode_pml, pml.name as pml,
         kode_koseka, koseka.name as koseka
-FROM ruta
-LEFT JOIN master_sls as sls
-    on ruta.kode_kab = sls.kode_kab
-    and ruta.kode_kec = sls.kode_kec
-    and ruta.kode_desa = sls.kode_desa
-    and ruta.id_sls = sls.id_sls
-    and ruta.id_sub_sls = sls.id_sub_sls
-LEFT JOIN users as pcl on sls.kode_pcl = pcl.email
-LEFT JOIN users as pml on sls.kode_pml = pml.email
-LEFT JOIN users as koseka on sls.kode_koseka = koseka.email
-
-
--- satuan jaraknya adalah KM
-CREATE VIEW dashboard_lokasi AS
-SELECT ruta.kode_kab, ruta.kode_kec, ruta.kode_desa, ruta.id_sls, ruta.id_sub_sls,
-        kode_pcl, pcl.name as pcl,
-        kode_pml, pml.name as pml,
-        kode_koseka, koseka.name as koseka,
-    6371 * 2 * ASIN(SQRT(
-        POWER(SIN((end_latitude - ABS(start_latitude)) * PI()/180 / 2), 2) +
-        COS(start_latitude * PI()/180) * COS(ABS(end_latitude) * PI()/180) *
-        POWER(SIN((end_longitude - start_longitude) * PI()/180 / 2), 2)
-    )) AS distance
 From ruta
 LEFT JOIN master_sls as sls
     on ruta.kode_kab = sls.kode_kab
@@ -60,20 +41,32 @@ LEFT JOIN users as pml on sls.kode_pml = pml.email
 LEFT JOIN users as koseka on sls.kode_koseka = koseka.email
 
 
+-- dasboard_target sekarang pakai yg pertama
 CREATE VIEW dashboard_target AS
-SELECT ruta.kode_prov, ruta.kode_kab, ruta.kode_kec, ruta.kode_desa, ruta.id_sls, ruta.id_sub_sls,
-        nurt, kepala_ruta, start_time, end_time,
-        TIMEDIFF(end_time, start_time) AS time_difference,
-        kode_pcl, pcl.name as pcl,
-        kode_pml, pml.name as pml,
-        kode_koseka, koseka.name as koseka
-FROM ruta
-LEFT JOIN master_sls as sls
-    on ruta.kode_kab = sls.kode_kab
-    and ruta.kode_kec = sls.kode_kec
-    and ruta.kode_desa = sls.kode_desa
-    and ruta.id_sls = sls.id_sls
-    and ruta.id_sub_sls = sls.id_sub_sls
-LEFT JOIN users as pcl on sls.kode_pcl = pcl.email
-LEFT JOIN users as pml on sls.kode_pml = pml.email
-LEFT JOIN users as koseka on sls.kode_koseka = koseka.email
+SELECT master_sls.kode_kab, master_sls.kode_pcl, master_sls.kode_pml, master_sls.kode_koseka, COUNT(ruta.id) as jumlah_ruta
+FROM master_sls
+LEFT JOIN (select ruta.kode_kab, ruta.kode_kec, ruta.kode_desa , ruta.id_sls, ruta.id_sub_sls, ruta.nurt FROM ruta) as ruta
+    on master_sls.kode_kab = ruta.kode_kab
+    and master_sls.kode_kec = ruta.kode_kec
+    and master_sls.kode_desa = ruta.kode_desa
+    and master_sls.id_sls = ruta.id_sls
+    and master_sls.id_sub_sls = ruta.id_sub_sls
+GROUP BY master_sls.kode_kab, master_sls.kode_pcl, master_sls.kode_pml, master_sls.kode_koseka
+ORDER BY master_sls.kode_kab, jumlah_ruta desc
+
+
+CREATE VIEW dashboard_target AS
+SELECT master_sls.kode_kab, master_sls.kode_kec,
+master_sls.kode_desa, master_sls.id_sls, master_sls.id_sub_sls, master_sls.kode_pcl,
+master_sls.kode_pml, master_sls.kode_koseka, COUNT(ruta.id) as jumlah_ruta
+FROM master_sls
+LEFT JOIN ruta as ruta
+    on master_sls.kode_kab = ruta.kode_kab
+    and master_sls.kode_kec = ruta.kode_kec
+    and master_sls.kode_desa = ruta.kode_desa
+    and master_sls.id_sls = ruta.id_sls
+    and master_sls.id_sub_sls = ruta.id_sub_sls
+GROUP BY master_sls.kode_kab, master_sls.kode_kec,
+master_sls.kode_desa, master_sls.id_sls, master_sls.id_sub_sls, master_sls.kode_pcl,
+master_sls.kode_pml, master_sls.kode_koseka
+ORDER BY master_sls.kode_kab, jumlah_ruta desc

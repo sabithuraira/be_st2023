@@ -761,14 +761,16 @@ class DashboardController extends Controller
         //KEYWORD CONDITION
         $datas = [];
         $datas =  DB::table('dashboard_lokasi')
-            ->select('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka', DB::raw('AVG(distance) * 1000 as rata_rata_jarak, COUNT(*) as jml_ruta'))
+            ->select('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka', DB::raw('AVG(distance) as rata_rata_jarak, COUNT(*) as jml_ruta'))
             ->groupBy('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka')
             ->where($condition)
             ->orderBy('kode_kab')
-            ->orderBy('kode_kec')
-            ->orderBy('kode_desa')
-            ->orderBy('id_sls')
-            ->orderBy('id_sub_sls')
+            ->orderBy('rata_rata_jarak', 'desc')
+
+            // ->orderBy('kode_kec')
+            // ->orderBy('kode_desa')
+            // ->orderBy('id_sls')
+            // ->orderBy('id_sub_sls')
             ->paginate($per_page);
         $datas->withPath('lokasi');
         $datas->appends($request->all());
@@ -790,15 +792,33 @@ class DashboardController extends Controller
 
         //KEYWORD CONDITION
         $datas = [];
-        $datas = DB::view('dashboard_target')
-            ->where($condition)
+        // $datas = Sls::select('master_sls.kode_kab', 'master_sls.kode_pcl', 'master_sls.kode_pml', 'master_sls.kode_koseka', DB::raw('COUNT(ruta.id) as jumlah_ruta'))
+        //     ->leftJoin('ruta', function ($join) {
+        //         $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab')
+        //             ->on('master_sls.kode_kec', '=', 'ruta.kode_kec')
+        //             ->on('master_sls.kode_desa', '=', 'ruta.kode_desa')
+        //             ->on('master_sls.id_sls', '=', 'ruta.id_sls')
+        //             ->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
+        //     })
+        //     ->where($condition)
+        //     ->groupby('master_sls.kode_kab', 'master_sls.kode_pcl', 'master_sls.kode_pml', 'master_sls.kode_koseka')
+        //     ->orderBy('kode_kab')
+        //     ->orderBy('jumlah_ruta',)
+        //     ->paginate($per_page);
+
+        // $datas = Sls::select('master_sls.kode_kab', 'master_sls.kode_pcl', 'master_sls.kode_pml', 'master_sls.kode_koseka')
+        //     ->with('ruta')
+        //     ->where($condition)
+        //     ->groupby('master_sls.kode_kab', 'master_sls.kode_pcl', 'master_sls.kode_pml', 'master_sls.kode_koseka')
+        //     ->orderBy('kode_kab')
+        //     ->orderBy('jumlah_ruta',)
+        //     ->paginate($per_page);
+
+        $datas = DB::table('dashboard_target')
             ->orderBy('kode_kab')
-            ->orderBy('kode_kec')
-            ->orderBy('kode_desa')
-            ->orderBy('id_sls')
-            ->orderBy('id_sub_sls')
+            ->orderBy('jumlah_ruta',)
             ->paginate($per_page);
-        $datas->withPath('dashboard_target');
+        $datas->withPath('target');
         $datas->appends($request->all());
 
         return response()->json(['status' => 'success', 'datas' => $datas]);
