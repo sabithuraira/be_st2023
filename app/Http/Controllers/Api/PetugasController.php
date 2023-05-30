@@ -72,7 +72,7 @@ class PetugasController extends Controller
         $keyword = $request->keyword;
         $per_page = 20;
         $datas = [];
-        $condition = [];
+        $condition[] = ['kode_kab', '<>', '00'];
         if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
         if (isset($request->kec_filter) && strlen($request->kec_filter) > 0) $condition[] = ['kode_kec', '=', $request->kec_filter];
         if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $request->desa_filter];
@@ -125,6 +125,7 @@ class PetugasController extends Controller
         $per_page = 20;
         $datas = [];
         $condition = [];
+        $condition[] = ['kode_kab', '<>', '00'];
         if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
         if (isset($request->kec_filter) && strlen($request->kec_filter) > 0) $condition[] = ['kode_kec', '=', $request->kec_filter];
         if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $request->desa_filter];

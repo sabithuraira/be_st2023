@@ -42,7 +42,7 @@ class SlsController extends Controller
      *     ),
      *     @OA\Response(
      *         response="default",
-     *         description="return array model kategori"
+     *         description="return array model sls"
      *     )
      * )
      */
@@ -108,7 +108,7 @@ class SlsController extends Controller
      *     ),
      *     @OA\Response(
      *         response="default",
-     *         description="return array model kategori"
+     *         description="return array model sls with ruta"
      *     )
      * )
      */
@@ -129,6 +129,55 @@ class SlsController extends Controller
                 break;
             default:
                 $condition[] = ['kode_pcl', '=', $kode_petugas];
+        }
+
+        $datas = Sls::join('desas', function ($join) {
+            $join->on('master_sls.kode_kab', '=', 'desas.id_kab')
+                ->on('master_sls.kode_kec', '=', 'desas.id_kec')
+                ->on('master_sls.kode_desa', '=', 'desas.id_desa');
+        })->join('kecs', function ($join) {
+            $join->on('master_sls.kode_kab', '=', 'kecs.id_kab')
+                ->on('master_sls.kode_kec', '=', 'kecs.id_kec');
+        })->where($condition)->get();
+        $result = SlsResource::collection($datas);
+
+        return response()->json(['status' => 'success', 'datas' => $result]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/sls/{kode_sls}/sls",
+     *     tags={"sls"},
+     *     summary="Get By Sls",
+     *     description="get daftar SLS by Sls",
+     *     operationId="get_by_sls",
+     *     @OA\Parameter(
+     *          name="kode_sls",
+     *          description="Kode Sls",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="return array model sls with ruta"
+     *     )
+     * )
+     */
+    public function get_by_sls($kode_sls)
+    {
+        $datas = [];
+
+        $condition = [];
+
+        if (strlen($kode_sls) == 16) {
+            $condition[] = ['kode_kab', '=', substr($kode_sls, 2, 2)];
+            $condition[] = ['kode_kec', '=', substr($kode_sls, 4, 3)];
+            $condition[] = ['kode_desa', '=', substr($kode_sls, 7, 3)];
+            $condition[] = ['id_sls', '=', substr($kode_sls, 10, 4)];
+            $condition[] = ['id_sub_sls', '=', substr($kode_sls, 14, 2)];
         }
 
         $datas = Sls::join('desas', function ($join) {
