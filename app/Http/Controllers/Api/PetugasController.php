@@ -152,7 +152,7 @@ class PetugasController extends Controller
                         ->paginate($per_page);
             // print_r("Ha");die();
         }
-        $datas->withPath('petugas/rekap');
+        $datas->withPath('target');
         $datas->appends($request->all());
 
         return response()->json(['status' => 'success', 'data' => $datas, 'label_kab' => $label_kab, 'label_kec' => $label_kec, 'label_desa' => $label_desa, 'label_sls' => $label_sls]);
