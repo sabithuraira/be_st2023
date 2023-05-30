@@ -98,6 +98,67 @@ class PetugasController extends Controller
         return response()->json(['status' => 'success', 'data' => $datas, 'label_kab' => $label_kab, 'label_kec' => $label_kec, 'label_desa' => $label_desa, 'label_sls' => $label_sls]);
     }
 
+
+    public function rekap(Request $request)
+    {
+        $label_kab = "";
+        $label_kec = "";
+        $label_desa = "";
+        $label_sls = "";
+
+        $label_kab = Kabs::where('id_kab', $request->kab_filter)
+            ->pluck('nama_kab')->first();
+        $label_kec = Kecs::where('id_kab', $request->kab_filter)
+            ->where('id_kec', $request->kec_filter)
+            ->pluck('nama_kec')->first();
+        $label_desa = Desas::where('id_kab', $request->kab_filter)
+            ->where('id_kec', $request->kec_filter)
+            ->where('id_desa', $request->desa_filter)
+            ->pluck('nama_desa')->first();
+        $label_sls = Sls::where('kode_kab', $request->kab_filter)
+            ->where('kode_kec', $request->kec_filter)
+            ->where('kode_desa', $request->desa_filter)
+            ->where('id_sls', $request->sls_filter)
+            ->pluck('nama_sls')->first();
+
+        $keyword = $request->keyword;
+        $per_page = 20;
+        $datas = [];
+        $condition = [];
+        if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
+        if (isset($request->kec_filter) && strlen($request->kec_filter) > 0) $condition[] = ['kode_kec', '=', $request->kec_filter];
+        if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $request->desa_filter];
+        //PAGINATION
+        if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
+        //KEYWORD CONDITION
+        if (isset($request->keyword) && strlen($request->keyword) > 0) {
+            $datas = User::where($condition)
+                ->where(
+                    (function ($query) use ($keyword) {
+                        $query->where('name', 'LIKE', '%' . $keyword . '%')
+                            ->orWhere('email', 'LIKE', '%' . $keyword . '%');
+                    })
+                )->with('roles')
+                ->withCount('rutas')
+                ->orderBy('kode_kab', 'Asc')
+                ->orderBy('id', 'DESC')->paginate($per_page);
+        } else {
+            $datas = User::where($condition)
+                        ->with('roles')
+                        ->withCount('rutas')
+                        ->orderBy('kode_kab', 'Asc')
+                        ->orderBy('name', 'Asc')
+                        ->paginate($per_page);
+            // print_r("Ha");die();
+        }
+        $datas->withPath('petugas/rekap');
+        $datas->appends($request->all());
+
+        return response()->json(['status' => 'success', 'data' => $datas, 'label_kab' => $label_kab, 'label_kec' => $label_kec, 'label_desa' => $label_desa, 'label_sls' => $label_sls]);
+    }
+
+
+
     public function show($id)
     {
         $status = "success";
