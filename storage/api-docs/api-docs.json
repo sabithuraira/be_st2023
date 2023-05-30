@@ -1245,7 +1245,7 @@
                 },
                 "responses": {
                     "default": {
-                        "description": "return array model kategori"
+                        "description": "return array model sls"
                     }
                 }
             },
@@ -1337,7 +1337,33 @@
                 ],
                 "responses": {
                     "default": {
-                        "description": "return array model kategori"
+                        "description": "return array model sls with ruta"
+                    }
+                }
+            }
+        },
+        "/api/sls/{kode_sls}/sls": {
+            "get": {
+                "tags": [
+                    "sls"
+                ],
+                "summary": "Get By Sls",
+                "description": "get daftar SLS by Sls",
+                "operationId": "get_by_sls",
+                "parameters": [
+                    {
+                        "name": "kode_sls",
+                        "in": "path",
+                        "description": "Kode Sls",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "return array model sls with ruta"
                     }
                 }
             }

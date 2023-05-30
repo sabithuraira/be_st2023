@@ -35,8 +35,8 @@ Route::middleware('web')->get('authenticate', [ImportController::class, 'authent
 Route::middleware('web')->get('getcsrf', [PetugasController::class, 'getcsrf']);
 // Route::middleware('web')->resource('petugas', PetugasController::class);
 Route::resource('sls', SlsController::class);
-Route::get('sls/get_by_petugas', [SlsController::class, 'get_by_petugas']);
 Route::get('sls/{jenis}/{kode_petugas}/petugas', [SlsController::class, 'get_by_petugas']);
+Route::get('sls/{kode_sls}/sls', [SlsController::class, 'get_by_sls']);
 Route::get('make_roles', [ImportController::class, 'make_roles']);
 
 Route::get('list_kabs', [WIlayahController::class, 'list_kabs']);
