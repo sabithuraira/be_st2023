@@ -68,6 +68,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('import_user', [ImportController::class, 'import_user']);
 
     Route::get('export_alokasi', [ExportController::class, 'export_alokasi']);
+    Route::get('export_ruta', [ExportController::class, 'export_ruta']);
+    Route::get('export_progress', [ExportController::class, 'export_progress']);
     Route::post('import_alokasi', [ImportController::class, 'import_alokasi']);
 
     Route::resource('ruta', RutaController::class);

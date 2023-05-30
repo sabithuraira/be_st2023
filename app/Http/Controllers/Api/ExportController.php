@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Exports\AlokasiExport;
+use App\Exports\ProgressExport;
+use App\Exports\RutaExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -81,5 +83,16 @@ class ExportController extends Controller
     {
         return Excel::download(new AlokasiExport($request), 'alokasi.xlsx');
         // return response()->json(['status' => 'success', 'datas' => $excel]);
+    }
+
+
+    public function export_ruta(Request $request)
+    {
+        return excel::download(new RutaExport($request), 'ruta_16.xlsx');
+    }
+
+    public function export_progress(Request $request)
+    {
+        return excel::download(new ProgressExport($request), 'progress_16.xlsx');
     }
 }
