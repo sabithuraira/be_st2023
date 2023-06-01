@@ -18,10 +18,59 @@ class RutaExport implements FromCollection, WithMapping, WithHeadings
     }
     public function collection()
     {
-        return Ruta::where('kode_kab', "LIKE", "%" . $this->request->kode_kab . "%")
-            ->where('kode_kec', "LIKE", "%" . $this->request->kode_kec . "%")
-            ->where('kode_desa', "LIKE", "%" . $this->request->kode_desa . "%")
-            ->where('id_sls', "LIKE", "%" . $this->request->id_sls . "%")
+        return Ruta::select(
+            'ruta.kode_prov',
+            'ruta.kode_kab',
+            'ruta.kode_kec',
+            'ruta.kode_desa',
+            'ruta.id_sls',
+            'ruta.id_sub_sls',
+            'nurt',
+            'kepala_ruta',
+            'kode_pcl',
+            'kode_pml',
+            'kode_koseka',
+            'start_time',
+            'end_time',
+            'start_latitude',
+            'start_latitude',
+            'end_latitude',
+            'start_longitude',
+            'end_longitude',
+            'subsektor1_a',
+            'subsektor1_b',
+            'subsektor2_a',
+            'subsektor2_b',
+            'subsektor3_a',
+            'subsektor3_b',
+            'subsektor4_a',
+            'subsektor4_b',
+            'subsektor4_c',
+            'subsektor5_a',
+            'subsektor5_b',
+            'subsektor5_c',
+            'subsektor6_a',
+            'subsektor6_b',
+            'subsektor6_c',
+            'subsektor7_a',
+            'jumlah_art',
+            'jumlah_unit_usaha',
+        )
+            ->leftJoin(
+                'master_sls',
+                function ($join) {
+                    $join->on('ruta.kode_kab', '=', 'master_sls.kode_kab');
+                    $join->on('ruta.kode_kec', '=', 'master_sls.kode_kec');
+                    $join->on('ruta.kode_desa', '=', 'master_sls.kode_desa');
+                    $join->on('ruta.id_sls', '=', 'master_sls.id_sls');
+                    $join->on('ruta.id_sub_sls', '=', 'master_sls.id_sub_sls');
+                }
+            )
+            ->where('ruta.kode_kab', "LIKE", "%" . $this->request->kode_kab . "%")
+            ->where('ruta.kode_kec', "LIKE", "%" . $this->request->kode_kec . "%")
+            ->where('ruta.kode_desa', "LIKE", "%" . $this->request->kode_desa . "%")
+            ->where('ruta.id_sls', "LIKE", "%" . $this->request->id_sls . "%")
+
             ->get();
     }
     public function map($ruta): array
@@ -35,12 +84,33 @@ class RutaExport implements FromCollection, WithMapping, WithHeadings
             $ruta->id_sub_sls,
             $ruta->nurt,
             $ruta->kepala_ruta,
+            $ruta->kode_pcl,
+            $ruta->kode_pml,
+            $ruta->kode_koseka,
             $ruta->start_time,
             $ruta->end_time,
             $ruta->start_latitude,
             $ruta->end_latitude,
             $ruta->start_longitude,
             $ruta->end_longitude,
+            $ruta->subsektor1_a,
+            $ruta->subsektor1_b,
+            $ruta->subsektor2_a,
+            $ruta->subsektor2_b,
+            $ruta->subsektor3_a,
+            $ruta->subsektor3_b,
+            $ruta->subsektor4_a,
+            $ruta->subsektor4_b,
+            $ruta->subsektor4_c,
+            $ruta->subsektor5_a,
+            $ruta->subsektor5_b,
+            $ruta->subsektor5_c,
+            $ruta->subsektor6_a,
+            $ruta->subsektor6_b,
+            $ruta->subsektor6_c,
+            $ruta->subsektor7_a,
+            $ruta->jumlah_art,
+            $ruta->jumlah_unit_usaha,
         ];
     }
     public function headings(): array
@@ -54,12 +124,33 @@ class RutaExport implements FromCollection, WithMapping, WithHeadings
             'id_sub_sls',
             'nurt',
             'kepala_ruta',
+            'kode_pcl',
+            'kode_pml',
+            'kode_koseka',
             'start_time',
             'end_time',
             'start_latitude',
             'end_latutide',
             'start_longitude',
-            'end_longitude'
+            'end_longitude',
+            'subsektor1_a',
+            'subsektor1_b',
+            'subsektor2_a',
+            'subsektor2_b',
+            'subsektor3_a',
+            'subsektor3_b',
+            'subsektor4_a',
+            'subsektor4_b',
+            'subsektor4_c',
+            'subsektor5_a',
+            'subsektor5_b',
+            'subsektor5_c',
+            'subsektor6_a',
+            'subsektor6_b',
+            'subsektor6_c',
+            'subsektor7_a',
+            'jumlah_art',
+            'jumlah_unit_usaha',
         ];
     }
 }
