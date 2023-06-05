@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Imports\AlokasiImport;
+use App\Imports\RutaRegsosekImport;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -121,6 +122,22 @@ class ImportController extends Controller
     {
         if ($request->file('import_file')) {
             $data = Excel::import(new AlokasiImport, request()->file('import_file'));
+            // return 'Berhasil Memasukkan data';
+            if ($data) {
+                return response()->json(['status' => 'success', 'data' => "Import Berhasil"]);
+            } else {
+                return response()->json(['status' => 'error', 'data' => 'Kesalahan']);
+            }
+        } else {
+            // return 'Kesalahan File';
+            return redirect()->back()->with('error', 'Kesalahan File');
+        }
+    }
+
+    public function import_ruta_regsosek(Request $request)
+    {
+        if ($request->file('import_file')) {
+            $data = Excel::import(new RutaRegsosekImport, request()->file('import_file'));
             // return 'Berhasil Memasukkan data';
             if ($data) {
                 return response()->json(['status' => 'success', 'data' => "Import Berhasil"]);

@@ -47,13 +47,11 @@ class AlokasiImport implements ToModel, WithUpserts
                 $kode_pcl = $row[8];
             }
 
-
-            if($row[9]!=""){            
+            if ($row[9] != "") {
                 $pml = User::where('email', $row[9])->first();
                 if ($pml) {
                     $kode_pml = $row[9];
-                }
-                else{
+                } else {
                     $user = User::create([
                         'name'     =>  str_replace("@bps.go.id", "", $row[9]),
                         'email'    => $row[9],
@@ -68,7 +66,7 @@ class AlokasiImport implements ToModel, WithUpserts
                 }
             }
 
-            if($row[10]!=""){
+            if ($row[10] != "") {
                 $koseka = User::where('email', $row[10])->first();
                 if ($koseka) {
                     $kode_koseka = $row[10];
@@ -87,10 +85,9 @@ class AlokasiImport implements ToModel, WithUpserts
                 }
             }
 
-            $jumlah_keluarga_tani = 0;
-            if ($row[7] != "") $jumlah_keluarga_tani = $row[7];
-            $sls->jml_keluarga_tani = $jumlah_keluarga_tani;
-
+            // $jumlah_keluarga_tani = 0;
+            // if ($row[7] != "") $jumlah_keluarga_tani = $row[7];
+            // $sls->jml_keluarga_tani = $jumlah_keluarga_tani;
             $sls->nama_sls = $row[6];
             $sls->kode_pcl = $kode_pcl;
             $sls->kode_pml = $kode_pml;
@@ -106,12 +103,11 @@ class AlokasiImport implements ToModel, WithUpserts
             }
 
 
-            if($row[9]!=""){            
+            if ($row[9] != "") {
                 $pml = User::where('email', $row[9])->first();
                 if ($pml) {
                     $kode_pml = $row[9];
-                }
-                else{
+                } else {
                     $user = User::create([
                         'name'     =>  str_replace("@bps.go.id", "", $row[9]),
                         'email'    => $row[9],
@@ -126,7 +122,7 @@ class AlokasiImport implements ToModel, WithUpserts
                 }
             }
 
-            if($row[10]!=""){
+            if ($row[10] != "") {
                 $koseka = User::where('email', $row[10])->first();
                 if ($koseka) {
                     $kode_koseka = $row[10];
@@ -145,8 +141,8 @@ class AlokasiImport implements ToModel, WithUpserts
                 }
             }
 
-            $jumlah_keluarga_tani = 0;
-            if ($row[7] != "") $jumlah_keluarga_tani = $row[7];
+            // $jumlah_keluarga_tani = 0;
+            // if ($row[7] != "") $jumlah_keluarga_tani = $row[7];
             // $sls->jml_keluarga_tani = $jumlah_keluarga_tani;
             $sls = Sls::create([
                 'kode_prov'     => "16",
@@ -156,7 +152,7 @@ class AlokasiImport implements ToModel, WithUpserts
                 'id_sls' => $row[4],
                 'id_sub_sls' => $row[5],
                 'nama_sls' => $row[6],
-                'jml_keluarga_tani' => $jumlah_keluarga_tani,
+                // 'jml_keluarga_tani' => $jumlah_keluarga_tani,
                 'kode_pcl' => $kode_pcl,
                 'kode_pml' => $kode_pml,
                 'kode_koseka' => $kode_koseka,
