@@ -316,7 +316,12 @@ class RutaController extends Controller
 
         foreach ($data_store as $key => $value) {
             if ($value['id']) {
-                Ruta::find($value['id'])->update($value);
+                try {
+                    Ruta::findOrFail($value['id'])->update($value);
+                } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+                    $value['id'] = '';
+                    Ruta::create($value);
+                }
             } else {
                 Ruta::create($value);
             }
