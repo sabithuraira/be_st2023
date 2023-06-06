@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kabs extends Model
 {
+
+    use \Awobaz\Compoships\Compoships, HasFactory;
     protected $table = 'kabs';
-    use HasFactory;
 
     public function sls_selesai()
     {

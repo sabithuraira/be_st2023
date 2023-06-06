@@ -94,6 +94,8 @@ class ExportController extends Controller
 
     public function export_progress(Request $request)
     {
+
+        // dd($request->all());
         return excel::download(new ProgressExport($request), 'progress_16.xlsx');
     }
 

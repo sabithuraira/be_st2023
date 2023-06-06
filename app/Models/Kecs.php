@@ -7,6 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kecs extends Model
 {
+
+    use \Awobaz\Compoships\Compoships, HasFactory;
     protected $table = 'kecs';
-    use HasFactory;
+
+    public function sls()
+    {
+        return $this->hasMany(
+            Sls::class,
+            ['kode_kab', 'kode_kec'],
+            ['id_kab', 'id_kec']
+        );
+    }
+
+    public function ruta()
+    {
+        return $this->hasMany(
+            Ruta::class,
+            ['kode_kab', 'kode_kec'],
+            ['id_kab', 'id_kec']
+        );
+    }
 }

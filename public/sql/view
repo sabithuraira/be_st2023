@@ -16,6 +16,24 @@ LEFT JOIN users as pcl on sls.kode_pcl = pcl.email
 LEFT JOIN users as pml on sls.kode_pml = pml.email
 LEFT JOIN users as koseka on sls.kode_koseka = koseka.email
 
+CREATE VIEW dashboard_waktus AS
+SELECT ruta.kode_prov, ruta.kode_kab, ruta.kode_kec, ruta.kode_desa, ruta.id_sls, ruta.id_sub_sls,
+        AVG(TIMEDIFF(end_time, start_time)) AS time_difference,
+        kode_pcl, pcl.name as pcl,
+        kode_pml, pml.name as pml,
+        kode_koseka, koseka.name as koseka
+FROM ruta
+LEFT JOIN master_sls as sls
+    on ruta.kode_kab = sls.kode_kab
+    and ruta.kode_kec = sls.kode_kec
+    and ruta.kode_desa = sls.kode_desa
+    and ruta.id_sls = sls.id_sls
+    and ruta.id_sub_sls = sls.id_sub_sls
+LEFT JOIN users as pcl on sls.kode_pcl = pcl.email
+LEFT JOIN users as pml on sls.kode_pml = pml.email
+LEFT JOIN users as koseka on sls.kode_koseka = koseka.email
+GROUP BY kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, pcl, pml, koseka
+
 
 -- satuan jaraknya adalah Meter
 CREATE VIEW dashboard_lokasi AS

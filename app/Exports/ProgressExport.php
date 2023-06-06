@@ -2,6 +2,9 @@
 
 namespace App\Exports;
 
+use App\Models\Desas;
+use App\Models\Kabs;
+use App\Models\Kecs;
 use App\Models\Sls;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,124 +25,49 @@ class ProgressExport implements FromCollection,  WithMapping, WithHeadings
     {
         if ($this->request->desa_filter) {
             $data = Sls::select(
-                'master_sls.kode_kab',
-                'nama_kab',
-                'master_sls.kode_kec',
-                'nama_kec',
-                'master_sls.kode_desa',
-                'nama_desa',
-                'master_sls.id_sls',
-                'master_sls.id_sls as kode_wilayah',
-                'nama_sls as nama_wilayah',
-                DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah, COUNT(ruta.id) as ruta_selesai, SUM(master_sls.jml_keluarga_tani) as perkiraan_ruta')
+                DB::raw("CONCAT(id_sls, id_sub_sls) AS id_sls, CONCAT(id_sls, id_sub_sls) AS kode_wilayah, nama_sls as nama_wilayah, '1' as jumlah"),
+                'status_selesai_pcl as selesai',
+                'jml_keluarga_tani as  perkiraan_ruta',
             )
-                ->leftJoin('desas', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'desas.id_kab')
-                        ->on('master_sls.kode_kec', '=', 'desas.id_kec')
-                        ->on('master_sls.kode_desa', '=', 'desas.id_desa');
-                })
-                ->leftJoin('kecs', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'kecs.id_kab')
-                        ->on('master_sls.kode_kec', '=', 'kecs.id_kec');
-                })
-                ->leftJoin('kabs', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
-                })
-                ->leftjoin('ruta', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab')
-                        ->on('master_sls.kode_kec', '=', 'ruta.kode_kec')
-                        ->on('master_sls.kode_desa', '=', 'ruta.kode_desa')
-                        ->on('master_sls.id_sls', '=', 'ruta.id_sls')
-                        ->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
-                })
-                ->where('master_sls.kode_kab', $this->request->kab_filter)
-                ->where('master_sls.kode_kec', $this->request->kec_filter)
-                ->where('master_sls.kode_desa', $this->request->desa_filter)
-                ->groupby('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec', 'kode_desa', 'nama_desa', 'id_sls', 'nama_sls')
-                ->orderBy('id_sls', 'asc')
+                ->withCount('ruta as ruta_selesai')
+                ->where('kode_kab', $this->request->kab_filter)
+                ->where('kode_kec', $this->request->kec_filter)
+                ->where('kode_desa', $this->request->desa_filter)
                 ->get();
         } else if ($this->request->kec_filter) {
-            $data = Sls::select(
-                'master_sls.kode_kab',
-                'nama_kab',
-                'master_sls.kode_kec',
-                'nama_kec',
-                'master_sls.kode_desa',
-                'master_sls.kode_desa as kode_wilayah',
-                'nama_desa as nama_wilayah',
-                DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah,  COUNT(ruta.id) as ruta_selesai, SUM(master_sls.jml_keluarga_tani) as perkiraan_ruta')
-            )
-                ->leftJoin('desas', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'desas.id_kab')
-                        ->on('master_sls.kode_kec', '=', 'desas.id_kec')
-                        ->on('master_sls.kode_desa', '=', 'desas.id_desa');
-                })
-                ->leftJoin('kecs', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'kecs.id_kab')
-                        ->on('master_sls.kode_kec', '=', 'kecs.id_kec');
-                })
-                ->leftJoin('kabs', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
-                })
-                ->leftjoin('ruta', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab')
-                        ->on('master_sls.kode_kec', '=', 'ruta.kode_kec')
-                        ->on('master_sls.kode_desa', '=', 'ruta.kode_desa')
-                        ->on('master_sls.id_sls', '=', 'ruta.id_sls')
-                        ->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
-                })
-                ->where('master_sls.kode_kab', $this->request->kab_filter)
-                ->where('master_sls.kode_kec', $this->request->kec_filter)
-                ->groupby('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec', 'kode_desa', 'nama_desa')
-                ->orderBy('kode_desa', 'asc')
+            $data = Desas::select(
+                'id_desa as kode_desa',
+                'id_desa as kode_wilayah',
+                'nama_desa as nama_wilayah'
+            )->withCount('sls as jumlah')
+                ->withSum('sls as selesai', 'status_selesai_pcl')
+                ->withSum('sls as perkiraan_ruta', 'jml_keluarga_tani')
+                ->withCount('ruta as ruta_selesai')
+                ->where('id_kab', $this->request->kab_filter)
+                ->where('id_kec', $this->request->kec_filter)
                 ->get();
         } else if ($this->request->kab_filter) {
-            $data = Sls::select(
-                'master_sls.kode_kab',
-                'nama_kab',
-                'master_sls.kode_kec',
-                'master_sls.kode_kec as kode_wilayah',
-                'nama_kec as nama_wilayah',
-                DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah,  COUNT(ruta.id) as ruta_selesai, SUM(master_sls.jml_keluarga_tani) as perkiraan_ruta')
-            )
-                ->leftJoin('kecs', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'kecs.id_kab')
-                        ->on('master_sls.kode_kec', '=', 'kecs.id_kec');
-                })
-                ->leftJoin('kabs', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
-                })
-                ->leftjoin('ruta', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab')
-                        ->on('master_sls.kode_kec', '=', 'ruta.kode_kec')
-                        ->on('master_sls.kode_desa', '=', 'ruta.kode_desa')
-                        ->on('master_sls.id_sls', '=', 'ruta.id_sls')
-                        ->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
-                })
-                ->where('master_sls.kode_kab', $this->request->kab_filter)
-                ->groupby('kode_kab', 'nama_kab', 'kode_kec', 'nama_kec')
-                ->orderBy('kode_kec', 'asc')
+            $data = Kecs::select(
+                'id_kec as kode_kec',
+                'id_kec as kode_wilayah',
+                'nama_kec as nama_wilayah'
+            )->withCount('sls as jumlah')
+                ->withSum('sls as selesai', 'status_selesai_pcl')
+                ->withSum('sls as perkiraan_ruta', 'jml_keluarga_tani')
+                ->withCount('ruta as ruta_selesai')
+                ->where('id_kab', $this->request->kab_filter)
+                ->orderby('id_kec')
                 ->get();
         } else {
-            $data = Sls::select(
-                'master_sls.kode_kab',
-                'master_sls.kode_kab as kode_wilayah',
+            $data = Kabs::select(
+                'id_kab as kode_kab',
+                'id_kab as kode_wilayah',
                 'nama_kab as nama_wilayah',
-                'alias',
-                DB::raw('SUM(status_selesai_pcl) as selesai, COUNT(*) as jumlah, COUNT(ruta.id) as ruta_selesai, SUM(master_sls.jml_keluarga_tani) as perkiraan_ruta')
-            )
-                ->leftJoin('kabs', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'kabs.id_kab');
-                })
-                ->leftjoin('ruta', function ($join) {
-                    $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab')
-                        ->on('master_sls.kode_kec', '=', 'ruta.kode_kec')
-                        ->on('master_sls.kode_desa', '=', 'ruta.kode_desa')
-                        ->on('master_sls.id_sls', '=', 'ruta.id_sls')
-                        ->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
-                })
-                ->groupby('kode_kab', 'nama_kab', 'alias')
-                ->orderBy('kode_kab', 'asc')
+                'alias'
+            )->withCount('sls as jumlah')
+                ->withSum('sls as selesai', 'status_selesai_pcl')
+                ->withSum('sls as perkiraan_ruta', 'jml_keluarga_tani')
+                ->withCount('ruta as ruta_selesai')
                 ->get();
         }
         return $data;
