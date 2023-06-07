@@ -249,13 +249,14 @@ class RutaController extends Controller
             $validator = $this->validator($value_null_to_string);
 
             if ($validator->fails()) {
-                return response()->json(['status' => 'error', 'data' => $validator->errors(), 'at' => $value_null_to_string]);
+                $errorString = implode(",",$validator->messages()->all());
+                return response()->json(['status' => 'error', 'data' => $errorString, 'at' => $value_null_to_string]);
             }
 
             try {
                 if ($value_null_to_string['id']) $value_null_to_string['id'] = Crypt::decryptString($value_null_to_string['id']);
             } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-                return response()->json(['status' => 'error', 'data' => null, 'at' => $value_null_to_string]);
+                return response()->json(['status' => 'error', 'data' => "Error, data ", 'at' => $value_null_to_string]);
             }
 
             if ($value['status_upload'] == '3') {
@@ -316,12 +317,20 @@ class RutaController extends Controller
 
         foreach ($data_store as $key => $value) {
             if ($value['id']) {
-                try {
-                    Ruta::findOrFail($value['id'])->update($value);
-                } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-                    $value['id'] = '';
+                $model = Ruta::find($value['id']);
+                if($model!=null){
+                    $model->update($value);
+                }
+                else{
+                    $value['id']    = "";
                     Ruta::create($value);
                 }
+                // try {
+                //     Ruta::findOrFail($value['id'])->update($value);
+                // } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+                //     $value['id'] = '';
+                //     Ruta::create($value);
+                // }
             } else {
                 Ruta::create($value);
             }
@@ -331,7 +340,75 @@ class RutaController extends Controller
             Ruta::find($id)->delete();
         }
 
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => 'success', 'data'=> "Data berhasil diupload"]);
+    }
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/ruta/update_sls_many",
+     *     tags={"ruta"},
+     *     summary="Update SLS Many Ruta",
+     *     description="Update SLS on many rutas data",
+     *     operationId="ruta/update_sls_many",
+     *     @OA\Parameter(
+     *          name="Bearer Token",
+     *          description="",
+     *          required=true,
+     *          in="header",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="form ruta",
+     *          @OA\JsonContent(
+     *              required={"kode_prov", "kode_kab", "kode_kec", "kode_desa", "id_sls", "id_sub_sls", "selected_data"},
+     *              @OA\Property(property="kode_prov", type="string"),
+     *              @OA\Property(property="kode_kab", type="string"),
+     *              @OA\Property(property="kode_kec", type="string"),
+     *              @OA\Property(property="kode_desa", type="string"),
+     *              @OA\Property(property="id_sls", type="string"),
+     *              @OA\Property(property="id_sub_sls", type="string"),
+     *              @OA\Property(property="selected_data", type="array"),
+     *          ),
+     *      ),
+     *     @OA\Response(
+     *         response="default",
+     *         description=""
+     *     )
+     * )
+     */
+    public function update_sls_many(Request $request)
+    {
+        Validator::make($value, [
+            'kode_prov' => 'required|string|max:2',
+            'kode_kab' => 'required|string|max:2',
+            'kode_kec' => 'required|string|max:3',
+            'kode_desa' => 'required|string|max:3',
+            'id_sls' => 'required|string|max:4',
+            'id_sub_sls' => 'required|string|max:2',
+            'selected_data' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'data' => $validator->errors()]);
+        }
+
+        foreach($request->selected_data as $value) {
+            $decryptId = Crypt::decryptString($value);
+            $data = Ruta::find($decryptId);
+            if($data!=null){
+                $data->kode_kab = $request->kode_kab;
+                $data->kode_kec = $request->kode_kec;
+                $data->kode_desa = $request->kode_desa;
+                $data->kode_id_sls = $request->kode_id_sls;
+                $data->kode_id_sub_sls = $request->kode_id_sub_sls;
+            }
+        }
+
+        return response()->json(['status' => 'success', 'data'  => null]);
     }
 
     /**
