@@ -172,6 +172,14 @@ class SlsController extends Controller
 
         $condition = [];
 
+        if (strlen($kode_sls) == 15) {
+            $condition[] = ['kode_kab', '=', substr($kode_sls, 2, 2)];
+            $condition[] = ['kode_kec', '=', substr($kode_sls, 4, 3)];
+            $condition[] = ['kode_desa', '=', substr($kode_sls, 7, 3)];
+            $condition[] = ['id_sls', '=', substr($kode_sls, 10, 4)];
+            $condition[] = ['id_sub_sls', '=', substr($kode_sls, 14, 1)];
+        }
+
         if (strlen($kode_sls) == 16) {
             $condition[] = ['kode_kab', '=', substr($kode_sls, 2, 2)];
             $condition[] = ['kode_kec', '=', substr($kode_sls, 4, 3)];

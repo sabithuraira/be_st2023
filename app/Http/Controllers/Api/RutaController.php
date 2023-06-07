@@ -240,24 +240,24 @@ class RutaController extends Controller
             $value_null_to_string = [];
 
             foreach ($value as $k => $v) {
-                if ($v) {
-                    $value_null_to_string[$k] = $v;
+                if ($v === null) {
+                    $value_null_to_string[$k] = '';
                 } else {
-                    $value_null_to_string[$k] = "";
+                    $value_null_to_string[$k] = $v;
                 }
             }
 
             $validator = $this->validator($value_null_to_string);
 
             if ($validator->fails()) {
-                $errorString = implode(",",$validator->messages()->all());
-                return response()->json(['status' => 'error', 'data' => $errorString, 'at' => $value_null_to_string]);
+                $errorString = implode(',',$validator->messages()->all());
+                return response()->json(['status' => 'error', 'data' => $errorString, 'at' => $value]);
             }
 
             try {
                 if ($value_null_to_string['id']) $value_null_to_string['id'] = Crypt::decryptString($value_null_to_string['id']);
             } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-                return response()->json(['status' => 'error', 'data' => "Error, data ", 'at' => $value_null_to_string]);
+                return response()->json(['status' => 'error', 'data' => 'Error, data ', 'at' => $value_null_to_string]);
             }
 
             if ($value['status_upload'] == '3') {
@@ -318,20 +318,20 @@ class RutaController extends Controller
 
         foreach ($data_store as $key => $value) {
             if ($value['id']) {
-                $model = Ruta::find($value['id']);
-                if($model!=null){
-                    $model->update($value);
-                }
-                else{
-                    $value['id']    = "";
-                    Ruta::create($value);
-                }
-                // try {
-                //     Ruta::findOrFail($value['id'])->update($value);
-                // } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-                //     $value['id'] = '';
+                // $model = Ruta::find($value['id']);
+                // if($model != null){
+                //     $model->update($value);
+                // }
+                // else{
+                //     $value['id'] = "";
                 //     Ruta::create($value);
                 // }
+                try {
+                    Ruta::findOrFail($value['id'])->update($value);
+                } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+                    $value['id'] = '';
+                    Ruta::create($value);
+                }
             } else {
                 Ruta::create($value);
             }
@@ -341,7 +341,7 @@ class RutaController extends Controller
             Ruta::find($id)->delete();
         }
 
-        return response()->json(['status' => 'success', 'data'=> "Data berhasil diupload"]);
+        return response()->json(['status' => 'success', 'data'=> 'Data berhasil diupload']);
     }
 
 
