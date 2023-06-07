@@ -44,4 +44,13 @@ class Sls extends Model
             ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls']
         );
     }
+
+    public function avg_ruta_time()
+    {
+        return $this->hasMany(
+            Ruta::class,
+            ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls'],
+            ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls']
+        );
+    }
 }
