@@ -522,18 +522,14 @@ class DashboardController extends Controller
 
         //KEYWORD CONDITION
         $datas = [];
-        $datas =  DB::table('dashboard_waktu')
-            ->select('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka', DB::raw('AVG(TIME_TO_SEC(time_difference)) / 60 AS rata_rata_waktu_menit, COUNT(*) as jml_ruta'))
-            ->groupBy('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka')
-            ->where($condition)
-            ->orderBy('kode_kab')
-            ->orderBy('rata_rata_waktu_menit', 'desc')
-            // ->orderBy('kode_kec')
-            // ->orderBy('kode_desa')
-            // ->orderBy('id_sls')
-            // ->orderBy('id_sub_sls')
-            ->paginate($per_page);
-        $datas->withPath('waktu');
+        // $datas =  DB::table('dashboard_waktu')
+        //     ->select('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka', DB::raw('AVG(TIME_TO_SEC(time_difference)) / 60 AS rata_rata_waktu_menit, COUNT(*) as jml_ruta'))
+        //     ->groupBy('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka')
+        //     ->where($condition)
+        //     ->orderBy('kode_kab')
+        //     ->orderBy('rata_rata_waktu_menit', 'desc')
+        //     ->paginate($per_page);
+        // $datas->withPath('waktu');
         $datas->appends($request->all());
         return response()->json(['status' => 'success', 'datas' => $datas]);
     }
