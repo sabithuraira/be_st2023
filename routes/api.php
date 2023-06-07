@@ -45,6 +45,9 @@ Route::get('list_desas', [WIlayahController::class, 'list_desas']);
 Route::get('list_sls', [WIlayahController::class, 'list_sls']);
 Route::get('list_roles', [PetugasController::class, 'list_roles']);
 
+
+Route::get('delete_ruta_duplikat', [RutaController::class, 'delete_ruta_duplikat']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('progress', [DashboardController::class, 'progress']);
     Route::get('progress_kk', [DashboardController::class, 'progress_kk']);

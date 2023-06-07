@@ -18,6 +18,9 @@ class RutaExport implements FromCollection, WithMapping, WithHeadings
     }
     public function collection()
     {
+        $id_sls = substr($this->request->id_sls, 0, 4);
+        $id_sub_sls = substr($this->request->id_sls, 4, 2);
+
         return Ruta::select(
             'ruta.kode_prov',
             'ruta.kode_kab',
@@ -69,8 +72,8 @@ class RutaExport implements FromCollection, WithMapping, WithHeadings
             ->where('ruta.kode_kab', "LIKE", "%" . $this->request->kode_kab . "%")
             ->where('ruta.kode_kec', "LIKE", "%" . $this->request->kode_kec . "%")
             ->where('ruta.kode_desa', "LIKE", "%" . $this->request->kode_desa . "%")
-            ->where('ruta.id_sls', "LIKE", "%" . $this->request->id_sls . "%")
-
+            ->where('ruta.id_sls', "LIKE", "%" . $id_sls . "%")
+            ->where('ruta.id_sub_sls', "LIKE", "%" . $id_sub_sls . "%")
             ->get();
     }
     public function map($ruta): array

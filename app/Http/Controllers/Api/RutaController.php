@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 class RutaController extends Controller
 {
@@ -237,7 +238,7 @@ class RutaController extends Controller
 
         foreach ($request->data as $key => $value) {
             $value_null_to_string = [];
-            
+
             foreach ($value as $k => $v) {
                 if ($v) {
                     $value_null_to_string[$k] = $v;
@@ -609,5 +610,40 @@ class RutaController extends Controller
             'start_longitude' => 'numeric',
             'end_longitude' => 'numeric',
         ]);
+    }
+
+
+    public function delete_ruta_duplikat(Request $request)
+    {
+        $ruta = Ruta::select('kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls', 'nurt', 'kepala_ruta', DB::raw('COUNT(*) as jumlah_duplikat'))
+            ->groupBy('kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls', 'nurt', 'kepala_ruta')
+            ->havingRaw('COUNT(*) > 1')
+            ->orderByDesc('jumlah_duplikat')
+            ->get();
+
+
+        foreach ($ruta as $rt) {
+            $data = Ruta::where('kode_kab', $rt->kode_kab)
+                ->where('kode_kec', $rt->kode_kec)
+                ->where('kode_desa', $rt->kode_desa)
+                ->where('id_sls', $rt->id_sls)
+                ->where('id_sub_sls', $rt->id_sub_sls)
+                ->where('nurt', $rt->nurt)
+                ->where('kepala_ruta', $rt->kepala_ruta)
+                ->get();
+
+            $idsToDelete = [];
+            $skipFirstRow = true;
+
+            foreach ($data as $dt) {
+                if ($skipFirstRow) {
+                    $skipFirstRow = false;
+                    continue;
+                }
+                $idsToDelete[] = $dt->id;
+            }
+            Ruta::whereIn('id', $idsToDelete)->delete();
+        }
+        return response()->json(['status' => 'success', 'data' => "selesai"]);
     }
 }
