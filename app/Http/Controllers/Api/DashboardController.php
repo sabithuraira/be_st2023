@@ -562,38 +562,33 @@ class DashboardController extends Controller
         //PAGINATION
         if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
         //KEYWORD CONDITION
-        $datas =  DB::table('dashboard_lokasi')
-            ->select('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka', 'distance')
-            ->groupBy('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka')
-            ->where($condition)
-            ->orderBy('kode_kab')
-            ->orderBy('rata_rata_jarak', 'desc')
-            ->paginate($per_page);
-        // $datas = User::where($condition)
-        //     ->role(["PPL"])
-        //     ->with('roles')
-        //     ->with(['rutas' => function ($query) {
-        //         $query->select('created_by', DB::raw('AVG(6371000 * 2 * ASIN(SQRT(
-        //             POWER(SIN((RADIANS(end_latitude) - RADIANS(start_latitude)) / 2), 2) +
-        //             COS(RADIANS(start_latitude)) * COS(RADIANS(end_latitude)) *
-        //             POWER(SIN((RADIANS(end_longitude) - RADIANS(start_longitude)) / 2), 2)
-        //         ))) as rata_rata_jarak, COUNT(*) as jml_ruta'))
-        //             ->groupBy('created_by');
-        //     }])
-        // $datas = User::where($condition)
-        //     ->role(["PPL"])
-        //     ->with('roles')
-        //     ->with(['rutas' => function ($query) {
-        //         $query->select('created_by', DB::raw('AVG(6371000 * 2 * ASIN(SQRT(
-        //             POWER(SIN((RADIANS(end_latitude) - RADIANS(start_latitude)) / 2), 2) +
-        //             COS(RADIANS(start_latitude)) * COS(RADIANS(end_latitude)) *
-        //             POWER(SIN((RADIANS(end_longitude) - RADIANS(start_longitude)) / 2), 2)
-        //         ))) as rata_rata_jarak, COUNT(*) as jml_ruta'))
-        //             ->groupBy('created_by');
-        //     }])
-        //     ->orderBy('kode_kab', 'ASC')
-        //     ->orderBy('name', 'ASC')
+        // $datas =  DB::table('dashboard_lokasi')
+        //     ->select('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka', 'distance')
+        //     ->groupBy('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka')
+        //     ->where($condition)
+        //     ->orderBy('kode_kab')
+        //     ->orderBy('rata_rata_jarak', 'desc')
         //     ->paginate($per_page);
+        // $datas = User::where($condition)
+        //     ->role(["PPL"])
+        //     ->with('roles')
+        //     ->with(['rutas' => function ($query) {
+        //         $query->select('created_by', DB::raw('AVG(6371000 * 2 * ASIN(SQRT(
+        //             POWER(SIN((RADIANS(end_latitude) - RADIANS(start_latitude)) / 2), 2) +
+        //             COS(RADIANS(start_latitude)) * COS(RADIANS(end_latitude)) *
+        //             POWER(SIN((RADIANS(end_longitude) - RADIANS(start_longitude)) / 2), 2)
+        //         ))) as rata_rata_jarak, COUNT(*) as jml_ruta'))
+        //             ->groupBy('created_by');
+        //     }])
+        $datas = User::where($condition)
+            ->role(["PPL"])
+            ->with(['rutas' => function ($query) {
+                $query->select('created_by', DB::raw('AVG(ABS(start_latitude) - ABS(end_latitude)) as rata_latitude, AVG(ABS(start_longitude) - ABS(end_longitude)) as rata_longitude, COUNT(*) as jml_ruta'))
+                    ->groupBy('created_by');
+            }])
+            ->orderBy('kode_kab', 'ASC')
+            ->orderBy('name', 'ASC')
+            ->paginate($per_page);
         $datas->withPath('lokasi');
         $datas->appends($request->all());
 

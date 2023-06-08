@@ -98,7 +98,6 @@ class PetugasController extends Controller
         return response()->json(['status' => 'success', 'data' => $datas, 'label_kab' => $label_kab, 'label_kec' => $label_kec, 'label_desa' => $label_desa, 'label_sls' => $label_sls]);
     }
 
-
     public function rekap(Request $request)
     {
         $label_kab = "";
@@ -131,28 +130,6 @@ class PetugasController extends Controller
         if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $request->desa_filter];
         //PAGINATION
         if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
-        //KEYWORD CONDITION
-        // if (isset($request->keyword) && strlen($request->keyword) > 0) {
-        //     $datas = User::role('PPL')
-        //         ->where($condition)
-        //         ->where(
-        //             (function ($query) use ($keyword) {
-        //                 $query->where('name', 'LIKE', '%' . $keyword . '%')
-        //                     ->orWhere('email', 'LIKE', '%' . $keyword . '%');
-        //             })
-        //         )
-        //         ->withCount('rutas')
-        //         ->orderBy('kode_kab', 'Asc')
-        //         ->orderBy('id', 'DESC')->paginate($per_page);
-        // } else {
-        // $datas = User::role('PPL')
-        //     ->where($condition)
-        //     ->withCount('rutas')
-        //     ->orderBy('kode_kab', 'Asc')
-        //     ->orderBy('name', 'Asc')
-        //     ->paginate($per_page);
-        // print_r("Ha");die();
-        // }
         $datas = User::where($condition)
             ->role(["PPL"])
             ->with('roles')
@@ -162,11 +139,8 @@ class PetugasController extends Controller
             ->paginate($per_page);
         $datas->withPath('target');
         $datas->appends($request->all());
-
         return response()->json(['status' => 'success', 'data' => $datas, 'label_kab' => $label_kab, 'label_kec' => $label_kec, 'label_desa' => $label_desa, 'label_sls' => $label_sls]);
     }
-
-
 
     public function show($id)
     {
@@ -196,7 +170,6 @@ class PetugasController extends Controller
             return response()->json(['status' => "error", 'data' => null]);
         }
     }
-
 
     public function petugas_sls($id)
     {
