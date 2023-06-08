@@ -57,6 +57,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('dashboard_lokasi', [DashboardController::class, 'dashboard_lokasi']);
     Route::get('dashboard_target', [DashboardController::class, 'dashboard_target']);
 
+    Route::get('dashboard_koseka', [DashboardController::class, 'dashboard_koseka']);
+
     Route::resource('petugas', PetugasController::class);
     Route::get('petugas/data/rekap', [PetugasController::class, 'rekap']);
 

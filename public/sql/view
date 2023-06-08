@@ -111,3 +111,127 @@ GROUP BY master_sls.kode_kab, master_sls.kode_kec,
 master_sls.kode_desa, master_sls.id_sls, master_sls.id_sub_sls, master_sls.kode_pcl,
 master_sls.kode_pml, master_sls.kode_koseka
 ORDER BY master_sls.kode_kab, jumlah_ruta desc
+
+
+Mengetahui ruta yang duplikat
+SELECT kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, nurt, kepala_ruta, count(*) as jumlah_duplikat
+FROM ruta
+GROUP BY kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls, nurt, kepala_ruta
+HAVING COUNT(*) > 1
+ORDER BY `jumlah_duplikat` DESC
+
+
+
+CREATE VIEW dashboard_pertanggal AS
+SELECT
+ ruta.kode_kab,
+ ruta.kode_kec,
+ ruta.kode_desa,
+ ruta.id_sls,
+ ruta.id_sub_sls,
+ kode_koseka,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-01' THEN 1 ELSE 0 END) AS `1 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-02' THEN 1 ELSE 0 END) AS `2 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-03' THEN 1 ELSE 0 END) AS `3 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-04' THEN 1 ELSE 0 END) AS `4 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-05' THEN 1 ELSE 0 END) AS `5 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-06' THEN 1 ELSE 0 END) AS `6 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-07' THEN 1 ELSE 0 END) AS `7 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-08' THEN 1 ELSE 0 END) AS `8 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-09' THEN 1 ELSE 0 END) AS `9 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-10' THEN 1 ELSE 0 END) AS `10 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-11' THEN 1 ELSE 0 END) AS `11 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-12' THEN 1 ELSE 0 END) AS `12 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-13' THEN 1 ELSE 0 END) AS `13 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-14' THEN 1 ELSE 0 END) AS `14 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-15' THEN 1 ELSE 0 END) AS `15 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-16' THEN 1 ELSE 0 END) AS `16 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-17' THEN 1 ELSE 0 END) AS `17 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-18' THEN 1 ELSE 0 END) AS `18 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-19' THEN 1 ELSE 0 END) AS `19 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-20' THEN 1 ELSE 0 END) AS `20 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-21' THEN 1 ELSE 0 END) AS `21 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-22' THEN 1 ELSE 0 END) AS `22 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-23' THEN 1 ELSE 0 END) AS `23 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-24' THEN 1 ELSE 0 END) AS `24 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-25' THEN 1 ELSE 0 END) AS `25 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-26' THEN 1 ELSE 0 END) AS `26 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-27' THEN 1 ELSE 0 END) AS `27 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-28' THEN 1 ELSE 0 END) AS `28 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-29' THEN 1 ELSE 0 END) AS `29 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-30' THEN 1 ELSE 0 END) AS `30 Juni`
+FROM  ruta
+
+INNER JOIN master_sls
+    ON master_sls.kode_kab = ruta.kode_kab
+    AND master_sls.kode_kec = ruta.kode_kec
+    AND master_sls.kode_desa = ruta.kode_desa
+    AND master_sls.id_sls = ruta.id_sls
+    AND master_sls.id_sub_sls = ruta.id_sub_sls
+
+Group BY kode_kab,
+ kode_kec,
+ kode_desa,
+ id_sls,
+ id_sub_sls,
+ kode_koseka
+
+SELECT email, users.kode_kab, users.name, COUNT(ruta.id) as ruta FROM users
+	INNER JOIN model_has_roles ON users.id = model_has_roles.model_id
+    INNER JOIN roles ON model_has_roles.role_id = roles.id
+    LEFT JOIN master_sls on kode_koseka = email
+    LEFT JOIN ruta ON master_sls.kode_kab = ruta.kode_kab
+    AND master_sls.kode_kab = ruta.kode_kab
+    AND master_sls.kode_kec = ruta.kode_kec
+    AND master_sls.kode_desa = ruta.kode_desa
+    AND master_sls.id_sls = ruta.id_sls
+    AND master_sls.id_sub_sls = ruta.id_sub_sls
+    WHERE users.kode_kab = 71
+    	AND roles.name = 'Koseka'
+GROUP BY email, kode_kab, name;
+
+
+SELECT email, users.kode_kab, users.name,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-01' THEN 1 ELSE 0 END) AS `1 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-02' THEN 1 ELSE 0 END) AS `2 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-03' THEN 1 ELSE 0 END) AS `3 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-04' THEN 1 ELSE 0 END) AS `4 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-05' THEN 1 ELSE 0 END) AS `5 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-06' THEN 1 ELSE 0 END) AS `6 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-07' THEN 1 ELSE 0 END) AS `7 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-08' THEN 1 ELSE 0 END) AS `8 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-09' THEN 1 ELSE 0 END) AS `9 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-10' THEN 1 ELSE 0 END) AS `10 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-11' THEN 1 ELSE 0 END) AS `11 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-12' THEN 1 ELSE 0 END) AS `12 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-13' THEN 1 ELSE 0 END) AS `13 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-14' THEN 1 ELSE 0 END) AS `14 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-15' THEN 1 ELSE 0 END) AS `15 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-16' THEN 1 ELSE 0 END) AS `16 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-17' THEN 1 ELSE 0 END) AS `17 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-18' THEN 1 ELSE 0 END) AS `18 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-19' THEN 1 ELSE 0 END) AS `19 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-20' THEN 1 ELSE 0 END) AS `20 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-21' THEN 1 ELSE 0 END) AS `21 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-22' THEN 1 ELSE 0 END) AS `22 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-23' THEN 1 ELSE 0 END) AS `23 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-24' THEN 1 ELSE 0 END) AS `24 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-25' THEN 1 ELSE 0 END) AS `25 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-26' THEN 1 ELSE 0 END) AS `26 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-27' THEN 1 ELSE 0 END) AS `27 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-28' THEN 1 ELSE 0 END) AS `28 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-29' THEN 1 ELSE 0 END) AS `29 Juni`,
+  SUM(CASE WHEN DATE(start_time) = '2023-06-30' THEN 1 ELSE 0 END) AS `30 Juni`
+  FROM users
+	INNER JOIN model_has_roles ON users.id = model_has_roles.model_id
+    INNER JOIN roles ON model_has_roles.role_id = roles.id
+    LEFT JOIN master_sls on kode_koseka = email
+    LEFT JOIN ruta ON master_sls.kode_kab = ruta.kode_kab
+    AND master_sls.kode_kab = ruta.kode_kab
+    AND master_sls.kode_kec = ruta.kode_kec
+    AND master_sls.kode_desa = ruta.kode_desa
+    AND master_sls.id_sls = ruta.id_sls
+    AND master_sls.id_sub_sls = ruta.id_sub_sls
+    WHERE users.kode_kab = 71
+    	AND roles.name = 'Koseka'
+GROUP BY email, kode_kab, name;

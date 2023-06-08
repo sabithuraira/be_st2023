@@ -125,33 +125,41 @@ class PetugasController extends Controller
         $per_page = 20;
         $datas = [];
         $condition = [];
-        $condition[] = ['kode_kab', '<>', '00'];
+        // $condition[] = ['kode_kab', '<>', '00'];
         if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
         if (isset($request->kec_filter) && strlen($request->kec_filter) > 0) $condition[] = ['kode_kec', '=', $request->kec_filter];
         if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $request->desa_filter];
         //PAGINATION
         if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
         //KEYWORD CONDITION
-        if (isset($request->keyword) && strlen($request->keyword) > 0) {
-            $datas = User::where($condition)
-                ->where(
-                    (function ($query) use ($keyword) {
-                        $query->where('name', 'LIKE', '%' . $keyword . '%')
-                            ->orWhere('email', 'LIKE', '%' . $keyword . '%');
-                    })
-                )->with('roles')
-                ->withCount('rutas')
-                ->orderBy('kode_kab', 'Asc')
-                ->orderBy('id', 'DESC')->paginate($per_page);
-        } else {
-            $datas = User::where($condition)
-                        ->with('roles')
-                        ->withCount('rutas')
-                        ->orderBy('kode_kab', 'Asc')
-                        ->orderBy('name', 'Asc')
-                        ->paginate($per_page);
-            // print_r("Ha");die();
-        }
+        // if (isset($request->keyword) && strlen($request->keyword) > 0) {
+        //     $datas = User::role('PPL')
+        //         ->where($condition)
+        //         ->where(
+        //             (function ($query) use ($keyword) {
+        //                 $query->where('name', 'LIKE', '%' . $keyword . '%')
+        //                     ->orWhere('email', 'LIKE', '%' . $keyword . '%');
+        //             })
+        //         )
+        //         ->withCount('rutas')
+        //         ->orderBy('kode_kab', 'Asc')
+        //         ->orderBy('id', 'DESC')->paginate($per_page);
+        // } else {
+        // $datas = User::role('PPL')
+        //     ->where($condition)
+        //     ->withCount('rutas')
+        //     ->orderBy('kode_kab', 'Asc')
+        //     ->orderBy('name', 'Asc')
+        //     ->paginate($per_page);
+        // print_r("Ha");die();
+        // }
+        $datas = User::where($condition)
+            ->role(["PPL"])
+            ->with('roles')
+            ->withCount('rutas')
+            ->orderBy('kode_kab', 'ASC')
+            ->orderBy('name', 'ASC')
+            ->paginate($per_page);
         $datas->withPath('target');
         $datas->appends($request->all());
 

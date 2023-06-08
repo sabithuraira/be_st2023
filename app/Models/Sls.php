@@ -45,12 +45,13 @@ class Sls extends Model
         );
     }
 
-    public function avg_ruta_time()
+    public function ruta_1_juni()
     {
-        return $this->hasMany(
-            Ruta::class,
-            ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls'],
-            ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls']
-        );
+        return $this->hasMany(Ruta::class, ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls'], ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls']);
+        // ->whereDate('start_time', '2023-06-01');
+    }
+    public function rutas()
+    {
+        return $this->hasMany(Ruta::class, ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls'], ['kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls']);
     }
 }

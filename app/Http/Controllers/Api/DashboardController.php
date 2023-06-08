@@ -9,6 +9,7 @@ use App\Models\Kecs;
 use App\Models\Ruta;
 use App\Models\Sls;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -579,9 +580,20 @@ class DashboardController extends Controller
         //         ))) as rata_rata_jarak, COUNT(*) as jml_ruta'))
         //             ->groupBy('created_by');
         //     }])
-        // ->orderBy('kode_kab', 'ASC')
-        // ->orderBy('name', 'ASC')
-        // ->paginate($per_page);
+        // $datas = User::where($condition)
+        //     ->role(["PPL"])
+        //     ->with('roles')
+        //     ->with(['rutas' => function ($query) {
+        //         $query->select('created_by', DB::raw('AVG(6371000 * 2 * ASIN(SQRT(
+        //             POWER(SIN((RADIANS(end_latitude) - RADIANS(start_latitude)) / 2), 2) +
+        //             COS(RADIANS(start_latitude)) * COS(RADIANS(end_latitude)) *
+        //             POWER(SIN((RADIANS(end_longitude) - RADIANS(start_longitude)) / 2), 2)
+        //         ))) as rata_rata_jarak, COUNT(*) as jml_ruta'))
+        //             ->groupBy('created_by');
+        //     }])
+        //     ->orderBy('kode_kab', 'ASC')
+        //     ->orderBy('name', 'ASC')
+        //     ->paginate($per_page);
         $datas->withPath('lokasi');
         $datas->appends($request->all());
 
@@ -630,6 +642,65 @@ class DashboardController extends Controller
             ->paginate($per_page);
         $datas->withPath('target');
         $datas->appends($request->all());
+
+        return response()->json(['status' => 'success', 'datas' => $datas]);
+    }
+
+    public function dashboard_koseka(Request $request)
+    {
+        $per_page = 20;
+        $condition = [];
+        if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['users.kode_kab', '=', $request->kab_filter];
+        //PAGINATION
+        if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
+        //KEYWORD CONDITION
+        $datas = [];
+
+        $datas = User::select('email', 'users.kode_kab', 'users.name')
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_1_juni', ['2023-06-01'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_2_juni', ['2023-06-02'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_3_juni', ['2023-06-03'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_4_juni', ['2023-06-04'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_5_juni', ['2023-06-05'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_6_juni', ['2023-06-06'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_7_juni', ['2023-06-07'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_8_juni', ['2023-06-08'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_9_juni', ['2023-06-09'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_10_juni', ['2023-06-10'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_11_juni', ['2023-06-11'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_12_juni', ['2023-06-12'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_13_juni', ['2023-06-13'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_14_juni', ['2023-06-14'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_15_juni', ['2023-06-15'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_16_juni', ['2023-06-16'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_17_juni', ['2023-06-17'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_18_juni', ['2023-06-18'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_19_juni', ['2023-06-19'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_20_juni', ['2023-06-20'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_21_juni', ['2023-06-21'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_22_juni', ['2023-06-22'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_23_juni', ['2023-06-23'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_24_juni', ['2023-06-24'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_25_juni', ['2023-06-25'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_26_juni', ['2023-06-26'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_27_juni', ['2023-06-27'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_28_juni', ['2023-06-28'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_29_juni', ['2023-06-29'])
+            ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_30_juni', ['2023-06-30'])
+            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->leftJoin('master_sls', 'kode_koseka', '=', 'email')
+            ->leftJoin('ruta', function ($join) {
+                $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab');
+                $join->on('master_sls.kode_kec', '=', 'ruta.kode_kec');
+                $join->on('master_sls.kode_desa', '=', 'ruta.kode_desa');
+                $join->on('master_sls.id_sls', '=', 'ruta.id_sls');
+                $join->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
+            })
+            ->where($condition)
+            ->where('roles.name', 'Koseka')
+            ->groupBy('email', 'kode_kab', 'name')
+            ->get();
 
         return response()->json(['status' => 'success', 'datas' => $datas]);
     }

@@ -46,7 +46,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function rutas(){
+    public function sls()
+    {
+        return $this->hasMany(Sls::class, 'kode_koseka', 'email')
+            ->select('kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls', 'kode_koseka');
+    }
+
+    public function rutas()
+    {
         return $this->hasMany('App\Models\Ruta', 'created_by', 'id');
     }
 }
