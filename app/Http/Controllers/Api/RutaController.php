@@ -344,7 +344,6 @@ class RutaController extends Controller
         return response()->json(['status' => 'success', 'data'=> 'Data berhasil diupload']);
     }
 
-
     /**
      * @OA\Post(
      *     path="/api/ruta/update_sls_many",
@@ -383,7 +382,7 @@ class RutaController extends Controller
      */
     public function update_sls_many(Request $request)
     {
-        Validator::make($value, [
+        $validator = Validator::make($request->all(), [
             'kode_prov' => 'required|string|max:2',
             'kode_kab' => 'required|string|max:2',
             'kode_kec' => 'required|string|max:3',
@@ -393,19 +392,22 @@ class RutaController extends Controller
             'selected_data' => 'required'
         ]);
 
+
         if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'data' => $validator->errors()]);
+            $errorString = implode(',',$validator->messages()->all());
+            return response()->json(['status' => 'error', 'data' => $errorString]);
         }
 
         foreach($request->selected_data as $value) {
-            $decryptId = Crypt::decryptString($value);
-            $data = Ruta::find($decryptId);
+            // $decryptId = Crypt::decryptString($value);
+            $data = Ruta::find($value);
             if($data!=null){
                 $data->kode_kab = $request->kode_kab;
                 $data->kode_kec = $request->kode_kec;
                 $data->kode_desa = $request->kode_desa;
-                $data->kode_id_sls = $request->kode_id_sls;
-                $data->kode_id_sub_sls = $request->kode_id_sub_sls;
+                $data->id_sls = $request->id_sls;
+                $data->id_sub_sls = $request->id_sub_sls;
+                $data->save();
             }
         }
 

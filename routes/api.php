@@ -89,4 +89,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('ruta/many', [RutaController::class, 'store_many']);
 
     Route::post('sls/update_progress', [SlsController::class, 'update_progress']);
+    Route::post('ruta/update_sls_many', [RutaController::class, 'update_sls_many']);
 });
