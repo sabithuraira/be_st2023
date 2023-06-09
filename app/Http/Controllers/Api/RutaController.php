@@ -55,7 +55,7 @@ class RutaController extends Controller
         if (strlen($request->kode_wilayah) >= 7) $condition[] = ['kode_kec', '=', substr($request->kode_wilayah, 4, 3)];
         if (strlen($request->kode_wilayah) >= 10) $condition[] = ['kode_desa', '=', substr($request->kode_wilayah, 7, 3)];
         if (strlen($request->kode_wilayah) >= 14) $condition[] = ['id_sls', '=', substr($request->kode_wilayah, 10, 4)];
-        if (strlen($request->kode_wilayah) >= 16) $condition[] = ['id_subsls', '=', substr($request->kode_wilayah, 14, 2)];
+        if (strlen($request->kode_wilayah) >= 16) $condition[] = ['id_sub_sls', '=', substr($request->kode_wilayah, 14, 2)];
 
         $data = Ruta::where($condition)->orderBy('id', 'desc')->paginate($per_page);
 
@@ -333,7 +333,22 @@ class RutaController extends Controller
                     Ruta::create($value);
                 }
             } else {
-                Ruta::create($value);
+                $condition = [];
+                $condition[] = ['kode_kab', '=', $value['kode_kab']];
+                $condition[] = ['kode_kec', '=', $value['kode_kec']];
+                $condition[] = ['kode_desa', '=', $value['kode_desa']];
+                $condition[] = ['id_sls', '=', $value['id_sls']];
+                $condition[] = ['id_sub_sls', '=', $value['id_sub_sls']];
+                $condition[] = ['nurt', '=', $value['nurt']];
+                $condition[] = ['kepala_ruta', '=', $value['kepala_ruta']];
+        
+                $model = Ruta::where($condition)->first();
+                if($model==null){
+                    Ruta::create($value);
+                }
+                else{
+                    $model->update($value);
+                }
             }
         }
 
