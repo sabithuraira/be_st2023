@@ -86,11 +86,22 @@ class PetugasController extends Controller
                         $query->where('name', 'LIKE', '%' . $keyword . '%')
                             ->orWhere('email', 'LIKE', '%' . $keyword . '%');
                     })
-                )->with('roles')
+                )
+                ->withcount('sls_ppl as jumlah_sls_ppl')
+                ->withcount('sls_pml as jumlah_sls_pml')
+                ->withcount('sls_koseka as jumlah_sls_koseka')
+                ->with('roles')
                 ->orderBy('kode_kab', 'Asc')
                 ->orderBy('id', 'DESC')->paginate($per_page);
         } else {
-            $datas = User::where($condition)->with('roles')->orderBy('kode_kab', 'Asc')->orderBy('name', 'Asc')->paginate($per_page);
+            $datas = User::where($condition)
+                ->with('roles')
+                ->withcount('sls_ppl as jumlah_sls_ppl')
+                ->withcount('sls_pml as jumlah_sls_pml')
+                ->withcount('sls_koseka as jumlah_sls_koseka')
+                ->orderBy('kode_kab', 'Asc')
+                ->orderBy('name', 'Asc')
+                ->paginate($per_page);
         }
         $datas->withPath('petugas');
         $datas->appends($request->all());

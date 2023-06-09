@@ -235,3 +235,31 @@ SELECT email, users.kode_kab, users.name,
     WHERE users.kode_kab = 71
     	AND roles.name = 'Koseka'
 GROUP BY email, kode_kab, name;
+
+
+Petugas yg blm ke lap
+
+SELECT users.kode_kab, users.email, users.name, COUNT(ruta.id) as jumlah_ruta
+FROM users
+LEFT JOIN ruta on users.id = ruta.created_by
+LEFT JOIN model_has_roles on users.id = model_has_roles.model_id
+LEFT JOIN roles on model_has_roles.role_id = roles.id
+WHERE roles.name = "PPL"
+WHERE HAVING COUNT(ruta.id) <=5
+GROUP BY kode_kab, email, name
+
+
+Petugas yg blm didampingi pml
+SELECT users.kode_kab, users.email, users.name, total_sls_count, jumlah_pendampingan_pml
+FROM users
+LEFT JOIN (
+    SELECT kode_pcl, COUNT(id) AS total_sls_count, COUNT(pendampingan_pml) AS jumlah_pendampingan_pml
+    FROM master_sls
+    GROUP BY kode_pcl
+) AS sls_counts ON users.email = sls_counts.kode_pcl
+LEFT JOIN model_has_roles on users.id = model_has_roles.model_id
+LEFT JOIN roles on model_has_roles.role_id = roles.id
+WHERE roles.name = "PPL"
+ORDER BY jumlah_pendampingan_pml;
+
+

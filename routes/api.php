@@ -48,12 +48,16 @@ Route::get('list_roles', [PetugasController::class, 'list_roles']);
 
 Route::get('delete_ruta_duplikat', [RutaController::class, 'delete_ruta_duplikat']);
 
+Route::get('export_dashboard_waktu', [ExportController::class, 'export_dashboard_waktu']);
+Route::get('export_dashboard_lokasi', [ExportController::class, 'export_dashboard_lokasi']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('progress', [DashboardController::class, 'progress']);
     Route::get('progress_kk', [DashboardController::class, 'progress_kk']);
     Route::get('progress_dokumen', [DashboardController::class, 'progress_dokumen']);
 
     Route::get('dashboard_waktu', [DashboardController::class, 'dashboard_waktu']);
+
     Route::get('dashboard_lokasi', [DashboardController::class, 'dashboard_lokasi']);
     Route::get('dashboard_target', [DashboardController::class, 'dashboard_target']);
 

@@ -515,30 +515,25 @@ class DashboardController extends Controller
         $per_page = 20;
         $datas = [];
         $condition = [];
-
-        $condition[] = ['kode_kab', '<>', '00'];
         if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
         if (isset($request->kec_filter) && strlen($request->kec_filter) > 0) $condition[] = ['kode_kec', '=', $request->kec_filter];
         if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $request->desa_filter];
-
+        $tanggal_awal = $request->tanggal_awal ? $request->tanggal_awal : now()->subDays(7)->format('m/d/Y');
+        $tanggal_akhir = $request->tanggal_akhir ? $request->tanggal_akhir : now()->format('m/d/Y');
+        $awalDate = \DateTime::createFromFormat('m/d/Y', $tanggal_awal);
+        $akhirDate = \DateTime::createFromFormat('m/d/Y', $tanggal_akhir);
         //PAGINATION
         if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
-
-        //KEYWORD CONDITION
-
-        // $datas =  DB::table('dashboard_waktu')
-        //     ->select('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka', DB::raw('AVG(TIME_TO_SEC(time_difference)) / 60 AS rata_rata_waktu_menit, COUNT(*) as jml_ruta'))
-        //     ->groupBy('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka')
-        //     ->where($condition)
-        //     ->orderBy('kode_kab')
-        //     ->orderBy('rata_rata_waktu_menit', 'desc')
-        //     ->paginate($per_page);
         $datas = User::where($condition)
             ->role(["PPL"])
             ->with('roles')
-            ->with(['rutas' => function ($query) {
-                $query->select('created_by', DB::raw('AVG(TIMESTAMPDIFF(MINUTE, start_time, end_time)) as rata_rata_waktu_menit,
-                COUNT(*) as jml_ruta',))
+            ->with(['rutas' => function ($query) use ($awalDate, $akhirDate) {
+                $query
+                    ->whereBetween('created_at', [
+                        $awalDate->format('Y-m-d 00:00:00'),
+                        $akhirDate->format('Y-m-d 23:59:59')
+                    ])
+                    ->select('created_by', DB::raw('AVG(TIMESTAMPDIFF(MINUTE, start_time, end_time)) as rata_rata_waktu_menit, COUNT(*) as jml_ruta'))
                     ->groupBy('created_by');
             }])
             ->orderBy('kode_kab', 'ASC')
@@ -561,29 +556,19 @@ class DashboardController extends Controller
         if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $request->desa_filter];
         //PAGINATION
         if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
-        //KEYWORD CONDITION
-        // $datas =  DB::table('dashboard_lokasi')
-        //     ->select('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka', 'distance')
-        //     ->groupBy('kode_kab', 'kode_pcl', 'kode_pml', 'kode_koseka', 'pcl', 'pml', 'koseka')
-        //     ->where($condition)
-        //     ->orderBy('kode_kab')
-        //     ->orderBy('rata_rata_jarak', 'desc')
-        //     ->paginate($per_page);
-        // $datas = User::where($condition)
-        //     ->role(["PPL"])
-        //     ->with('roles')
-        //     ->with(['rutas' => function ($query) {
-        //         $query->select('created_by', DB::raw('AVG(6371000 * 2 * ASIN(SQRT(
-        //             POWER(SIN((RADIANS(end_latitude) - RADIANS(start_latitude)) / 2), 2) +
-        //             COS(RADIANS(start_latitude)) * COS(RADIANS(end_latitude)) *
-        //             POWER(SIN((RADIANS(end_longitude) - RADIANS(start_longitude)) / 2), 2)
-        //         ))) as rata_rata_jarak, COUNT(*) as jml_ruta'))
-        //             ->groupBy('created_by');
-        //     }])
+        $tanggal_awal = $request->tanggal_awal ? $request->tanggal_awal : now()->subDays(7)->format('m/d/Y');
+        $tanggal_akhir = $request->tanggal_akhir ? $request->tanggal_akhir : now()->format('m/d/Y');
+        $awalDate = \DateTime::createFromFormat('m/d/Y', $tanggal_awal);
+        $akhirDate = \DateTime::createFromFormat('m/d/Y', $tanggal_akhir);
         $datas = User::where($condition)
             ->role(["PPL"])
-            ->with(['rutas' => function ($query) {
-                $query->select('created_by', DB::raw('AVG(ABS(start_latitude) - ABS(end_latitude)) as rata_latitude, AVG(ABS(start_longitude) - ABS(end_longitude)) as rata_longitude, COUNT(*) as jml_ruta'))
+            ->with(['rutas' => function ($query) use ($awalDate, $akhirDate) {
+                $query
+                    ->whereBetween('created_at', [
+                        $awalDate->format('Y-m-d 00:00:00'),
+                        $akhirDate->format('Y-m-d 23:59:59')
+                    ])
+                    ->select('created_by', DB::raw('AVG(ABS(start_latitude) - ABS(end_latitude)) as rata_latitude, AVG(ABS(start_longitude) - ABS(end_longitude)) as rata_longitude, COUNT(*) as jml_ruta'))
                     ->groupBy('created_by');
             }])
             ->orderBy('kode_kab', 'ASC')

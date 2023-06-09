@@ -52,6 +52,19 @@ class User extends Authenticatable
             ->select('kode_kab', 'kode_kec', 'kode_desa', 'id_sls', 'id_sub_sls', 'kode_koseka');
     }
 
+    public function sls_ppl()
+    {
+        return $this->hasMany(Sls::class, 'kode_pcl', 'email');
+    }
+    public function sls_pml()
+    {
+        return $this->hasMany(Sls::class, 'kode_pml', 'email');
+    }
+    public function sls_koseka()
+    {
+        return $this->hasMany(Sls::class, 'kode_koseka', 'email');
+    }
+
     public function rutas()
     {
         return $this->hasMany('App\Models\Ruta', 'created_by', 'id');
