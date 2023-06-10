@@ -545,7 +545,6 @@ class DashboardController extends Controller
         return response()->json(['status' => 'success', 'datas' => $datas]);
     }
 
-
     public function dashboard_lokasi(Request $request)
     {
         $per_page = 20;
@@ -588,34 +587,8 @@ class DashboardController extends Controller
         if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
         if (isset($request->kec_filter) && strlen($request->kec_filter) > 0) $condition[] = ['kode_kec', '=', $request->kec_filter];
         if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $request->desa_filter];
-
-        //PAGINATION
         if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
-
-        //KEYWORD CONDITION
         $datas = [];
-        // $datas = Sls::select('master_sls.kode_kab', 'master_sls.kode_pcl', 'master_sls.kode_pml', 'master_sls.kode_koseka', DB::raw('COUNT(ruta.id) as jumlah_ruta'))
-        //     ->leftJoin('ruta', function ($join) {
-        //         $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab')
-        //             ->on('master_sls.kode_kec', '=', 'ruta.kode_kec')
-        //             ->on('master_sls.kode_desa', '=', 'ruta.kode_desa')
-        //             ->on('master_sls.id_sls', '=', 'ruta.id_sls')
-        //             ->on('master_sls.id_sub_sls', '=', 'ruta.id_sub_sls');
-        //     })
-        //     ->where($condition)
-        //     ->groupby('master_sls.kode_kab', 'master_sls.kode_pcl', 'master_sls.kode_pml', 'master_sls.kode_koseka')
-        //     ->orderBy('kode_kab')
-        //     ->orderBy('jumlah_ruta',)
-        //     ->paginate($per_page);
-
-        // $datas = Sls::select('master_sls.kode_kab', 'master_sls.kode_pcl', 'master_sls.kode_pml', 'master_sls.kode_koseka')
-        //     ->with('ruta')
-        //     ->where($condition)
-        //     ->groupby('master_sls.kode_kab', 'master_sls.kode_pcl', 'master_sls.kode_pml', 'master_sls.kode_koseka')
-        //     ->orderBy('kode_kab')
-        //     ->orderBy('jumlah_ruta',)
-        //     ->paginate($per_page);
-
         $datas = DB::table('dashboard_target')
             ->orderBy('kode_kab')
             ->orderBy('jumlah_ruta',)
@@ -631,9 +604,11 @@ class DashboardController extends Controller
         $per_page = 20;
         $condition = [];
         if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['users.kode_kab', '=', $request->kab_filter];
-        //PAGINATION
+        if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
+        if (isset($request->kec_filter) && strlen($request->kec_filter) > 0) $condition[] = ['kode_kec', '=', $request->kec_filter];
+        if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $request->desa_filter];
+
         if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
-        //KEYWORD CONDITION
         $datas = [];
 
         $datas = User::select('email', 'users.kode_kab', 'users.name')
@@ -681,6 +656,33 @@ class DashboardController extends Controller
             ->where('roles.name', 'Koseka')
             ->groupBy('email', 'kode_kab', 'name')
             ->get();
+
+        return response()->json(['status' => 'success', 'datas' => $datas]);
+    }
+
+
+    public function dashboard_pendampingan(Request $request)
+    {
+        $per_page = 20;
+        $condition = [];
+        $keyword = $request->keyword;
+        if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['users.kode_kab', '=', $request->kab_filter];
+        if (isset($request->kec_filter) && strlen($request->kec_filter) > 0) $condition[] = ['kode_kec', '=', $request->kec_filter];
+        if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $request->desa_filter];
+        if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
+        $datas = [];
+        $datas = User::role('PPL')
+            ->withCount('sls_ppl as jml_sls')
+            ->withCount(['sls_ppl as pendampingan_pml' => function ($query) {
+                $query->whereNotNull('pendampingan_pml');
+            }])
+            ->withCount(['sls_ppl as pendampingan_koseka' => function ($query) {
+                $query->whereNotNull('pendampingan_koseka');
+            }])
+            ->where($condition)
+            ->orderby('kode_kab')
+            ->orderby('name')
+            ->paginate($per_page);
 
         return response()->json(['status' => 'success', 'datas' => $datas]);
     }
