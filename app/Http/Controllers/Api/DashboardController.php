@@ -604,14 +604,14 @@ class DashboardController extends Controller
         $per_page = 20;
         $condition = [];
         if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['users.kode_kab', '=', $request->kab_filter];
-        if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
-        if (isset($request->kec_filter) && strlen($request->kec_filter) > 0) $condition[] = ['kode_kec', '=', $request->kec_filter];
-        if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $request->desa_filter];
+        // if (isset($request->kab_filter) && strlen($request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $request->kab_filter];
+        if (isset($request->kec_filter) && strlen($request->kec_filter) > 0) $condition[] = ['users.kode_kec', '=', $request->kec_filter];
+        if (isset($request->desa_filter) && strlen($request->desa_filter) > 0) $condition[] = ['users.kode_desa', '=', $request->desa_filter];
 
         if (isset($request->per_page) && strlen($request->per_page) > 0) $per_page = $request->per_page;
         $datas = [];
 
-        $datas = User::select('email', 'users.kode_kab', 'users.name')
+        $datas = User::select('users.email', 'users.kode_kab', 'users.name')
             ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_1_juni', ['2023-06-01'])
             ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_2_juni', ['2023-06-02'])
             ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_3_juni', ['2023-06-03'])
@@ -644,7 +644,7 @@ class DashboardController extends Controller
             ->selectRaw('SUM(CASE WHEN DATE(start_time) = ? THEN 1 ELSE 0 END) AS rt_30_juni', ['2023-06-30'])
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->leftJoin('master_sls', 'kode_koseka', '=', 'email')
+            ->leftJoin('master_sls', 'master_sls.kode_koseka', '=', 'users.email')
             ->leftJoin('ruta', function ($join) {
                 $join->on('master_sls.kode_kab', '=', 'ruta.kode_kab');
                 $join->on('master_sls.kode_kec', '=', 'ruta.kode_kec');
@@ -654,7 +654,7 @@ class DashboardController extends Controller
             })
             ->where($condition)
             ->where('roles.name', 'Koseka')
-            ->groupBy('email', 'kode_kab', 'name')
+            ->groupBy('users.email', 'users.kode_kab', 'users.name')
             ->get();
 
         return response()->json(['status' => 'success', 'datas' => $datas]);
