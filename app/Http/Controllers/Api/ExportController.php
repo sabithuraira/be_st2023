@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exports\AlokasiExport;
 use App\Exports\DashboardLokasiExport;
 use App\Exports\DashboardWaktuExport;
+use App\Exports\DokumenExport;
 use App\Exports\ProgressExport;
 use App\Exports\RutaExport;
 use App\Exports\TargetExport;
@@ -88,7 +89,6 @@ class ExportController extends Controller
         // return response()->json(['status' => 'success', 'datas' => $excel]);
     }
 
-
     public function export_ruta(Request $request)
     {
         return excel::download(new RutaExport($request), 'ruta_16.xlsx');
@@ -96,9 +96,12 @@ class ExportController extends Controller
 
     public function export_progress(Request $request)
     {
-
-        // dd($request->all());
         return excel::download(new ProgressExport($request), 'progress_16.xlsx');
+    }
+
+    public function export_dokumen(Request $request)
+    {
+        return excel::download(new DokumenExport($request), 'dokumen_16.xlsx');
     }
 
     public function export_target(Request $request)

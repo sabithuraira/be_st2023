@@ -673,11 +673,13 @@ class DashboardController extends Controller
         $datas = [];
         $datas = User::role('PPL')
             ->withCount('sls_ppl as jml_sls')
-            ->withCount(['sls_ppl as pendampingan_pml' => function ($query) {
-                $query->whereNotNull('pendampingan_pml');
+            ->with(['p_pml' => function ($query) {
+                $query->groupBy('kode_pcl', 'kode_pml')
+                    ->select('kode_pcl', 'kode_pml', DB::raw('COUNT(pendampingan_pml) as pendampingan_pml'));
             }])
-            ->withCount(['sls_ppl as pendampingan_koseka' => function ($query) {
-                $query->whereNotNull('pendampingan_koseka');
+            ->with(['p_koseka' => function ($query) {
+                $query->groupBy('kode_pcl', 'kode_koseka')
+                    ->select('kode_pcl', 'kode_koseka', DB::raw('COUNT(pendampingan_koseka) as pendampingan_koseka'));
             }])
             ->where($condition)
             ->orderby('kode_kab')

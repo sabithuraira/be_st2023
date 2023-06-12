@@ -45,11 +45,7 @@ Route::get('list_desas', [WIlayahController::class, 'list_desas']);
 Route::get('list_sls', [WIlayahController::class, 'list_sls']);
 Route::get('list_roles', [PetugasController::class, 'list_roles']);
 
-
 Route::get('delete_ruta_duplikat', [RutaController::class, 'delete_ruta_duplikat']);
-
-Route::get('export_dashboard_waktu', [ExportController::class, 'export_dashboard_waktu']);
-Route::get('export_dashboard_lokasi', [ExportController::class, 'export_dashboard_lokasi']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('progress', [DashboardController::class, 'progress']);
@@ -79,7 +75,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('export_alokasi', [ExportController::class, 'export_alokasi']);
     Route::get('export_ruta', [ExportController::class, 'export_ruta']);
     Route::get('export_progress', [ExportController::class, 'export_progress']);
-
+    Route::get('export_dokumen', [ExportController::class, 'export_dokumen']);
+    Route::get('export_dashboard_waktu', [ExportController::class, 'export_dashboard_waktu']);
+    Route::get('export_dashboard_lokasi', [ExportController::class, 'export_dashboard_lokasi']);
 
     Route::get('export_target', [ExportController::class, 'export_target']);
     Route::post('import_alokasi', [ImportController::class, 'import_alokasi']);

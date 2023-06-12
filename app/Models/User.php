@@ -56,6 +56,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Sls::class, 'kode_pcl', 'email');
     }
+
+    public function p_koseka()
+    {
+        return $this->hasMany(Sls::class, 'kode_pcl', 'email');
+    }
+
+    public function p_pml()
+    {
+        return $this->hasMany(Sls::class, 'kode_pcl', 'email');
+    }
     public function sls_pml()
     {
         return $this->hasMany(Sls::class, 'kode_pml', 'email');
