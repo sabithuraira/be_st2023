@@ -77,6 +77,6 @@ class User extends Authenticatable
 
     public function rutas()
     {
-        return $this->hasMany('App\Models\Ruta', 'created_by', 'id');
+        return $this->hasMany(Ruta::class, 'created_by', 'id');
     }
 }

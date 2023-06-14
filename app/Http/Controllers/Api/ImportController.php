@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Imports\AlokasiImport;
+use App\Imports\PrelistImport;
 use App\Imports\RutaRegsosekImport;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
@@ -138,6 +139,23 @@ class ImportController extends Controller
     {
         if ($request->file('import_file')) {
             $data = Excel::import(new RutaRegsosekImport, request()->file('import_file'));
+            // return 'Berhasil Memasukkan data';
+            if ($data) {
+                return response()->json(['status' => 'success', 'data' => "Import Berhasil"]);
+            } else {
+                return response()->json(['status' => 'error', 'data' => 'Kesalahan']);
+            }
+        } else {
+            // return 'Kesalahan File';
+            return redirect()->back()->with('error', 'Kesalahan File');
+        }
+    }
+
+
+    public function import_prelist(Request $request)
+    {
+        if ($request->file('import_file')) {
+            $data = Excel::import(new PrelistImport, request()->file('import_file'));
             // return 'Berhasil Memasukkan data';
             if ($data) {
                 return response()->json(['status' => 'success', 'data' => "Import Berhasil"]);

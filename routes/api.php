@@ -53,7 +53,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('progress_dokumen', [DashboardController::class, 'progress_dokumen']);
 
     Route::get('dashboard_waktu', [DashboardController::class, 'dashboard_waktu']);
-
     Route::get('dashboard_lokasi', [DashboardController::class, 'dashboard_lokasi']);
     Route::get('dashboard_target', [DashboardController::class, 'dashboard_target']);
     Route::get('dashboard_koseka', [DashboardController::class, 'dashboard_koseka']);
@@ -76,12 +75,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('export_ruta', [ExportController::class, 'export_ruta']);
     Route::get('export_progress', [ExportController::class, 'export_progress']);
     Route::get('export_dokumen', [ExportController::class, 'export_dokumen']);
+
     Route::get('export_dashboard_waktu', [ExportController::class, 'export_dashboard_waktu']);
     Route::get('export_dashboard_lokasi', [ExportController::class, 'export_dashboard_lokasi']);
 
     Route::get('export_target', [ExportController::class, 'export_target']);
     Route::post('import_alokasi', [ImportController::class, 'import_alokasi']);
     Route::post('import_ruta_regsosek', [ImportController::class, 'import_ruta_regsosek']);
+    Route::post('import_prelist', [ImportController::class, 'import_prelist']);
 
     Route::resource('ruta', RutaController::class);
     Route::post('ruta/many', [RutaController::class, 'store_many']);
