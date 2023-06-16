@@ -26,28 +26,24 @@ class TargetExport implements FromCollection, WithMapping, WithHeadings
         if (isset($this->request->kec_filter) && strlen($this->request->kec_filter) > 0) $condition[] = ['kode_kec', '=', $this->request->kec_filter];
         if (isset($this->request->desa_filter) && strlen($this->request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $this->request->desa_filter];
 
-        if (isset($this->request->keyword) && strlen($this->request->keyword) > 0) {
-            $datas = User::where($condition)
-                ->role(["PPL"])
-                ->where(
-                    (function ($query) use ($keyword) {
-                        $query->where('name', 'LIKE', '%' . $keyword . '%')
-                            ->orWhere('email', 'LIKE', '%' . $keyword . '%');
-                    })
-                )->with('roles')
-                ->withCount('rutas')
-                ->orderBy('kode_kab', 'Asc')
-                ->orderBy('id', 'DESC')
-                ->get();
-        } else {
-            $datas = User::where($condition)
-                ->role(["PPL"])
-                ->with('roles')
-                ->withCount('rutas')
-                ->orderBy('kode_kab', 'Asc')
-                ->orderBy('name', 'Asc')
-                ->get();
-        }
+        // $datas = User::where($condition)
+        //     ->role(["PPL"])
+        //     ->with('roles')
+        //     ->withCount('rutas')
+        //     ->orderBy('kode_kab', 'Asc')
+        //     ->orderBy('name', 'Asc')
+        //     ->get();
+        // ///
+        $datas = User::where($condition)
+            ->role(["PPL"])
+            ->with('roles')
+            ->withCount('rutas')
+            ->withCount('sls_ppl as jml_sls')
+            ->withSum('sls_ppl as prelist_ruta_tani', 'ruta_prelist')
+            ->orderBy('kode_kab', 'ASC')
+            ->orderBy('name', 'ASC')
+            ->get();
+        //
         return $datas;
     }
 
@@ -58,15 +54,20 @@ class TargetExport implements FromCollection, WithMapping, WithHeadings
         $date1 = strtotime("2023-06-01");
         $diff = round(abs($date1 - strtotime($date2)) / 86400);
         $target_hari_ini = 10 * ($diff + 1);
-        $persen = "";
-        if ($ruta->rutas_count < $target_hari_ini) {
-            $persen = $ruta->rutas_count / $target_hari_ini * 100 . "%";
+
+        $persen = '100 %';
+        if ($ruta->prelist_ruta_tani!='0') {
+            // $persen = $ruta->rutas_count / $target_hari_ini * 100 . "%";
+            $total = round(($ruta['rutas_count'] / $ruta['prelist_ruta_tani']) * 100, 2);
+            $persen = $total . " %";
         }
 
         return [
             $ruta->kode_kab,
             $ruta->name,
             $ruta->email,
+            $ruta->jml_sls,
+            $ruta->prelist_ruta_tani,
             $ruta->rutas_count,
             $persen,
         ];
@@ -74,11 +75,13 @@ class TargetExport implements FromCollection, WithMapping, WithHeadings
     public function headings(): array
     {
         return [
-            'kode_kab',
-            'nama',
-            'email',
-            'jumlah_ruta_selesai',
-            'persentase_selesai_by_target',
+            'Kode Kab/Kota',
+            'Nama',
+            'Email',
+            'Jumlah SLS',
+            'Target Ruta Prelist',
+            'Ruta Dicacah',
+            'Persentase Pencacahan/Prelist',
         ];
     }
 }
