@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exports\AlokasiExport;
 use App\Exports\DashboardLokasiExport;
 use App\Exports\DashboardWaktuExport;
+use App\Exports\DashboardPendampinganExport;
 use App\Exports\DokumenExport;
 use App\Exports\PendampinganExport;
 use App\Exports\ProgressExport;
@@ -121,6 +122,6 @@ class ExportController extends Controller
 
     public function export_dashboard_pendampingan(Request $request)
     {
-        return excel::download(new PendampinganExport($request), 'pendampingan_16.xlsx');
+        return excel::download(new DashboardPendampinganExport($request), 'pendampingan_16.xlsx');
     }
 }

@@ -78,6 +78,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('export_dashboard_waktu', [ExportController::class, 'export_dashboard_waktu']);
     Route::get('export_dashboard_lokasi', [ExportController::class, 'export_dashboard_lokasi']);
+    Route::get('export_dashboard_pendampingan', [ExportController::class, 'export_dashboard_pendampingan']);
+
     Route::get('export_target', [ExportController::class, 'export_target']);
     Route::get('export_dashboard_pendampingan', [ExportController::class, 'export_dashboard_pendampingan']);
 

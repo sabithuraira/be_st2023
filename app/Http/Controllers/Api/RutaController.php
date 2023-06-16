@@ -323,7 +323,7 @@ class RutaController extends Controller
                 //     $model->update($value);
                 // }
                 // else{
-                //     $value['id'] = "";
+                //     $value['id'] = "";355
                 //     Ruta::create($value);
                 // }
                 try {
