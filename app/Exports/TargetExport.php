@@ -28,6 +28,7 @@ class TargetExport implements FromCollection, WithMapping, WithHeadings
 
         if (isset($this->request->keyword) && strlen($this->request->keyword) > 0) {
             $datas = User::where($condition)
+                ->role(["PPL"])
                 ->where(
                     (function ($query) use ($keyword) {
                         $query->where('name', 'LIKE', '%' . $keyword . '%')
@@ -40,6 +41,7 @@ class TargetExport implements FromCollection, WithMapping, WithHeadings
                 ->get();
         } else {
             $datas = User::where($condition)
+                ->role(["PPL"])
                 ->with('roles')
                 ->withCount('rutas')
                 ->orderBy('kode_kab', 'Asc')
