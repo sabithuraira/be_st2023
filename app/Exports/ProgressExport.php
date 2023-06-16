@@ -77,7 +77,7 @@ class ProgressExport implements FromCollection,  WithMapping, WithHeadings
     {
         $persen = 0;
         if ($data->jumlah) {
-            $persen = round($data->selesai / $data->jumlah, 3);
+            $persen = round(100 * ($data->selesai / $data->jumlah), 3);
         }
         return [
             $data->kode_wilayah,

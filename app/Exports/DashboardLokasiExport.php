@@ -68,8 +68,9 @@ class DashboardLokasiExport implements FromCollection, WithHeadings, WithMapping
             $data->kode_kab,
             $data->email,
             $data->name,
-            $jarak_latitude,
-            $jarak_longitude,
+            round(abs($jarak_latitude) * 1000, 2),
+            // $jarak_latitude,
+            // $jarak_longitude,
             $jml_ruta
         ];
     }
@@ -79,8 +80,9 @@ class DashboardLokasiExport implements FromCollection, WithHeadings, WithMapping
             'kode_kab',
             'email',
             'nama',
-            'jarak_latitude',
-            'jarak_longitude',
+            'jarak(Km)',
+            // 'jarak_latitude',
+            // 'jarak_longitude',
             'jml_ruta'
         ];
     }

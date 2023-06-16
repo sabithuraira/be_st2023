@@ -145,6 +145,8 @@ class PetugasController extends Controller
             ->role(["PPL"])
             ->with('roles')
             ->withCount('rutas')
+            ->withCount('sls_ppl as jml_sls')
+            ->withSum('sls_ppl as prelist_ruta_tani', 'ruta_prelist')
             ->orderBy('kode_kab', 'ASC')
             ->orderBy('name', 'ASC')
             ->paginate($per_page);

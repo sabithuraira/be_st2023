@@ -119,6 +119,7 @@ class DashboardController extends Controller
                 DB::raw("CONCAT(id_sls, id_sub_sls) AS id_sls, CONCAT(id_sls, id_sub_sls) AS kode_wilayah, nama_sls as nama_wilayah, '1' as jumlah"),
                 'status_selesai_pcl as selesai',
                 'jml_keluarga_tani as  perkiraan_ruta',
+                'ruta_prelist as prelist_ruta_tani'
             )
                 ->withCount('ruta as ruta_selesai')
                 ->where('kode_kab', $request->kab_filter)
@@ -135,6 +136,7 @@ class DashboardController extends Controller
             )->withCount('sls as jumlah')
                 ->withSum('sls as selesai', 'status_selesai_pcl')
                 ->withSum('sls as perkiraan_ruta', 'jml_keluarga_tani')
+                ->withSum('sls as prelist_ruta_tani', 'ruta_prelist')
                 ->withCount('ruta as ruta_selesai')
                 ->where('id_kab', $request->kab_filter)
                 ->where('id_kec', $request->kec_filter)
@@ -148,6 +150,7 @@ class DashboardController extends Controller
             )->withCount('sls as jumlah')
                 ->withSum('sls as selesai', 'status_selesai_pcl')
                 ->withSum('sls as perkiraan_ruta', 'jml_keluarga_tani')
+                ->withSum('sls as prelist_ruta_tani', 'ruta_prelist')
                 ->withCount('ruta as ruta_selesai')
                 ->where('id_kab', $request->kab_filter)
                 ->orderby('id_kec')
@@ -161,6 +164,7 @@ class DashboardController extends Controller
             )->withCount('sls as jumlah')
                 ->withSum('sls as selesai', 'status_selesai_pcl')
                 ->withSum('sls as perkiraan_ruta', 'jml_keluarga_tani')
+                ->withSum('sls as prelist_ruta_tani', 'ruta_prelist')
                 ->withCount('ruta as ruta_selesai')
                 ->get();
         }
@@ -591,11 +595,10 @@ class DashboardController extends Controller
         $datas = [];
         $datas = DB::table('dashboard_target')
             ->orderBy('kode_kab')
-            ->orderBy('jumlah_ruta',)
+            ->orderBy('jumlah_ruta')
             ->paginate($per_page);
         $datas->withPath('target');
         $datas->appends($request->all());
-
         return response()->json(['status' => 'success', 'datas' => $datas]);
     }
 
@@ -660,7 +663,6 @@ class DashboardController extends Controller
         return response()->json(['status' => 'success', 'datas' => $datas]);
     }
 
-
     public function dashboard_pendampingan(Request $request)
     {
         $per_page = 20;
@@ -685,7 +687,8 @@ class DashboardController extends Controller
             ->orderby('kode_kab')
             ->orderby('name')
             ->paginate($per_page);
-
+        $datas->withPath('pendampingan');
+        $datas->appends($request->all());
         return response()->json(['status' => 'success', 'datas' => $datas]);
     }
 }

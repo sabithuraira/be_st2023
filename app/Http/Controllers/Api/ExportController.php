@@ -6,6 +6,7 @@ use App\Exports\AlokasiExport;
 use App\Exports\DashboardLokasiExport;
 use App\Exports\DashboardWaktuExport;
 use App\Exports\DokumenExport;
+use App\Exports\PendampinganExport;
 use App\Exports\ProgressExport;
 use App\Exports\RutaExport;
 use App\Exports\TargetExport;
@@ -86,7 +87,6 @@ class ExportController extends Controller
     public function export_alokasi(Request $request)
     {
         return Excel::download(new AlokasiExport($request), 'alokasi.xlsx');
-        // return response()->json(['status' => 'success', 'datas' => $excel]);
     }
 
     public function export_ruta(Request $request)
@@ -115,6 +115,12 @@ class ExportController extends Controller
     }
     public function export_dashboard_lokasi(Request $request)
     {
+        // dd($request->all());
         return excel::download(new DashboardLokasiExport($request), 'lokasi_16.xlsx');
+    }
+
+    public function export_dashboard_pendampingan(Request $request)
+    {
+        return excel::download(new PendampinganExport($request), 'pendampingan_16.xlsx');
     }
 }
