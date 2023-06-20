@@ -39,7 +39,7 @@ class TargetExport implements FromCollection, WithMapping, WithHeadings
             ->with('roles')
             ->withCount('rutas')
             ->withCount('sls_ppl as jml_sls')
-            ->withSum('sls_ppl as prelist_ruta_tani', 'ruta_prelist')
+            ->withSum('sls_ppl as prelist_ruta', 'ruta_prelist')
             ->orderBy('kode_kab', 'ASC')
             ->orderBy('name', 'ASC')
             ->get();
@@ -56,9 +56,9 @@ class TargetExport implements FromCollection, WithMapping, WithHeadings
         $target_hari_ini = 10 * ($diff + 1);
 
         $persen = '100 %';
-        if ($ruta->prelist_ruta_tani!='0') {
+        if ($ruta->prelist_ruta > 0) {
             // $persen = $ruta->rutas_count / $target_hari_ini * 100 . "%";
-            $total = round(($ruta['rutas_count'] / $ruta['prelist_ruta_tani']) * 100, 2);
+            $total = round(($ruta['rutas_count'] / $ruta['prelist_ruta']) * 100, 2);
             $persen = $total . " %";
         }
 
@@ -67,7 +67,7 @@ class TargetExport implements FromCollection, WithMapping, WithHeadings
             $ruta->name,
             $ruta->email,
             $ruta->jml_sls,
-            $ruta->prelist_ruta_tani,
+            $ruta->prelist_ruta,
             $ruta->rutas_count,
             $persen,
         ];
