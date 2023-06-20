@@ -35,12 +35,33 @@ class PrelistImport implements ToModel, WithUpserts, WithStartRow
             ->first();
 
         if ($sls) {
+            $jumlah_keluarga = 0;
             $jumlah_keluarga_tani = 0;
+            if ($row[14] != "") $jumlah_keluarga = $row[14];
             if ($row[15] != "") $jumlah_keluarga_tani = $row[15];
-            $sls->ruta_prelist = $jumlah_keluarga_tani;
+            $sls->ruta_prelist = $jumlah_keluarga;
+            $sls->prelist_ruta_tani = $jumlah_keluarga_tani;
+
             return $sls;
         } else {
-            return null;
+            $jumlah_keluarga = 0;
+            if ($row[14] != "") $jumlah_keluarga = $row[14];
+            $jumlah_keluarga_tani = 0;
+            if ($row[15] != "") $jumlah_keluarga_tani = $row[15];
+            $sls = Sls::create([
+                'kode_prov'     => "16",
+                'kode_kab' => $row[2],
+                'kode_kec' => $row[4],
+                'kode_desa' => $row[6],
+                'id_sls' => $id_sls[0],
+                'id_sub_sls' => $id_sls[1],
+                'nama_sls' => $row[10],
+                'ruta_prelist' => $jumlah_keluarga,
+                'prelist_ruta_tani' => $jumlah_keluarga_tani,
+                'created_by' => $auth->id,
+                'updated_by' => $auth->id,
+            ]);
+            return $sls;
         }
     }
 }

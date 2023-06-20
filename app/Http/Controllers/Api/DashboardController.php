@@ -119,7 +119,8 @@ class DashboardController extends Controller
                 DB::raw("CONCAT(id_sls, id_sub_sls) AS id_sls, CONCAT(id_sls, id_sub_sls) AS kode_wilayah, nama_sls as nama_wilayah, '1' as jumlah"),
                 'status_selesai_pcl as selesai',
                 'jml_keluarga_tani as  perkiraan_ruta',
-                'ruta_prelist as prelist_ruta_tani'
+                'ruta_prelist as prelist_ruta',
+                'prelist_ruta_tani as prelist_ruta_tani'
             )
                 ->withCount('ruta as ruta_selesai')
                 ->where('kode_kab', $request->kab_filter)
@@ -136,7 +137,8 @@ class DashboardController extends Controller
             )->withCount('sls as jumlah')
                 ->withSum('sls as selesai', 'status_selesai_pcl')
                 ->withSum('sls as perkiraan_ruta', 'jml_keluarga_tani')
-                ->withSum('sls as prelist_ruta_tani', 'ruta_prelist')
+                ->withSum('sls as prelist_ruta', 'ruta_prelist')
+                ->withSum('sls as prelist_ruta_tani', 'prelist_ruta_tani')
                 ->withCount('ruta as ruta_selesai')
                 ->where('id_kab', $request->kab_filter)
                 ->where('id_kec', $request->kec_filter)
@@ -150,7 +152,8 @@ class DashboardController extends Controller
             )->withCount('sls as jumlah')
                 ->withSum('sls as selesai', 'status_selesai_pcl')
                 ->withSum('sls as perkiraan_ruta', 'jml_keluarga_tani')
-                ->withSum('sls as prelist_ruta_tani', 'ruta_prelist')
+                ->withSum('sls as prelist_ruta', 'ruta_prelist')
+                ->withSum('sls as prelist_ruta_tani', 'prelist_ruta_tani')
                 ->withCount('ruta as ruta_selesai')
                 ->where('id_kab', $request->kab_filter)
                 ->orderby('id_kec')
@@ -164,7 +167,8 @@ class DashboardController extends Controller
             )->withCount('sls as jumlah')
                 ->withSum('sls as selesai', 'status_selesai_pcl')
                 ->withSum('sls as perkiraan_ruta', 'jml_keluarga_tani')
-                ->withSum('sls as prelist_ruta_tani', 'ruta_prelist')
+                ->withSum('sls as prelist_ruta', 'ruta_prelist')
+                ->withSum('sls as prelist_ruta_tani', 'prelist_ruta_tani')
                 ->withCount('ruta as ruta_selesai')
                 ->get();
         }
