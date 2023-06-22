@@ -29,6 +29,18 @@ class AlokasiImport implements ToModel, WithUpserts
         if (strlen($row[1]) != 2) {
             return null;
         }
+        if (strlen($row[2]) != 3) {
+            return null;
+        }
+        if (strlen($row[3]) != 3) {
+            return null;
+        }
+        if (strlen($row[4]) != 4) {
+            return null;
+        }
+        if (strlen($row[5]) != 2) {
+            return null;
+        }
 
         $sls = Sls::where('kode_kab', $row[1])
             ->where('kode_kec', $row[2])

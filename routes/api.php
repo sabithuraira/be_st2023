@@ -44,6 +44,7 @@ Route::get('list_kecs', [WIlayahController::class, 'list_kecs']);
 Route::get('list_desas', [WIlayahController::class, 'list_desas']);
 Route::get('list_sls', [WIlayahController::class, 'list_sls']);
 Route::get('list_roles', [PetugasController::class, 'list_roles']);
+Route::get('export_user', [ExportController::class, 'export_user']);
 
 Route::get('delete_ruta_duplikat', [RutaController::class, 'delete_ruta_duplikat']);
 
@@ -82,6 +83,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('export_target', [ExportController::class, 'export_target']);
     Route::get('export_dashboard_pendampingan', [ExportController::class, 'export_dashboard_pendampingan']);
+
 
     Route::post('import_alokasi', [ImportController::class, 'import_alokasi']);
     Route::post('import_ruta_regsosek', [ImportController::class, 'import_ruta_regsosek']);

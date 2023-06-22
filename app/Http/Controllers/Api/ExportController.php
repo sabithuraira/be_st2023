@@ -11,6 +11,7 @@ use App\Exports\PendampinganExport;
 use App\Exports\ProgressExport;
 use App\Exports\RutaExport;
 use App\Exports\TargetExport;
+use App\Exports\UserExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -123,5 +124,10 @@ class ExportController extends Controller
     public function export_dashboard_pendampingan(Request $request)
     {
         return excel::download(new DashboardPendampinganExport($request), 'pendampingan_16.xlsx');
+    }
+
+    public function export_user(Request $request)
+    {
+        return excel::download(new UserExport($request), 'user_16.xlsx');
     }
 }
