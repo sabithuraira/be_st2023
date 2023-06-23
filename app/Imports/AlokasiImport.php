@@ -54,19 +54,19 @@ class AlokasiImport implements ToModel, WithUpserts
             $kode_pcl = "";
             $kode_pml = "";
             $kode_koseka = "";
-            $pcl = User::where('email', $row[8])->first();
+            $pcl = User::where('email', strtolower($row[8]))->first();
             if ($pcl) {
-                $kode_pcl = $row[8];
+                $kode_pcl = strtolower($row[8]);
             }
 
             if ($row[9] != "") {
-                $pml = User::where('email', $row[9])->first();
+                $pml = User::where('email', strtolower($row[9]))->first();
                 if ($pml) {
-                    $kode_pml = $row[9];
+                    $kode_pml = strtolower($row[9]);
                 } else {
                     $user = User::create([
-                        'name'     =>  str_replace("@bps.go.id", "", $row[9]),
-                        'email'    => $row[9],
+                        'name'     =>  str_replace("@bps.go.id", "", strtolower($row[9])),
+                        'email'    => strtolower($row[9]),
                         'password' => Hash::make('123456'),
                         'kode_kab' => $row[1],
                         'kode_kec' => $row[2],
@@ -74,18 +74,18 @@ class AlokasiImport implements ToModel, WithUpserts
                         'created_by' => $auth->id
                     ]);
                     $user->syncRoles(["PML"]);
-                    $kode_koseka = $row[9];
+                    $kode_koseka = strtolower($row[9]);
                 }
             }
 
             if ($row[10] != "") {
-                $koseka = User::where('email', $row[10])->first();
+                $koseka = User::where('email', strtolower($row[10]))->first();
                 if ($koseka) {
-                    $kode_koseka = $row[10];
+                    $kode_koseka = strtolower($row[10]);
                 } else {
                     $user = User::create([
-                        'name'     =>  str_replace("@bps.go.id", "", $row[10]),
-                        'email'    => $row[10],
+                        'name'     =>  str_replace("@bps.go.id", "", strtolower($row[10])),
+                        'email'    => strtolower($row[10]),
                         'password' => Hash::make('123456'),
                         'kode_kab' => $row[1],
                         'kode_kec' => $row[2],
@@ -93,7 +93,7 @@ class AlokasiImport implements ToModel, WithUpserts
                         'created_by' => $auth->id
                     ]);
                     $user->syncRoles(["Koseka"]);
-                    $kode_koseka = $row[10];
+                    $kode_koseka = strtolower($row[10]);
                 }
             }
 
@@ -109,20 +109,20 @@ class AlokasiImport implements ToModel, WithUpserts
             $kode_pcl = "";
             $kode_pml = "";
             $kode_koseka = "";
-            $pcl = User::where('email', $row[8])->first();
+            $pcl = User::where('email', strtolower($row[8]))->first();
             if ($pcl) {
-                $kode_pcl = $row[8];
+                $kode_pcl = strtolower($row[8]);
             }
 
 
             if ($row[9] != "") {
-                $pml = User::where('email', $row[9])->first();
+                $pml = User::where('email', strtolower($row[9]))->first();
                 if ($pml) {
-                    $kode_pml = $row[9];
+                    $kode_pml = strtolower($row[9]);
                 } else {
                     $user = User::create([
-                        'name'     =>  str_replace("@bps.go.id", "", $row[9]),
-                        'email'    => $row[9],
+                        'name'     =>  str_replace("@bps.go.id", "", strtolower($row[9])),
+                        'email'    => strtolower($row[9]),
                         'password' => Hash::make('123456'),
                         'kode_kab' => $row[1],
                         'kode_kec' => $row[2],
@@ -130,18 +130,18 @@ class AlokasiImport implements ToModel, WithUpserts
                         'created_by' => $auth->id
                     ]);
                     $user->syncRoles(["PML"]);
-                    $kode_koseka = $row[9];
+                    $kode_koseka = strtolower($row[9]);
                 }
             }
 
             if ($row[10] != "") {
-                $koseka = User::where('email', $row[10])->first();
+                $koseka = User::where('email', strtolower($row[10]))->first();
                 if ($koseka) {
-                    $kode_koseka = $row[10];
+                    $kode_koseka = strtolower($row[10]);
                 } else {
                     $user = User::create([
-                        'name'     =>  str_replace("@bps.go.id", "", $row[10]),
-                        'email'    => $row[10],
+                        'name'     =>  str_replace("@bps.go.id", "", strtolower($row[10])),
+                        'email'    => strtolower($row[10]),
                         'password' => Hash::make('123456'),
                         'kode_kab' => $row[1],
                         'kode_kec' => $row[2],
@@ -149,7 +149,7 @@ class AlokasiImport implements ToModel, WithUpserts
                         'created_by' => $auth->id
                     ]);
                     $user->syncRoles(["Koseka"]);
-                    $kode_koseka = $row[10];
+                    $kode_koseka = strtolower($row[10]);
                 }
             }
 

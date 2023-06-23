@@ -31,12 +31,12 @@ class UsersImport implements ToModel, WithStartRow, WithUpserts
             return null;
         }
         // cek sudah ada di db atau belum
-        $assign = User::where('email', $row[4])->first();
+        $assign = User::where('email', strtolower($row[4]))->first();
         if ($assign) {
             // jika sudah ada di db
             $user = new User([
                 'name'     => $row[1],
-                'email'    => $row[4],
+                'email'    => strtolower($row[4]),
                 'password' => Hash::make('123456'),
                 'pengawas' => $row[6],
                 'kode_kab' => $kd_wilayah,
@@ -49,7 +49,7 @@ class UsersImport implements ToModel, WithStartRow, WithUpserts
         } else {
             $user = User::create([
                 'name'     => $row[1],
-                'email'    => $row[4],
+                'email'    => strtolower($row[4]),
                 'password' => Hash::make('123456'),
                 'pengawas' => $row[6],
                 'kode_kab' => $kd_wilayah,
