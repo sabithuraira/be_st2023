@@ -10,6 +10,7 @@ use App\Exports\DokumenExport;
 use App\Exports\PendampinganExport;
 use App\Exports\ProgressExport;
 use App\Exports\RutaExport;
+use App\Exports\SlsPerubahanExport;
 use App\Exports\TargetExport;
 use App\Exports\UserExport;
 use App\Http\Controllers\Controller;
@@ -129,5 +130,10 @@ class ExportController extends Controller
     public function export_user(Request $request)
     {
         return excel::download(new UserExport($request), 'user_16.xlsx');
+    }
+
+    public function export_sls_perubahan(Request $request)
+    {
+        return excel::download(new SlsPerubahanExport($request), 'sls_16.xlsx');
     }
 }

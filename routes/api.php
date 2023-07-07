@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('import_user', [ImportController::class, 'import_user']);
 
     Route::get('export_alokasi', [ExportController::class, 'export_alokasi']);
+    Route::get('export_sls_perubahan', [ExportController::class, 'export_sls_perubahan']);
     Route::get('export_ruta', [ExportController::class, 'export_ruta']);
     Route::get('export_progress', [ExportController::class, 'export_progress']);
     Route::get('export_dokumen', [ExportController::class, 'export_dokumen']);
