@@ -402,7 +402,12 @@ class SlsController extends Controller
 
             switch ($value['jabatan']) {
             case 1:
-                $model->status_selesai_pcl = $value['status_selesai_pcl'];
+                if($model->status_selesai_pcl==1){
+                    $model->status_selesai_pcl = 1;
+                }
+                else{
+                    $model->status_selesai_pcl = $value['status_selesai_pcl'];
+                }
                 $model->status_sls = $value['status_sls'];
                 break;
             case 2:
@@ -414,7 +419,13 @@ class SlsController extends Controller
                 $model->pendampingan_koseka = $value['pendampingan_koseka'];
                 break;
             default:
-                $model->status_selesai_pcl = $value['status_selesai_pcl'];
+                // $model->status_selesai_pcl = $value['status_selesai_pcl'];
+                if($model->status_selesai_pcl==1){
+                    $model->status_selesai_pcl = 1;
+                }
+                else{
+                    $model->status_selesai_pcl = $value['status_selesai_pcl'];
+                }
                 $model->status_sls = $value['status_sls'];
             }
             
