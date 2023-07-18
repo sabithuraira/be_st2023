@@ -353,7 +353,11 @@ class RutaController extends Controller
         }
 
         foreach ($data_delete as $id) {
-            Ruta::find($id)->delete();
+            try {
+                Ruta::findOrFail($id)->delete();;
+            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+                
+            }
         }
 
         return response()->json(['status' => 'success', 'data'=> 'Data berhasil diupload']);
