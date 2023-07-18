@@ -30,9 +30,6 @@ class RutaExport implements FromCollection, WithMapping, WithHeadings
             'ruta.id_sub_sls',
             'nurt',
             'kepala_ruta',
-            'kode_pcl',
-            'kode_pml',
-            'kode_koseka',
             'start_time',
             'end_time',
             'start_latitude',
@@ -59,16 +56,6 @@ class RutaExport implements FromCollection, WithMapping, WithHeadings
             'jumlah_art',
             'jumlah_unit_usaha',
         )
-            ->leftJoin(
-                'master_sls',
-                function ($join) {
-                    $join->on('ruta.kode_kab', '=', 'master_sls.kode_kab');
-                    $join->on('ruta.kode_kec', '=', 'master_sls.kode_kec');
-                    $join->on('ruta.kode_desa', '=', 'master_sls.kode_desa');
-                    $join->on('ruta.id_sls', '=', 'master_sls.id_sls');
-                    $join->on('ruta.id_sub_sls', '=', 'master_sls.id_sub_sls');
-                }
-            )
             ->where('ruta.kode_kab', "LIKE", "%" . $this->request->kode_kab . "%")
             ->where('ruta.kode_kec', "LIKE", "%" . $this->request->kode_kec . "%")
             ->where('ruta.kode_desa', "LIKE", "%" . $this->request->kode_desa . "%")
@@ -87,9 +74,9 @@ class RutaExport implements FromCollection, WithMapping, WithHeadings
             $ruta->id_sub_sls,
             $ruta->nurt,
             $ruta->kepala_ruta,
-            $ruta->kode_pcl,
-            $ruta->kode_pml,
-            $ruta->kode_koseka,
+            $ruta->sls->kode_pcl,
+            $ruta->sls->kode_pml,
+            $ruta->sls->kode_koseka,
             $ruta->start_time,
             $ruta->end_time,
             $ruta->start_latitude,
