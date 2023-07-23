@@ -187,6 +187,24 @@ class ExportController extends Controller
             ->where('ruta.id_sub_sls', "LIKE", "%" . $id_sub_sls . "%")
             ->get();
         foreach ($data as $ruta) {
+
+            $kode_pcl = "";
+            $kode_pml = "";
+            $kode_koseka = "";
+
+            if ($ruta->sls) {
+                if ($ruta->sls->kode_pcl) {
+                    $kode_pcl =  $ruta->sls->kode_pcl;
+                }
+                if ($ruta->sls->kode_pml) {
+                    $kode_pml =  $ruta->sls->kode_pml;
+                }
+                if ($ruta->sls->kode_koseka) {
+                    $kode_koseka =  $ruta->sls->kode_koseka;
+                }
+            }
+
+
             $rowData = [
                 $ruta->kode_prov,
                 $ruta->kode_kab,
@@ -196,9 +214,9 @@ class ExportController extends Controller
                 $ruta->id_sub_sls,
                 $ruta->nurt,
                 $ruta->kepala_ruta,
-                $ruta->sls->kode_pcl,
-                $ruta->sls->kode_pml,
-                $ruta->sls->kode_koseka,
+                $kode_pcl,
+                $kode_pml,
+                $kode_koseka,
                 $ruta->start_time,
                 $ruta->end_time,
                 $ruta->start_latitude,
