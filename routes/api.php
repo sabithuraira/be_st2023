@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\PetugasController;
 use App\Http\Controllers\Api\SlsController;
 use App\Http\Controllers\Api\RutaController;
 use App\Http\Controllers\Api\WIlayahController;
+use App\Http\Controllers\Api\TelegramController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::middleware('auth:sanctum')->get('cd/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('telegram/pes_st2023', [TelegramController::class, 'pes_st2023']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('change_password', [AuthController::class, 'change_password']);
