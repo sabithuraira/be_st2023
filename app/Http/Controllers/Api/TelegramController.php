@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Log;
 use App\Models\PesSt2023;
+use App\Http\Controllers\Controller;
 
 class TelegramController extends Controller
 {
