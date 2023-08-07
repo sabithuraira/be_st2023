@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ExportController;
+use App\Http\Controllers\Api\PesController;
 use App\Http\Controllers\Api\PetugasController;
 use App\Http\Controllers\Api\SlsController;
 use App\Http\Controllers\Api\RutaController;
@@ -54,6 +55,8 @@ Route::get('delete_ruta_duplikat', [RutaController::class, 'delete_ruta_duplikat
 Route::get('export_ruta', [ExportController::class, 'export_ruta']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::resource('pes', PesController::class);
+
     Route::get('progress', [DashboardController::class, 'progress']);
     Route::get('progress_kk', [DashboardController::class, 'progress_kk']);
     Route::get('progress_dokumen', [DashboardController::class, 'progress_dokumen']);
