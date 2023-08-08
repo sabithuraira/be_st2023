@@ -8,6 +8,7 @@ use App\Exports\DashboardWaktuExport;
 use App\Exports\DashboardPendampinganExport;
 use App\Exports\DokumenExport;
 use App\Exports\PendampinganExport;
+use App\Exports\PesExport;
 use App\Exports\ProgressExport;
 use App\Exports\RutaExport;
 use App\Exports\SlsPerubahanExport;
@@ -288,5 +289,10 @@ class ExportController extends Controller
     public function export_sls_perubahan(Request $request)
     {
         return excel::download(new SlsPerubahanExport($request), 'sls_16.xlsx');
+    }
+
+    public function export_pes(Request $request)
+    {
+        return excel::download(new PesExport($request), 'pes_16.xlsx');
     }
 }
