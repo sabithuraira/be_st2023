@@ -42,6 +42,9 @@ class PesExport implements FromCollection, WithHeadings, WithMapping
             $sls->jml_ruta_pes,
             $sls->jml_art_pes,
             $sls->status_selesai,
+            $sls->nama_ppl,
+            $sls->nama_pml,
+            $sls->updated_at,
         ];
     }
 
@@ -61,6 +64,8 @@ class PesExport implements FromCollection, WithHeadings, WithMapping
             'jml_ruta_pes',
             'jml_art_pes',
             'status_selesai',
+            'nama_ppl',
+            'nama_pml',
             'updated_at'
         ];
     }

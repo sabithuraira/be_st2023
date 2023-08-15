@@ -57,6 +57,7 @@ Route::get('export_ruta', [ExportController::class, 'export_ruta']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('pes', PesController::class);
     Route::get('export_pes', [ExportController::class, 'export_pes']);
+    Route::post('import_pes', [ImportController::class, 'import_pes']);
 
 
     Route::get('progress', [DashboardController::class, 'progress']);
