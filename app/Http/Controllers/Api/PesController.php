@@ -31,7 +31,7 @@ class PesController extends Controller
         $data = PesSt2023::where($condition)
             ->paginate(20);
 
-        $data->withPath('index');
+        $data->withPath('pes_st2023');
         $data->appends($request->all());
         return response()->json(['status' => 'success', 'data' => $data, 'label_kab' => $label_kab, 'label_kec' => $label_kec]);
     }

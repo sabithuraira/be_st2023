@@ -31,6 +31,9 @@ class UmkmController extends Controller
 
         if ($request->desa_filter) {
             $data = Umkm::select(
+                'kode_kab as kode_kab',
+                'kode_kec as kode_kec',
+                'kode_desa as kode_desa',
                 DB::raw(
                     "CONCAT(id_sls,id_sub_sls) as kode_sls, CONCAT(id_sls,id_sub_sls) as kode_wilayah"
                 ),
@@ -53,8 +56,10 @@ class UmkmController extends Controller
                 ->where('kode_kec', $request->kec_filter)
                 ->where('id_kab', $request->kab_filter)
                 ->where('id_kec', $request->kec_filter)
-                ->groupBy('kode_desa', 'nama_desa')
+                ->groupBy('kode_kab', 'kode_kec', 'kode_desa', 'nama_desa')
                 ->selectRaw('
+                 kode_kab as kode_kab,
+                 kode_kec as kode_kec,
                  kode_desa as kode_desa,
                  kode_desa as kode_wilayah,
                  desas.nama_desa as nama_wilayah,
@@ -69,8 +74,9 @@ class UmkmController extends Controller
         } else if ($request->kab_filter) {
             $data = Umkm::where('kode_kab', $request->kab_filter)
                 ->where('id_kab', $request->kab_filter)
-                ->groupBy('kode_kec', 'nama_kec')
+                ->groupBy('kode_kab', 'kode_kec', 'nama_kec')
                 ->selectRaw('
+                 kode_kab as kode_kab,
                  kode_kec as kode_kec,
                  kode_kec as kode_wilayah,
                  kecs.nama_kec as nama_wilayah,
