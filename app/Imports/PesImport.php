@@ -35,12 +35,12 @@ class PesImport implements ToModel, WithUpserts, WithStartRow
         // dd(substr($row[5], 4, 2));
         if ($pes) {
             if ($row[8] != "")  $pes->klasifikasi = $row[7];
-            if ($row[10] != "")  $pes->kode_ppl = $row[9];
-            if ($row[11] != "")  $pes->nama_ppl = $row[10];
-            if ($row[12] != "")  $pes->wa_ppl = $row[11];
-            if ($row[13] != "")  $pes->kode_pml = $row[12];
-            if ($row[14] != "")  $pes->nama_pml = $row[13];
-            if ($row[15] != "")  $pes->wa_pml = $row[14];
+            if ($row[9] != "")  $pes->kode_ppl = $row[9];
+            if ($row[10] != "")  $pes->nama_ppl = $row[10];
+            if ($row[11] != "")  $pes->wa_ppl = $row[11];
+            if ($row[12] != "")  $pes->kode_pml = $row[12];
+            if ($row[13] != "")  $pes->nama_pml = $row[13];
+            if ($row[14] != "")  $pes->wa_pml = $row[14];
             return $pes;
         }
     }

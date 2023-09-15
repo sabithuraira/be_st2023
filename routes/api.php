@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\SlsController;
 use App\Http\Controllers\Api\RutaController;
 use App\Http\Controllers\Api\WIlayahController;
 use App\Http\Controllers\Api\TelegramController;
+use App\Http\Controllers\Api\UmkmController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,14 +52,17 @@ Route::get('export_user', [ExportController::class, 'export_user']);
 
 Route::get('delete_ruta_duplikat', [RutaController::class, 'delete_ruta_duplikat']);
 
-
 Route::get('export_ruta', [ExportController::class, 'export_ruta']);
+
+Route::get('umkm', [UmkmController::class, 'index']);
+
+
+
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('pes', PesController::class);
     Route::get('export_pes', [ExportController::class, 'export_pes']);
     Route::post('import_pes', [ImportController::class, 'import_pes']);
-
 
     Route::get('progress', [DashboardController::class, 'progress']);
     Route::get('progress_kk', [DashboardController::class, 'progress_kk']);
