@@ -19,6 +19,7 @@ class UmkmSLSExport implements FromCollection, WithMapping, WithHeadings
 
     public function collection()
     {
+        $condition = [];
         if (isset($this->request->kab_filter) && strlen($this->request->kab_filter) > 0) $condition[] = ['kode_kab', '=', $this->request->kab_filter];
         if (isset($this->request->kec_filter) && strlen($this->request->kec_filter) > 0) $condition[] = ['kode_kec', '=', $this->request->kec_filter];
         if (isset($this->request->desa_filter) && strlen($this->request->desa_filter) > 0) $condition[] = ['kode_desa', '=', $this->request->desa_filter];
