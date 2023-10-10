@@ -13,6 +13,8 @@ use App\Exports\ProgressExport;
 use App\Exports\RutaExport;
 use App\Exports\SlsPerubahanExport;
 use App\Exports\TargetExport;
+use App\Exports\UmkmExport;
+use App\Exports\UmkmSLSExport;
 use App\Exports\UserExport;
 use App\Http\Controllers\Controller;
 use App\Models\Ruta;
@@ -291,8 +293,13 @@ class ExportController extends Controller
         return excel::download(new SlsPerubahanExport($request), 'sls_16.xlsx');
     }
 
-    public function export_pes(Request $request)
+    public function export_umkm(Request $request)
     {
-        return excel::download(new PesExport($request), 'pes_16.xlsx');
+        return excel::download(new UmkmExport($request), 'export_umkm.xlsx');
+    }
+
+    public function export_umkm_sls(Request $request)
+    {
+        return excel::download(new UmkmSLSExport($request), 'export_umkm_sls.xlsx');
     }
 }

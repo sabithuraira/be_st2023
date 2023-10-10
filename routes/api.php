@@ -55,7 +55,8 @@ Route::get('delete_ruta_duplikat', [RutaController::class, 'delete_ruta_duplikat
 Route::get('export_ruta', [ExportController::class, 'export_ruta']);
 
 Route::get('umkm', [UmkmController::class, 'index']);
-
+Route::get('export_umkm', [ExportController::class, 'export_umkm']);
+Route::get('export_umkm_sls', [ExportController::class, 'export_umkm_sls']);
 
 
 
