@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\RutaController;
 use App\Http\Controllers\Api\WIlayahController;
 use App\Http\Controllers\Api\TelegramController;
 use App\Http\Controllers\Api\UmkmController;
+use App\Http\Controllers\Api\FileController;
 
 /*
 |--------------------------------------------------------------------------
