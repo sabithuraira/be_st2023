@@ -59,7 +59,7 @@ Route::get('umkm', [UmkmController::class, 'index']);
 Route::get('export_umkm', [ExportController::class, 'export_umkm']);
 Route::get('export_umkm_sls', [ExportController::class, 'export_umkm_sls']);
 
-
+Route::post('file/{id}/upload', [FileController::class, 'upload']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('pes', PesController::class);
